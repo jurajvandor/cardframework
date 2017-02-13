@@ -1,7 +1,12 @@
-import java.io.File;
 
 public class XMLLoader implements Loader {
-    public Deck loadDeck(File file) {
+
+    private String path;
+    public XMLLoader(String path){
+        this.path = path;
+    }
+
+    public LoadedCards loadDeck() {
         return null;
     }
 }

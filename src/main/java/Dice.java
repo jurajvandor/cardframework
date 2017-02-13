@@ -1,18 +1,16 @@
+import java.util.Random;
+
 public class Dice {
 
-	/**
-	 * 
-	 * @param min
-	 * @param max
-	 */
+	private int min;
+	private int max;
 	public Dice(int min, int max) {
-		// TODO - implement Dice.Dice
-		throw new UnsupportedOperationException();
+		this.min = min;
+		this.max = max;
 	}
 
 	public int roll() {
-		// TODO - implement Dice.roll
-		throw new UnsupportedOperationException();
+		return ((new Random()).nextInt()%max+1)+min;
 	}
 
 }

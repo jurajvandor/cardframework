@@ -4,10 +4,16 @@ import java.util.Map;
 public class Card {
 
 	private Map<String, String> properties;
-	private File pictureOfCard;
+
+	public Card(Map<String,String> properties){
+		this.properties = properties;
+	}
 
 	public Map<String, String> getProperties() {
 		return this.properties;
 	}
 
+    public Card copyCard(){
+	    return null;
+    }
 }

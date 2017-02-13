@@ -9,14 +9,10 @@ public class GroupOfCards {
 
 	/**
 	 * 
-	 * @param container
+	 * @param cards
 	 */
-	public GroupOfCards(Collection<Card> container) {
-		// TODO - implement GroupOfCards.GroupOfCards
-		throw new UnsupportedOperationException();
-	}
-
-	public GroupOfCards(ArrayList<Card> cards) {
+	public GroupOfCards(Collection<Card> cards) {
+		this.cards = cards;
 	}
 
 	public List<Card> getCards() {

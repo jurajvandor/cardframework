@@ -1,13 +1,17 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Deck extends GroupOfCards {
 
 	private boolean type;
 
-
-	public Deck() {
-		super(new ArrayList<Card>());
+	public Deck(List<Card> cards ){
+		super(cards);
 	}
+
+
 
 	public Card drawTopCard() {
 		// TODO - implement Deck.drawTopCard
