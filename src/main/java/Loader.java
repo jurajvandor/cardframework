@@ -1,6 +1,6 @@
 
 public interface Loader {
 
-	LoadedCards loadDeck();
+	LoadedCards loadCards();
 
 }

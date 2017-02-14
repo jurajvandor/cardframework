@@ -9,7 +9,7 @@ public class PlayerPropertyTypeValues implements Comparable<PlayerPropertyTypeVa
 
 	public PlayerPropertyTypeValues(String type){
 		this.type = type;
-		values = new TreeSet<String>();
+		values = new TreeSet<>();
 	}
 
 	public void addValue(String value){

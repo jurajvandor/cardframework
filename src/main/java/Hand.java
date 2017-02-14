@@ -4,18 +4,15 @@ public class Hand extends GroupOfCards {
 
 	private boolean visibility;
 
-	public Hand(ArrayList<Card> cards) {
+	public Hand(ArrayList<Card> cards, boolean visibility) {
 		super(cards);
+		this.visibility = visibility;
 	}
 
 	public boolean getVisibility() {
 		return this.visibility;
 	}
 
-	/**
-	 * 
-	 * @param visibility
-	 */
 	public void setVisibility(boolean visibility) {
 		this.visibility = visibility;
 	}

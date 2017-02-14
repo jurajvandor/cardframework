@@ -15,8 +15,7 @@ public class Player extends CardOwner {
 	 * @param value
 	 */
 	public void addProperty(String type, String value) {
-		// TODO - implement Player.addProperty
-		throw new UnsupportedOperationException();
+		properties.put(type,value);
 	}
 
 	/**
@@ -24,8 +23,7 @@ public class Player extends CardOwner {
 	 * @param type
 	 */
 	public String getProperty(String type) {
-		// TODO - implement Player.getProperty
-		throw new UnsupportedOperationException();
+		return properties.get(type);
 	}
 
 }

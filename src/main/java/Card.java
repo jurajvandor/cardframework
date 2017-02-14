@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Card {
@@ -14,6 +15,6 @@ public class Card {
 	}
 
     public Card copyCard(){
-	    return null;
+	    return new Card(new HashMap<>(properties));
     }
 }

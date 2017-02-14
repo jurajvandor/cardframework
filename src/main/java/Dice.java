@@ -13,4 +13,7 @@ public class Dice {
 		return ((new Random()).nextInt()%max+1)+min;
 	}
 
+	public static int roll(int min, int max){
+		return ((new Random()).nextInt()%max+1)+min;
+	}
 }

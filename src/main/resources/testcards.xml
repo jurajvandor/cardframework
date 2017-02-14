@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<cards name = "skuskove karty">
-	<card>
-		<count>3</count>
+
+<cards name="skuskove karty">
+	<card count="3">
 		<color>black</color>
 		<value>5</value>
 		<picture>http://thewallmachine.com/files/1411921557.jpg</picture>
 	</card>
-	<card>
-		<count>2</count>
+	<card count="2">
 		<color>red</color>
 		<value>7</value>
 		<picture>http://thewallmachine.com/files/1411921557.jpg</picture>
 	</card>
-</cards>  
+</cards>

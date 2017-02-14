@@ -2,16 +2,16 @@
  * Created by Juraj on 13.02.2017.
  */
 public class LoadedCard {
-    private int number;
+    private int count;
     private Card card;
 
-    public LoadedCard(Card card, int num){
+    public LoadedCard(Card card, int count){
         this.card = card;
-        this.number = num;
+        this.count = count;
     }
 
-    public int getNumber() {
-        return number;
+    public int getCount() {
+        return count;
     }
 
     public Card getCard() {
