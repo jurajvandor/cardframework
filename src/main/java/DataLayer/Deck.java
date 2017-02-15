@@ -1,9 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+package DataLayer;
 
-public class Deck extends GroupOfCards {
+import java.util.List;
+
+public class Deck extends ListOfCards {
 
 	private boolean type;
 
@@ -14,8 +13,7 @@ public class Deck extends GroupOfCards {
 
 
 	public Card drawTopCard() {
-		// TODO - implement Deck.drawTopCard
-		throw new UnsupportedOperationException();
+		cards
 	}
 
 	/**
@@ -23,12 +21,12 @@ public class Deck extends GroupOfCards {
 	 * @param card
 	 */
 	public void returnCardToTop(Card card) {
-		// TODO - implement Deck.returnCardToTop
+		// TODO - implement DataLayer.Deck.returnCardToTop
 		throw new UnsupportedOperationException();
 	}
 
 	public void shuffle() {
-		// TODO - implement Deck.shuffle
+		// TODO - implement DataLayer.Deck.shuffle
 		throw new UnsupportedOperationException();
 	}
 

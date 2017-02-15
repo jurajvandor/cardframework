@@ -1,3 +1,5 @@
+package DataLayer;
+
 import java.util.List;
 public class Game {
 
@@ -7,7 +9,7 @@ public class Game {
 	 * @param decksToLoad
 	 */
 	public Game(int numOfPlayers, List<Loader> decksToLoad) {
-		// TODO - implement Game.Game
+		// TODO - implement DataLayer.Game.DataLayer.Game
 		throw new UnsupportedOperationException();
 	}
 
@@ -16,7 +18,7 @@ public class Game {
 	 * @param filename
 	 */
 	public void saveState(String filename) {
-		// TODO - implement Game.saveState
+		// TODO - implement DataLayer.Game.saveState
 		throw new UnsupportedOperationException();
 	}
 
@@ -25,7 +27,7 @@ public class Game {
 	 * @param filename
 	 */
 	public void loadState(String filename) {
-		// TODO - implement Game.loadState
+		// TODO - implement DataLayer.Game.loadState
 		throw new UnsupportedOperationException();
 	}
 

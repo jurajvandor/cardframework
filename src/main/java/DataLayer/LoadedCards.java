@@ -1,13 +1,14 @@
+package DataLayer;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Juraj on 13.02.2017.
  */
 public class LoadedCards {
     private List<LoadedCard> cards;
-    //private Set<CardPropertyTypeValues> typeValues;
+    //private Set<DataLayer.CardPropertyTypeValues> typeValues;
     private String name;
 
     public LoadedCards(List<LoadedCard> cards,  String name) {

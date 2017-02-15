@@ -1,6 +1,8 @@
+package DataLayer;
+
 import java.util.ArrayList;
 
-public class Hand extends GroupOfCards {
+public class Hand extends ListOfCards {
 
 	private boolean visibility;
 

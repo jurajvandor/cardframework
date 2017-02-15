@@ -1,3 +1,5 @@
+package DataLayer;
+
 import java.util.Random;
 
 public class Dice {

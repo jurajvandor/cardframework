@@ -1,14 +1,17 @@
+package DataLayer;
+
 import java.util.Set;
 import java.util.TreeSet;
 
-public class CardPropertyTypeValues implements Comparable<CardPropertyTypeValues>{
+public class PlayerPropertyTypeValues implements Comparable<PlayerPropertyTypeValues>{
 
 	private String type;
 	private Set<String> values;
 
-	public CardPropertyTypeValues(String type){
+
+	public PlayerPropertyTypeValues(String type){
 		this.type = type;
-		values = new TreeSet<String>();
+		values = new TreeSet<>();
 	}
 
 	public void addValue(String value){
@@ -20,7 +23,7 @@ public class CardPropertyTypeValues implements Comparable<CardPropertyTypeValues
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 
-		CardPropertyTypeValues that = (CardPropertyTypeValues) o;
+		PlayerPropertyTypeValues that = (PlayerPropertyTypeValues) o;
 
 		return type.equals(that.type);
 	}
@@ -30,8 +33,9 @@ public class CardPropertyTypeValues implements Comparable<CardPropertyTypeValues
 		return type.hashCode();
 	}
 
-	public int compareTo(CardPropertyTypeValues o) {
+	public int compareTo(PlayerPropertyTypeValues o) {
 		if (this == o) return 0;
 		return type.compareTo(o.type);
 	}
+
 }
