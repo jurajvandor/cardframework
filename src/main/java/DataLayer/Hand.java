@@ -1,13 +1,14 @@
 package DataLayer;
 
-import java.util.ArrayList;
+import java.util.*;
 
-public class Hand extends ListOfCards {
+public class Hand implements GroupOfCards {
 
 	private boolean visibility;
+	private Set<Card> cards;
 
-	public Hand(ArrayList<Card> cards, boolean visibility) {
-		super(cards);
+	public Hand(Set<Card> cards, boolean visibility) {
+		this.cards = cards;
 		this.visibility = visibility;
 	}
 
@@ -19,4 +20,31 @@ public class Hand extends ListOfCards {
 		this.visibility = visibility;
 	}
 
+
+	public Collection<Card> getCards() {
+		return cards;
+	}
+
+	public void addCard(Card card) {
+		cards.add(card);
+	}
+
+	public boolean removeCard(Card card) {
+		return cards.remove(card);
+
+	}
+
+	public boolean hasCard(Card card) {
+		return cards.contains(card);
+	}
+
+
+	public GroupOfCards copy(){
+		return new Hand(new TreeSet<>(cards), visibility);
+	}
+
+	@Override
+	public Iterator<Card> iterator() {
+		return cards.iterator();
+	}
 }

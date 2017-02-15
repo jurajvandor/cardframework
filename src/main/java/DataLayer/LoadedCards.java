@@ -21,7 +21,7 @@ public class LoadedCards {
         List<Card> list = new ArrayList<Card>();
         for (LoadedCard c: cards) {
             for (int i = c.getCount(); i > 0; i--){
-                list.add(c.getCard().copyCard());
+                list.add(new Card(c.getCard()));
             }
         }
         return new Deck(list);

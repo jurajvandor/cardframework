@@ -11,11 +11,11 @@ public class Card {
 		this.properties = properties;
 	}
 
+	public Card(Card card){
+		this.properties = new HashMap<>(card.properties);
+	}
+
 	public Map<String, String> getProperties() {
 		return this.properties;
 	}
-
-    public Card copyCard(){
-	    return new Card(new HashMap<>(properties));
-    }
 }

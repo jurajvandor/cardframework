@@ -17,7 +17,8 @@ public class XMLLoader implements Loader {
 
     public static void main(String[] args){
         Loader l = new XMLLoader("C:\\Users\\Juraj\\IdeaProjects\\cardframework\\src\\main\\resources\\testcards.xml");
-        l.loadCards();
+        LoadedCards c = l.loadCards();
+        Deck d = c.createDeck();
     }
 
     private String path;
