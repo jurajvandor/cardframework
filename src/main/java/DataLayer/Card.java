@@ -1,9 +1,10 @@
 package DataLayer;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Card {
+public class Card  implements Serializable {
 
 	private Map<String, String> properties;
 

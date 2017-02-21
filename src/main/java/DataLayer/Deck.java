@@ -1,11 +1,12 @@
 package DataLayer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class Deck implements GroupOfCards {
+public class Deck implements GroupOfCards, Serializable {
 
 	private DeckType type;
 

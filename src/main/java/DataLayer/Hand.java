@@ -1,5 +1,6 @@
 package DataLayer;
 
+import java.io.Serializable;
 import java.util.*;
 
 public class Hand implements GroupOfCards {

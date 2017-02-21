@@ -1,8 +1,9 @@
 package DataLayer;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Dice {
+public class Dice implements Serializable {
 
 	private int min;
 	private int max;

@@ -1,9 +1,11 @@
 package DataLayer;
 
+import java.io.Serializable;
+
 /**
  * Created by Juraj on 13.02.2017.
  */
-public class LoadedCard {
+public class LoadedCard  implements Serializable {
     private int count;
     private Card card;
 
