@@ -1,6 +1,9 @@
 package DataLayer;
 
+import com.sun.javafx.collections.UnmodifiableObservableMap;
+
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +20,6 @@ public class Card  implements Serializable {
 	}
 
 	public Map<String, String> getProperties() {
-		return this.properties;
+		return Collections.unmodifiableMap(this.properties);
 	}
 }

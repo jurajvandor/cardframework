@@ -19,6 +19,7 @@ public class Deck implements GroupOfCards, Serializable {
 	public void returnCardToTop(Card card) {
 		cards.add(card);
 	}
+
 /*for i from 0 to n−2 do
 	j ← random integer such that i ≤ j < n
 	exchange a[i] and a[j]
@@ -26,9 +27,7 @@ public class Deck implements GroupOfCards, Serializable {
 	public void shuffle() {
 		for (int i = 0; i < cards.size()-2; i++){
 			int j = Dice.roll(i,cards.size()-1);
-			Card tmp = cards.get(i);
-			cards.set(i, cards.get(j));
-			cards.set(j, tmp);
+			Collections.swap(cards,i,j);
 		}
 	}
 
@@ -38,6 +37,7 @@ public class Deck implements GroupOfCards, Serializable {
 
 	public void setType(DeckType type) {
 		this.type = type;
+		Collections.reverse(cards);
 	}
 
 	public Collection<Card> getCards() {

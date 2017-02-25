@@ -1,15 +1,40 @@
 package DataLayer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game implements Serializable{
 
 	private List<Player> players;
+	private Map<String, LoadedCards> decks;
 	public Game() {
 		players = new ArrayList<>();
+		decks = new HashMap<>();
 	}
+
+	public void load(List<Loader> loaders){
+        for (Loader l: loaders) {
+            LoadedCards c = l.loadCards();
+            decks.put(c.getName(), c);
+        }
+    }
+
+    public void load(Loader loader){
+        LoadedCards c = loader.loadCards();
+        decks.put(c.getName(), c);
+	}
+
+    public Deck createDeck(String name){
+	    return decks.get(name).createDeck();
+    }
+
+    public void createDeck(String name, CardOwner owner){
+        owner.addCards(name, (decks.get(name).createDeck()));
+    }
+
+    public void createDeckCustomizeName(String name, String customName, CardOwner owner){
+        owner.addCards(customName, (decks.get(name).createDeck()));
+    }
 
 	public int addPlayer(String name){
 		players.add(new Player(name));

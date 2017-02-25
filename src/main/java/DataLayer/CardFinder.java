@@ -12,12 +12,26 @@ public class CardFinder  implements Serializable {
 	CardFinder(GroupOfCards cards){
 		this.cards = cards.copy();
 	}
-	public GroupOfCards FilterCards(String propertyName, Collection<String> values) {
+    public GroupOfCards filterCards(String propertyName, Collection<String> values) {
+        for (Card c : cards){
+            if (!values.contains(c.getProperties().get(propertyName))){
+                cards.removeCard(c);
+            }
+        }
+        return cards;
+    }
 
-		return cards;
-	}
+    public GroupOfCards filterCards(String propertyName, String value) {
+        for (Card c : cards){
+            if (!c.getProperties().get(propertyName).equals(value)){
+                cards.removeCard(c);
+            }
+        }
+        return cards;
+    }
 
-	public GroupOfCards getCards(){
+
+    public GroupOfCards getCards(){
 		return cards;
 	}
 

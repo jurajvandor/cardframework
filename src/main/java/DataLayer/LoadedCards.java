@@ -11,14 +11,18 @@ public class LoadedCards  implements Serializable {
     private List<LoadedCard> cards;
     private String name;
 
-    public LoadedCards(List<LoadedCard> cards,  String name) {
+    public String getName() {
+        return name;
+    }
+
+    public LoadedCards(List<LoadedCard> cards, String name) {
         this.cards = cards;
         //this.typeValues = typeValues;
         this.name = name;
     }
 
     public Deck createDeck(){
-        List<Card> list = new ArrayList<Card>();
+        List<Card> list = new ArrayList<>();
         for (LoadedCard c: cards) {
             for (int i = c.getCount(); i > 0; i--){
                 list.add(new Card(c.getCard()));
