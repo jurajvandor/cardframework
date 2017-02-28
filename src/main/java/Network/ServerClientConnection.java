@@ -1,5 +1,6 @@
 package Network;
 
+import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,9 +11,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Juraj on 28.02.2017.
  */
-public class ServerClientConnection extends Thread {
+public class ServerClientConnection extends Thread implements Closeable {
 
-    private String clientName = null;
     private DataInputStream is = null;
     private PrintStream os = null;
     private Socket clientSocket = null;
@@ -29,9 +29,13 @@ public class ServerClientConnection extends Thread {
         maxClientsCount = connections.length;
     }
 
-    void quit(){
-        listener.quit();
+    public void close(){
+        listener.close();
         quit = true;
+    }
+
+    public void send(String message){
+        outputBuffer.add(message);
     }
 
     public void run() {
@@ -44,8 +48,8 @@ public class ServerClientConnection extends Thread {
             listener = new ServerClientConnectionListener(inputBuffer, is);
 
             while (!quit){
-                if (!inputBuffer.isEmpty()){
-                    os.println(inputBuffer.take());
+                if (!outputBuffer.isEmpty()){
+                    os.println(outputBuffer.take());
                 }
                 sleep(500);
             }
@@ -69,30 +73,4 @@ public class ServerClientConnection extends Thread {
     }
 }
 
-class ServerClientConnectionListener extends Thread{
-    private BlockingQueue<String> inputBuffer;
-    private DataInputStream inputStream;
-    private boolean quit = false;
 
-    public void quit(){
-        quit = true;
-    }
-
-    ServerClientConnectionListener(BlockingQueue<String> inputBuffer, DataInputStream inputStream){
-        this.inputBuffer = inputBuffer;
-        this.inputStream = inputStream;
-    }
-
-    public void run(){
-        String message;
-        try {
-            while (!quit) {
-                message = inputStream.readUTF();
-                inputBuffer.add(message);
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-}
