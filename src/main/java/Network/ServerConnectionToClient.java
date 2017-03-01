@@ -1,9 +1,6 @@
 package Network;
 
-import java.io.Closeable;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -11,19 +8,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Juraj on 28.02.2017.
  */
-public class ServerClientConnection extends Thread implements Closeable {
+public class ServerConnectionToClient extends Thread implements Closeable {
 
     private DataInputStream is = null;
     private PrintStream os = null;
     private Socket clientSocket = null;
-    private final ServerClientConnection[] connections;
+    private final ServerConnectionToClient[] connections;
     private int maxClientsCount;
     private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
     private BlockingQueue<String> inputBuffer = new LinkedBlockingQueue<>();
     private boolean quit = false;
-    private ServerClientConnectionListener listener = null;
+    private ConnectionListener listener = null;
 
-    public ServerClientConnection(Socket clientSocket, ServerClientConnection[] connections) {
+    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections) {
         this.clientSocket = clientSocket;
         this.connections = connections;
         maxClientsCount = connections.length;
@@ -40,13 +37,13 @@ public class ServerClientConnection extends Thread implements Closeable {
 
     public void run() {
         int maxClientsCount = this.maxClientsCount;
-        ServerClientConnection[] threads = this.connections;
+        ServerConnectionToClient[] threads = this.connections;
 
         try {
             is = new DataInputStream(clientSocket.getInputStream());
             os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ServerClientConnectionListener(inputBuffer, is);
-
+            listener = new ConnectionListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
+            listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
                     os.println(outputBuffer.take());

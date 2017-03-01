@@ -9,19 +9,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Juraj on 22.02.2017.
  */
-public class ServerConnectionListener implements Runnable{
+public class ServerConnectionListener extends Thread{
 
     private ServerSocket serverSocket = null;
     private Socket clientSocket = null;
     private int portNumber;
     private int maxClientsCount;
-    private ServerClientConnection[] threads = new ServerClientConnection[maxClientsCount];
-    private BlockingQueue<ServerClientConnection> newClients  = new LinkedBlockingQueue<>();
+    private ServerConnectionToClient[] threads;
+    private BlockingQueue<ServerConnectionToClient> newClients  = new LinkedBlockingQueue<>();
     private boolean quit = false;
+
+    public static void main(String[] args){
+        (new ServerConnectionListener(2223, 5)).start();
+    }
 
     ServerConnectionListener(int portNumber, int maxClientsCount){
         this.portNumber = portNumber;
         this.maxClientsCount = maxClientsCount;
+        this.threads = new ServerConnectionToClient[maxClientsCount];
     }
 
     public void quit(){
@@ -41,7 +46,7 @@ public class ServerConnectionListener implements Runnable{
                 int i;
                 for (i = 0; i < maxClientsCount; i++) {
                     if (threads[i] == null) {
-                        (threads[i] = new ServerClientConnection(clientSocket, threads)).start();
+                        (threads[i] = new ServerConnectionToClient(clientSocket, threads)).start();
                         break;
                     }
                 }

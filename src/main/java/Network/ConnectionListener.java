@@ -1,5 +1,6 @@
 package Network;
 
+import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -8,16 +9,16 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Juraj on 28.02.2017.
  */
-class ServerClientConnectionListener extends Thread implements Closeable {
+class ConnectionListener extends Thread implements Closeable {
     private BlockingQueue<String> inputBuffer;
-    private DataInputStream inputStream;
+    private BufferedReader inputStream;
     private boolean quit = false;
 
     public void close(){
         quit = true;
     }
 
-    ServerClientConnectionListener(BlockingQueue<String> inputBuffer, DataInputStream inputStream){
+    ConnectionListener(BlockingQueue<String> inputBuffer, BufferedReader inputStream){
         this.inputBuffer = inputBuffer;
         this.inputStream = inputStream;
     }
@@ -26,7 +27,7 @@ class ServerClientConnectionListener extends Thread implements Closeable {
         String message;
         try {
             while (!quit) {
-                message = inputStream.readUTF();
+                message = inputStream.readLine();
                 inputBuffer.add(message);
             }
         }
