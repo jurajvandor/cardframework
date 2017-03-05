@@ -48,7 +48,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
                 if (!outputBuffer.isEmpty()){
                     os.println(outputBuffer.take());
                 }
-                sleep(500);
+                sleep(50);
             }
 
             synchronized (this) {

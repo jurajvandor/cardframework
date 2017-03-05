@@ -19,11 +19,7 @@ public class ServerConnectionListener extends Thread{
     private BlockingQueue<ServerConnectionToClient> newClients  = new LinkedBlockingQueue<>();
     private boolean quit = false;
 
-    public static void main(String[] args){
-        (new ServerConnectionListener(2223, 5)).start();
-    }
-
-    ServerConnectionListener(int portNumber, int maxClientsCount){
+    public ServerConnectionListener(int portNumber, int maxClientsCount){
         this.portNumber = portNumber;
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
@@ -31,6 +27,12 @@ public class ServerConnectionListener extends Thread{
 
     public void quit(){
         quit = true;
+    }
+
+    public void sendAllCliets(String message){
+        for (ServerConnectionToClient c : threads) {
+            c.send(message);
+        }
     }
 
     public void run() {

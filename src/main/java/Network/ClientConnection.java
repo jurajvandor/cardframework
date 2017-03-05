@@ -23,14 +23,6 @@ public class ClientConnection extends Thread implements Closeable{
         this.portNumber = portNumber;
     }
 
-    public static void main(String[] args){
-
-        ClientConnection c = new ClientConnection("localhost", 2223);
-        c.start();
-        c.send("hello");
-
-
-    }
     public void close(){
         listener.close();
         quit = true;
@@ -52,7 +44,7 @@ public class ClientConnection extends Thread implements Closeable{
                     os.println(outputBuffer.take());
                 }
                 os.flush();
-                sleep(500);
+                sleep(50);
             }
 
             is.close();
