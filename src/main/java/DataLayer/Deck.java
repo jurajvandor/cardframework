@@ -20,15 +20,9 @@ public class Deck implements GroupOfCards, Serializable {
 		cards.add(card);
 	}
 
-/*for i from 0 to n−2 do
-	j ← random integer such that i ≤ j < n
-	exchange a[i] and a[j]
-	https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle */
+
 	public void shuffle() {
-		for (int i = 0; i < cards.size()-2; i++){
-			int j = Dice.roll(i,cards.size()-1);
-			Collections.swap(cards,i,j);
-		}
+		Collections.shuffle(cards);
 	}
 
 	public DeckType getType() {
@@ -50,7 +44,6 @@ public class Deck implements GroupOfCards, Serializable {
 
 	public boolean removeCard(Card card) {
 		return cards.remove(card);
-
 	}
 
 	public boolean hasCard(Card card) {
