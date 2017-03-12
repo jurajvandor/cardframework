@@ -9,18 +9,11 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Juraj on 28.02.2017.
  */
-class ConnectionListener extends Thread implements Closeable {
-    private BlockingQueue<String> inputBuffer;
-    private BufferedReader inputStream;
-    private boolean quit = false;
+class ClientListener extends  Listener {
 
-    public void close(){
-        quit = true;
-    }
 
-    ConnectionListener(BlockingQueue<String> inputBuffer, BufferedReader inputStream){
-        this.inputBuffer = inputBuffer;
-        this.inputStream = inputStream;
+    ClientListener(BlockingQueue<String> inputBuffer, BufferedReader inputStream){
+        super(inputBuffer, inputStream);
     }
 
     public void run(){

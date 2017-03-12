@@ -14,13 +14,11 @@ public class ClientConnection extends Thread implements Closeable{
     private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
     private BlockingQueue<String> inputBuffer = new LinkedBlockingQueue<>();
     private boolean quit = false;
-    private ConnectionListener listener = null;
-    private String host;
-    private int portNumber;
+    private ClientListener listener = null;
+    private Socket clientSocket;
 
-    public ClientConnection(String host, int portNumber) {
-        this.host = host;
-        this.portNumber = portNumber;
+    public ClientConnection(String host, int portNumber) throws IOException{
+        clientSocket = new Socket(host, portNumber);
     }
 
     public void close(){
@@ -32,12 +30,20 @@ public class ClientConnection extends Thread implements Closeable{
         outputBuffer.add(message);
     }
 
+    public String receive() {
+        try {
+            return inputBuffer.take();
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void run() {
         try {
-            Socket clientSocket = new Socket(host, portNumber);
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ConnectionListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
+            listener = new ClientListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()) {
@@ -50,9 +56,7 @@ public class ClientConnection extends Thread implements Closeable{
             is.close();
             os.close();
             clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

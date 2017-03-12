@@ -10,20 +10,21 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ServerConnectionToClient extends Thread implements Closeable {
 
-    private DataInputStream is = null;
-    private PrintStream os = null;
     private Socket clientSocket = null;
     private final ServerConnectionToClient[] connections;
     private int maxClientsCount;
     private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<String> inputBuffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<String> inputBuffer;
     private boolean quit = false;
-    private ConnectionListener listener = null;
+    private ClientListener listener = null;
+    private int id;
 
-    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections) {
+    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, BlockingQueue<String> inputBuffer) {
         this.clientSocket = clientSocket;
         this.connections = connections;
         maxClientsCount = connections.length;
+        this.id = id;
+        this.inputBuffer = inputBuffer;
     }
 
     public void close(){
@@ -40,9 +41,9 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         ServerConnectionToClient[] threads = this.connections;
 
         try {
-            is = new DataInputStream(clientSocket.getInputStream());
-            os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ConnectionListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
+            DataInputStream is = new DataInputStream(clientSocket.getInputStream());
+            PrintStream os = new PrintStream(clientSocket.getOutputStream());
+            listener = new ClientListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
@@ -62,9 +63,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
             is.close();
             os.close();
             clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

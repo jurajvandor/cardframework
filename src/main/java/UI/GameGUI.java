@@ -3,20 +3,75 @@ package UI;
  * Created by Juraj on 02.03.2017.
  */
 
+import Network.ClientConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class GameGUI extends Application {
+
+    private ClientConnection connection = null;
+
+    public boolean connect(String hostname, String port){
+        try {
+            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port));
+            connection.start();
+            this.connection = connection;
+        }catch (IOException e){
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/GameGUI.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1360, 680));
+        primaryStage.setTitle("Defualt Game");
+        primaryStage.setScene(new Scene(root, 1340, 680));
+        primaryStage.setMinHeight(720);
+        primaryStage.setMinWidth(1360);
         primaryStage.show();
+
+
+        Stage connectStage = new Stage();
+        connectStage.initModality(Modality.APPLICATION_MODAL);
+        connectStage.setTitle("Connect");
+        connectStage.setResizable(false);
+        connectStage.setMaxWidth(300);
+        connectStage.setMaxHeight(400);
+        connectStage.setMinWidth(300);
+        connectStage.setMinHeight(400);
+
+        Label label1 = new Label("Hostname or IP adress:");
+        TextArea hostname = new TextArea("localhost");
+        hostname.setMaxHeight(10);
+        Label label2 = new Label("Port:");
+        TextArea port = new TextArea("2222");
+        port.setMaxHeight(10);
+        Button button = new Button("Connect");
+
+        VBox connectionLayout= new VBox(label1, hostname, label2, port, button);
+        connectionLayout.setSpacing(10);
+        connectionLayout.setPadding(new Insets(10,10,10,10));
+        Scene connectionScene = new Scene(connectionLayout);
+        connectStage.setScene(connectionScene);
+
+        connectStage.show();
+
+        button.setOnAction(event -> {
+            if (connect(hostname.getText(), port.getText()))
+                connectStage.close();
+        });
+
+        
     }
 
 
