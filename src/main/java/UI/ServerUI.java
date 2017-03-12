@@ -30,7 +30,7 @@ public class ServerUI {
         while(connecting){
             if (connection.hasMessage()){
                 Pair<Integer,String> message = connection.receivedMessage();
-
+                System.out.println(message.getKey() + " messages: " + message.getValue());
             }
             sleep(40);
         }

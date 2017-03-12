@@ -19,12 +19,15 @@ import java.io.IOException;
 public class GameGUI extends Application {
 
     private ClientConnection connection = null;
+    private Controller controller;
 
-    public boolean connect(String hostname, String port){
+    public boolean connect(String hostname, String port, String name){
         try {
             ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port));
             connection.start();
             this.connection = connection;
+            controller.setConnection(connection);
+            connection.send("NAME " + name);
         }catch (IOException e){
             return false;
         }
@@ -33,12 +36,15 @@ public class GameGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/GameGUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Defualt Game");
         primaryStage.setScene(new Scene(root, 1340, 680));
         primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1360);
         primaryStage.show();
+        controller = loader.<Controller>getController();
+
 
 
         Stage connectStage = new Stage();
@@ -56,9 +62,12 @@ public class GameGUI extends Application {
         Label label2 = new Label("Port:");
         TextArea port = new TextArea("2222");
         port.setMaxHeight(10);
+        Label label3 = new Label("Player name:");
+        TextArea name = new TextArea("Player");
+        name.setMaxHeight(10);
         Button button = new Button("Connect");
 
-        VBox connectionLayout= new VBox(label1, hostname, label2, port, button);
+        VBox connectionLayout= new VBox(label1, hostname, label2, port, label3, name, button);
         connectionLayout.setSpacing(10);
         connectionLayout.setPadding(new Insets(10,10,10,10));
         Scene connectionScene = new Scene(connectionLayout);
@@ -67,11 +76,9 @@ public class GameGUI extends Application {
         connectStage.show();
 
         button.setOnAction(event -> {
-            if (connect(hostname.getText(), port.getText()))
+            if (connect(hostname.getText(), port.getText(), name.getText()))
                 connectStage.close();
         });
-
-        
     }
 
 

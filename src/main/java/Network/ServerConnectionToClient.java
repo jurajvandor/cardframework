@@ -16,7 +16,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
     private BlockingQueue<String> inputBuffer;
     private boolean quit = false;
-    private ClientListener listener = null;
+    private ServerListener listener = null;
     private int id;
 
     public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, BlockingQueue<String> inputBuffer) {
@@ -43,7 +43,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ClientListener(inputBuffer, new BufferedReader(new InputStreamReader(is)));
+            listener = new ServerListener(inputBuffer, new BufferedReader(new InputStreamReader(is)), id);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
