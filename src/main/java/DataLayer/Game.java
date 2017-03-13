@@ -68,12 +68,8 @@ public class Game implements Serializable{
             game = (Game) in.readObject();
             in.close();
             fileIn.close();
-        }catch(IOException i) {
-            i.printStackTrace();
-            return null;
-        }catch(ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
+        }catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             return null;
         }
         return game;

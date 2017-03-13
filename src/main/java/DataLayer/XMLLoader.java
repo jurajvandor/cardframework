@@ -58,11 +58,7 @@ public class XMLLoader implements Loader {
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             return builder.parse(new InputSource(path));
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         return null;
