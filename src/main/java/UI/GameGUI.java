@@ -5,6 +5,7 @@ package UI;
 
 import Network.ClientConnection;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -13,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.omg.IOP.TAG_ALTERNATE_IIOP_ADDRESS;
+import sun.security.timestamp.TSRequest;
 
 import java.io.IOException;
 
@@ -43,9 +46,7 @@ public class GameGUI extends Application {
         primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1360);
         primaryStage.show();
-        controller = loader.<Controller>getController();
-
-
+        controller = loader.getController();
 
         Stage connectStage = new Stage();
         connectStage.initModality(Modality.APPLICATION_MODAL);
@@ -66,8 +67,9 @@ public class GameGUI extends Application {
         TextArea name = new TextArea("Player");
         name.setMaxHeight(10);
         Button button = new Button("Connect");
+        Label error = new Label("");
 
-        VBox connectionLayout= new VBox(label1, hostname, label2, port, label3, name, button);
+        VBox connectionLayout= new VBox(label1, hostname, label2, port, label3, name, button, error);
         connectionLayout.setSpacing(10);
         connectionLayout.setPadding(new Insets(10,10,10,10));
         Scene connectionScene = new Scene(connectionLayout);
@@ -78,7 +80,10 @@ public class GameGUI extends Application {
         button.setOnAction(event -> {
             if (connect(hostname.getText(), port.getText(), name.getText()))
                 connectStage.close();
+            else error.setText("Could not connect to server");
         });
+
+
     }
 
 
