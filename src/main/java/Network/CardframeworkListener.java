@@ -1,9 +1,9 @@
-package UI;
+package Network;
 
 
 /**
  * Created by Juraj on 14.03.2017.
  */
-public interface FXListener {
+public interface CardframeworkListener {
     void processMessage(String message);
 }

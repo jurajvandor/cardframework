@@ -1,13 +1,8 @@
 package Network;
 
-import UI.FXListener;
-import javafx.util.Pair;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Juraj on 22.02.2017.
@@ -19,13 +14,13 @@ public class Server extends Thread implements Closeable{
     private int maxClientsCount;
     private ServerConnectionToClient[] threads;
     private boolean quit = false;
-    private FXListener fxListener;
+    private CardframeworkListener cardframeworkListener;
 
-    public Server(int portNumber, int maxClientsCount, FXListener fxListener){
+    public Server(int portNumber, int maxClientsCount, CardframeworkListener cardframeworkListener){
         this.portNumber = portNumber;
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
-        this.fxListener = fxListener;
+        this.cardframeworkListener = cardframeworkListener;
     }
 
     public void quit(){
@@ -58,7 +53,7 @@ public class Server extends Thread implements Closeable{
                 int i;
                 for (i = 0; i < maxClientsCount; i++) {
                     if (threads[i] == null) {
-                        (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, fxListener)).start();
+                        (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, cardframeworkListener)).start();
                         break;
                     }
                 }

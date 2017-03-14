@@ -1,7 +1,5 @@
 package Network;
 
-import UI.FXListener;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
@@ -19,14 +17,14 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private boolean quit = false;
     private ServerListener listener = null;
     private int id;
-    private FXListener fxListener;
+    private CardframeworkListener cardframeworkListener;
 
-    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, FXListener fxListener) {
+    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, CardframeworkListener cardframeworkListener) {
         this.clientSocket = clientSocket;
         this.connections = connections;
         maxClientsCount = connections.length;
         this.id = id;
-        this.fxListener = fxListener;
+        this.cardframeworkListener = cardframeworkListener;
     }
 
     public void close(){
@@ -45,7 +43,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ServerListener( new BufferedReader(new InputStreamReader(is)), id, fxListener);
+            listener = new ServerListener( new BufferedReader(new InputStreamReader(is)), id, cardframeworkListener, this);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){

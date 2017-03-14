@@ -5,6 +5,7 @@ package UI;
 
 import Network.ClientConnection;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ public class GameGUI extends Application {
 
     private ClientConnection connection = null;
     private Controller controller;
+    private Stage primaryStage;
 
     private boolean connect(String hostname, String port, String name){
         try {
@@ -43,6 +45,7 @@ public class GameGUI extends Application {
         connectStage.setMaxHeight(400);
         connectStage.setMinWidth(300);
         connectStage.setMinHeight(400);
+        connectStage.setOnCloseRequest(event -> primaryStage.close());
 
         Label label1 = new Label("Hostname or IP adress:");
         TextArea hostname = new TextArea("localhost");
@@ -65,22 +68,30 @@ public class GameGUI extends Application {
         connectStage.show();
 
         button.setOnAction(event -> {
-            if (connect(hostname.getText(), port.getText(), name.getText()))
-                connectStage.close();
-            else error.setText("Could not connect to server");
-        });
+                    error.setText("");
+                    new Thread (() -> {
+                        if (connect(hostname.getText(), port.getText(), name.getText()))
+                            Platform.runLater(() -> connectStage.close());
+                        else Platform.runLater(() -> error.setText("Could not connect to server"));
+                    }).start();
+                }
+        );
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        this.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Defualt Game");
         primaryStage.setScene(new Scene(root, 1340, 680));
         primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1360);
-        primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            if (connection != null) connection.close();
+        });
         controller = loader.getController();
+        primaryStage.show();
 
         connectionWindow();
     }

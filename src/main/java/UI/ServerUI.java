@@ -1,5 +1,6 @@
 package UI;
 
+import Network.CardframeworkListener;
 import Network.MessageParser;
 import Network.Server;
 import javafx.util.Pair;
@@ -13,7 +14,7 @@ import static java.lang.Thread.sleep;
 /**
  * Created by Juraj on 02.03.2017.
  */
-public class ServerUI implements FXListener{
+public class ServerUI implements CardframeworkListener {
     private Server connection;
     public static void main(String[] args) throws InterruptedException {
 

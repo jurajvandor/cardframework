@@ -1,6 +1,7 @@
 package UI;
 
 
+import Network.CardframeworkListener;
 import Network.ClientConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -9,7 +10,7 @@ import javafx.scene.control.TextField;
 /**
  * Created by Juraj on 05.03.2017.
  */
-public class Controller implements FXListener{
+public class Controller implements CardframeworkListener {
 
     @FXML
     private TextField message;

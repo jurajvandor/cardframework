@@ -1,7 +1,5 @@
 package Network;
 
-import UI.FXListener;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -12,9 +10,11 @@ import javafx.application.Platform;
  */
 public class ClientListener extends  Listener {
 
+    private ClientConnection connection;
 
-    public ClientListener(BufferedReader inputStream, FXListener fxListener){
-        super( inputStream, fxListener);
+    public ClientListener(BufferedReader inputStream, CardframeworkListener cardframeworkListener, ClientConnection connection){
+        super( inputStream, cardframeworkListener);
+        this.connection = connection;
     }
 
     public void run(){
@@ -22,7 +22,8 @@ public class ClientListener extends  Listener {
         try {
             while (!quit) {
                 final String message = inputStream.readLine();
-                Platform.runLater(() -> fxListener.processMessage(message));
+                if (message == null) connection.close();
+                else Platform.runLater(() -> cardframeworkListener.processMessage(message));
             }
         }
         catch (IOException e){
