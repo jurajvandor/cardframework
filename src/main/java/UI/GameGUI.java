@@ -1,6 +1,6 @@
 package UI;
 /**
- * Created by Juraj on 02.03.2017.
+ * Created by Juraj Vandor on 02.03.2017.
  */
 
 import Network.ClientConnection;

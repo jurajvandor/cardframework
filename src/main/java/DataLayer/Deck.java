@@ -2,7 +2,9 @@ package DataLayer;
 
 import java.io.Serializable;
 import java.util.*;
-
+/**
+ * Created by Juraj Vandor on 14.03.2017.
+ */
 public class Deck implements GroupOfCards, Serializable {
 
 	private DeckType type;

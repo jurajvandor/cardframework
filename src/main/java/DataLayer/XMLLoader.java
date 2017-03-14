@@ -1,5 +1,7 @@
 package DataLayer;
-
+/**
+ * Created by Juraj Vandor on 14.03.2017.
+ */
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

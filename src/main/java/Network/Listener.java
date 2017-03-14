@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.Closeable;
 
 /**
- * Created by Juraj on 12.03.2017.
+ * Created by Juraj Vandor on 12.03.2017.
  */
 public class Listener extends Thread implements Closeable{
     protected BufferedReader inputStream;

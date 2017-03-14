@@ -1,5 +1,7 @@
 package DataLayer;
-
+/**
+ * Created by Juraj Vandor on 14.03.2017.
+ */
 import Network.ServerConnectionToClient;
 
 import java.io.Serializable;

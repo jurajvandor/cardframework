@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
 /**
- * Created by Juraj on 05.03.2017.
+ * Created by Juraj Vandor on 05.03.2017.
  */
 public class Controller implements CardframeworkListener {
 

@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by Juraj on 22.02.2017.
+ * Created by Juraj Vandor on 22.02.2017.
  */
 public class Server extends Thread implements Closeable{
 

@@ -3,7 +3,7 @@ package Network;
 import javafx.util.Pair;
 
 /**
- * Created by Juraj on 05.03.2017.
+ * Created by Juraj Vandor on 05.03.2017.
  */
 public class MessageParser {
     public static Pair<Integer, String> parseId(String message){

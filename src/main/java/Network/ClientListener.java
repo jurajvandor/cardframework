@@ -6,7 +6,7 @@ import java.io.IOException;
 import javafx.application.Platform;
 
 /**
- * Created by Juraj on 28.02.2017.
+ * Created by Juraj Vandor on 28.02.2017.
  */
 public class ClientListener extends  Listener {
 

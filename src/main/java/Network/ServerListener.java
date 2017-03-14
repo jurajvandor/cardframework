@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * Created by Juraj on 12.03.2017.
+ * Created by Juraj Vandor on 12.03.2017.
  */
 public class ServerListener extends Listener {
     private final int id;

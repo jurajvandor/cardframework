@@ -6,7 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by Juraj on 28.02.2017.
+ * Created by Juraj Vandor on 28.02.2017.
  */
 public class ServerConnectionToClient extends Thread implements Closeable {
 

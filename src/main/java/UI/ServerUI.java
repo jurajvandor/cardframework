@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import static java.lang.Thread.sleep;
 
 /**
- * Created by Juraj on 02.03.2017.
+ * Created by Juraj Vandor on 02.03.2017.
  */
 public class ServerUI implements CardframeworkListener {
     private Server connection;

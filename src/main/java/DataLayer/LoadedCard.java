@@ -3,7 +3,7 @@ package DataLayer;
 import java.io.Serializable;
 
 /**
- * Created by Juraj on 13.02.2017.
+ * Created by Juraj Vandor on 13.02.2017.
  */
 public class LoadedCard  implements Serializable {
     private int count;

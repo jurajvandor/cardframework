@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Created by Juraj Vandor on 14.03.2017.
+ */
 public class Card  implements Serializable {
 
 	private Map<String, String> properties;

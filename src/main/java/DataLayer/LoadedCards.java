@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Juraj on 13.02.2017.
+ * Created by Juraj Vandor on 13.02.2017.
  */
 public class LoadedCards  implements Serializable {
     private List<LoadedCard> cards;

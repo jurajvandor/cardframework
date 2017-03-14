@@ -3,7 +3,9 @@ package DataLayer;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Created by Juraj Vandor on 14.03.2017.
+ */
 public class CardOwner  implements Serializable {
 
     private Map<String, GroupOfCards> cards;
