@@ -18,7 +18,6 @@ public class Server extends Thread implements Closeable{
     private int portNumber;
     private int maxClientsCount;
     private ServerConnectionToClient[] threads;
-    private BlockingQueue<String> receivedMessages  = new LinkedBlockingQueue<>();
     private boolean quit = false;
     private FXListener fxListener;
 
@@ -33,22 +32,6 @@ public class Server extends Thread implements Closeable{
         quit = true;
     }
 
-    public boolean hasMessage(){
-        return !receivedMessages.isEmpty();
-    }
-
-    public Pair<Integer, String> receivedMessage(){
-        String message = null;
-        try{
-            message = receivedMessages.take();
-        }
-        catch (InterruptedException e ){
-            e.printStackTrace();
-        }
-        if (message == null) return null;
-        return MessageParser.parseId(message);
-    }
-
     public void close() {
         quit();
         for (ServerConnectionToClient c : threads){
@@ -56,7 +39,7 @@ public class Server extends Thread implements Closeable{
         }
     }
 
-    public void sendAllCliets(String message){
+    public void sendAllClients(String message){
         for (ServerConnectionToClient c : threads) {
             if (c != null) c.send(message);
         }
