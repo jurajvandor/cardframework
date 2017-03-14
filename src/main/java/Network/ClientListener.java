@@ -1,27 +1,28 @@
 package Network;
 
+import UI.FXListener;
+
 import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
+
+import javafx.application.Platform;
 
 /**
  * Created by Juraj on 28.02.2017.
  */
-class ClientListener extends  Listener {
+public class ClientListener extends  Listener {
 
 
-    ClientListener(BlockingQueue<String> inputBuffer, BufferedReader inputStream){
-        super(inputBuffer, inputStream);
+    public ClientListener(BufferedReader inputStream, FXListener fxListener){
+        super( inputStream, fxListener);
     }
 
     public void run(){
-        String message;
+
         try {
             while (!quit) {
-                message = inputStream.readLine();
-                inputBuffer.add(message);
+                final String message = inputStream.readLine();
+                Platform.runLater(() -> fxListener.processMessage(message));
             }
         }
         catch (IOException e){

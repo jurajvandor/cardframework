@@ -1,5 +1,7 @@
 package Network;
 
+import UI.FXListener;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
@@ -14,17 +16,17 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private final ServerConnectionToClient[] connections;
     private int maxClientsCount;
     private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
-    private BlockingQueue<String> inputBuffer;
     private boolean quit = false;
     private ServerListener listener = null;
     private int id;
+    private FXListener fxListener;
 
-    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, BlockingQueue<String> inputBuffer) {
+    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, FXListener fxListener) {
         this.clientSocket = clientSocket;
         this.connections = connections;
         maxClientsCount = connections.length;
         this.id = id;
-        this.inputBuffer = inputBuffer;
+        this.fxListener = fxListener;
     }
 
     public void close(){
@@ -43,7 +45,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ServerListener(inputBuffer, new BufferedReader(new InputStreamReader(is)), id);
+            listener = new ServerListener( new BufferedReader(new InputStreamReader(is)), id, fxListener);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){

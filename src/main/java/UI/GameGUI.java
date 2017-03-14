@@ -5,7 +5,6 @@ package UI;
 
 import Network.ClientConnection;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -14,8 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.omg.IOP.TAG_ALTERNATE_IIOP_ADDRESS;
-import sun.security.timestamp.TSRequest;
 
 import java.io.IOException;
 
@@ -24,9 +21,9 @@ public class GameGUI extends Application {
     private ClientConnection connection = null;
     private Controller controller;
 
-    public boolean connect(String hostname, String port, String name){
+    private boolean connect(String hostname, String port, String name){
         try {
-            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port));
+            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), controller);
             connection.start();
             this.connection = connection;
             controller.setConnection(connection);
@@ -37,17 +34,7 @@ public class GameGUI extends Application {
         return true;
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
-        Parent root = loader.load();
-        primaryStage.setTitle("Defualt Game");
-        primaryStage.setScene(new Scene(root, 1340, 680));
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1360);
-        primaryStage.show();
-        controller = loader.getController();
-
+    private void connectionWindow(){
         Stage connectStage = new Stage();
         connectStage.initModality(Modality.APPLICATION_MODAL);
         connectStage.setTitle("Connect");
@@ -82,13 +69,26 @@ public class GameGUI extends Application {
                 connectStage.close();
             else error.setText("Could not connect to server");
         });
+    }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
+        Parent root = loader.load();
+        primaryStage.setTitle("Defualt Game");
+        primaryStage.setScene(new Scene(root, 1340, 680));
+        primaryStage.setMinHeight(720);
+        primaryStage.setMinWidth(1360);
+        primaryStage.show();
+        controller = loader.getController();
 
+        connectionWindow();
     }
 
 
     public static void main(String[] args) {
         launch(args);
     }
+
 }
 

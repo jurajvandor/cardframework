@@ -1,5 +1,6 @@
 package UI;
 
+import Network.MessageParser;
 import Network.Server;
 import javafx.util.Pair;
 
@@ -12,10 +13,12 @@ import static java.lang.Thread.sleep;
 /**
  * Created by Juraj on 02.03.2017.
  */
-public class ServerUI {
+public class ServerUI implements FXListener{
+    private Server connection;
     public static void main(String[] args) throws InterruptedException {
+
         System.out.println("Port number to connect:");
-        int port, maxClients;
+        int port;
         try {
              port = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
         }
@@ -24,15 +27,23 @@ public class ServerUI {
             port = 2222;
         }
 
-        Server connection = new Server(port, 10);
-        connection.start();
+        ServerUI serverUI = new ServerUI();
+        serverUI.connection = new Server(port, 10, serverUI);
+        serverUI.connection.start();
         boolean connecting = true;
         while(connecting){
-            if (connection.hasMessage()){
-                Pair<Integer,String> message = connection.receivedMessage();
+            if (serverUI.connection.hasMessage()){
+                Pair<Integer,String> message = serverUI.connection.receivedMessage();
                 System.out.println(message.getKey() + " messages: " + message.getValue());
             }
             sleep(40);
         }
+    }
+
+    @Override
+    public void processMessage(String message) {
+        Pair<Integer,String> m = MessageParser.parseId(message);
+        System.out.println(m.getKey() + " messages: " + m.getValue());
+        connection.sendAllCliets(m.getKey() + " messages: " + m.getValue());
     }
 }

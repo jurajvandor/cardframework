@@ -1,5 +1,7 @@
 package Network;
 
+import UI.FXListener;
+
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -12,8 +14,8 @@ public class ServerListener extends Listener {
     private final int id;
 
 
-    ServerListener(BlockingQueue<String> inputBuffer, BufferedReader inputStream, int id){
-        super(inputBuffer,inputStream);
+    ServerListener( BufferedReader inputStream, int id, FXListener fxListener){
+        super(inputStream, fxListener);
         this.id = id;
     }
 
@@ -22,7 +24,7 @@ public class ServerListener extends Listener {
         try {
             while (!quit) {
                 message = inputStream.readLine();
-                inputBuffer.add(id + " " + message);
+                fxListener.processMessage(id + " " + message);
             }
         }
         catch (IOException e){

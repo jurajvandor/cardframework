@@ -1,5 +1,6 @@
 package Network;
 
+import UI.FXListener;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -19,11 +20,13 @@ public class Server extends Thread implements Closeable{
     private ServerConnectionToClient[] threads;
     private BlockingQueue<String> receivedMessages  = new LinkedBlockingQueue<>();
     private boolean quit = false;
+    private FXListener fxListener;
 
-    public Server(int portNumber, int maxClientsCount){
+    public Server(int portNumber, int maxClientsCount, FXListener fxListener){
         this.portNumber = portNumber;
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
+        this.fxListener = fxListener;
     }
 
     public void quit(){
@@ -55,7 +58,7 @@ public class Server extends Thread implements Closeable{
 
     public void sendAllCliets(String message){
         for (ServerConnectionToClient c : threads) {
-            c.send(message);
+            if (c != null) c.send(message);
         }
     }
 
@@ -72,7 +75,7 @@ public class Server extends Thread implements Closeable{
                 int i;
                 for (i = 0; i < maxClientsCount; i++) {
                     if (threads[i] == null) {
-                        (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, receivedMessages)).start();
+                        (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, fxListener)).start();
                         break;
                     }
                 }
