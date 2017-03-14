@@ -13,8 +13,10 @@
    <children>
       <HBox prefHeight="680.0" prefWidth="1340.0">
          <children>
-            <!-- insert your objects here -->
-            <Canvas height="680.0" width="1100" />
+
+            <GridPane prefHeight="680.0" prefWidth="1100" fx:id="gamepanel">
+               <!--game panel-->
+            </GridPane>
             <VBox prefHeight="680.0" prefWidth="240.0">
                <children>
                   <TextArea prefHeight="660.0" prefWidth="240.0" fx:id="chat"/>

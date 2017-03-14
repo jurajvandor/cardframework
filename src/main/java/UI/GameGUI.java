@@ -68,14 +68,13 @@ public class GameGUI extends Application {
         connectStage.show();
 
         button.setOnAction(event -> {
-                    error.setText("");
-                    new Thread (() -> {
-                        if (connect(hostname.getText(), port.getText(), name.getText()))
-                            Platform.runLater(() -> connectStage.close());
-                        else Platform.runLater(() -> error.setText("Could not connect to server"));
-                    }).start();
-                }
-        );
+            error.setText("");
+            new Thread (() -> {
+                if (connect(hostname.getText(), port.getText(), name.getText()))
+                    Platform.runLater(() -> connectStage.close());
+                else Platform.runLater(() -> error.setText("Could not connect to server"));
+            }).start();
+        });
     }
 
     @Override

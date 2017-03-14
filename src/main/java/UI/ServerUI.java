@@ -36,7 +36,9 @@ public class ServerUI implements CardframeworkListener {
     @Override
     public void processMessage(String message) {
         Pair<Integer,String> m = MessageParser.parseId(message);
+        Pair<String, String> pair = MessageParser.parseType(m.getValue());
         System.out.println(m.getKey() + " messages: " + m.getValue());
-        connection.sendAllClients(m.getKey() + " messages: " + m.getValue());
+        if (pair.getKey().equals("CHAT")) connection.sendAllClients("CHAT "+ m.getKey() + " messages: " + pair.getValue());
+        else connection.sendAllClients(m.getKey() + " messages: " + m.getValue());
     }
 }
