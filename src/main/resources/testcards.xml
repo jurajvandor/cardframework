@@ -4,261 +4,261 @@
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>A</value>
-		<picture>ace_of_diamonds.png</picture>
+		<picture>/ace_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>2</value>
-		<picture>2_of_diamonds.png</picture>
+		<picture>/2_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>3</value>
-		<picture>3_of_diamonds.png</picture>
+		<picture>/3_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>4</value>
-		<picture>4_of_diamonds.png</picture>
+		<picture>/4_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>5</value>
-		<picture>5_of_diamonds.png</picture>
+		<picture>/5_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>6</value>
-		<picture>6_of_diamonds.png</picture>
+		<picture>/6_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>7</value>
-		<picture>7_of_diamonds.png</picture>
+		<picture>/7_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>8</value>
-		<picture>8_of_diamonds.png</picture>
+		<picture>/8_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>9</value>
-		<picture>9_of_diamonds.png</picture>
+		<picture>/9_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>10</value>
-		<picture>10_of_diamonds.png</picture>
+		<picture>/10_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>J</value>
-		<picture>jack_of_diamonds.png</picture>
+		<picture>/jack_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>Q</value>
-		<picture>queen_of_diamonds.png</picture>
+		<picture>/queen_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>diamonds</suit>
 		<value>K</value>
-		<picture>king_of_diamonds.png</picture>
+		<picture>/king_of_diamonds.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>A</value>
-		<picture>ace_of_spades.png</picture>
+		<picture>/ace_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>2</value>
-		<picture>2_of_spades.png</picture>
+		<picture>/2_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>3</value>
-		<picture>3_of_spades.png</picture>
+		<picture>/3_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>4</value>
-		<picture>4_of_spades.png</picture>
+		<picture>/4_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>5</value>
-		<picture>5_of_spades.png</picture>
+		<picture>/5_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>6</value>
-		<picture>6_of_spades.png</picture>
+		<picture>/6_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>7</value>
-		<picture>7_of_spades.png</picture>
+		<picture>/7_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>8</value>
-		<picture>8_of_spades.png</picture>
+		<picture>/8_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>9</value>
-		<picture>9_of_spades.png</picture>
+		<picture>/9_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>10</value>
-		<picture>10_of_spades.png</picture>
+		<picture>/10_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>J</value>
-		<picture>jack_of_spades.png</picture>
+		<picture>/jack_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>Q</value>
-		<picture>queen_of_spades.png</picture>
+		<picture>/queen_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>spades</suit>
 		<value>K</value>
-		<picture>king_of_spades.png</picture>
+		<picture>/king_of_spades.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>A</value>
-		<picture>ace_of_hearts.png</picture>
+		<picture>/ace_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>2</value>
-		<picture>2_of_hearts.png</picture>
+		<picture>/2_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>3</value>
-		<picture>3_of_hearts.png</picture>
+		<picture>/3_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>4</value>
-		<picture>4_of_hearts.png</picture>
+		<picture>/4_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>5</value>
-		<picture>5_of_hearts.png</picture>
+		<picture>/5_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>6</value>
-		<picture>6_of_hearts.png</picture>
+		<picture>/6_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>7</value>
-		<picture>7_of_hearts.png</picture>
+		<picture>/7_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>8</value>
-		<picture>8_of_hearts.png</picture>
+		<picture>/8_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>9</value>
-		<picture>9_of_hearts.png</picture>
+		<picture>/9_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>10</value>
-		<picture>10_of_hearts.png</picture>
+		<picture>/10_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>J</value>
-		<picture>jack_of_hearts.png</picture>
+		<picture>/jack_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>Q</value>
-		<picture>queen_of_hearts.png</picture>
+		<picture>/queen_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>hearts</suit>
 		<value>K</value>
-		<picture>king_of_hearts.png</picture>
+		<picture>/king_of_hearts.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>A</value>
-		<picture>ace_of_clubs.png</picture>
+		<picture>/ace_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>2</value>
-		<picture>2_of_clubs.png</picture>
+		<picture>/2_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>3</value>
-		<picture>3_of_clubs.png</picture>
+		<picture>/3_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>4</value>
-		<picture>4_of_clubs.png</picture>
+		<picture>/4_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>5</value>
-		<picture>5_of_clubs.png</picture>
+		<picture>/5_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>6</value>
-		<picture>6_of_clubs.png</picture>
+		<picture>/6_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>7</value>
-		<picture>7_of_clubs.png</picture>
+		<picture>/7_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>8</value>
-		<picture>8_of_clubs.png</picture>
+		<picture>/8_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>9</value>
-		<picture>9_of_clubs.png</picture>
+		<picture>/9_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>10</value>
-		<picture>10_of_clubs.png</picture>
+		<picture>/10_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>J</value>
-		<picture>jack_of_clubs.png</picture>
+		<picture>/jack_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>Q</value>
-		<picture>queen_of_clubs.png</picture>
+		<picture>/queen_of_clubs.png</picture>
 	</card>
 	<card count="1">
 		<suit>clubs</suit>
 		<value>K</value>
-		<picture>king_of_clubs.png</picture>
+		<picture>/king_of_clubs.png</picture>
 	</card>
 </cards>
