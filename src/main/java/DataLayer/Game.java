@@ -2,13 +2,15 @@ package DataLayer;
 /**
  * Created by Juraj Vandor on 14.03.2017.
  */
+
 import java.io.*;
 import java.util.*;
 
-public class Game implements Serializable{
+public class Game<_Player extends Player, _Card extends Card> implements Serializable{
 
 	private List<Player> players;
 	private Map<String, LoadedCards> decks;
+	private Desk desk;
 	public Game() {
 		players = new ArrayList<>();
 		decks = new HashMap<>();
@@ -38,8 +40,8 @@ public class Game implements Serializable{
         owner.addCards(customName, (decks.get(name).createDeck()));
     }
 
-	public int addPlayer(String name){
-		players.add(new Player(name));
+	public int addPlayer(int id){
+		players.add(new Player(id));
 		return players.size()-1;
 	}
 
@@ -48,11 +50,11 @@ public class Game implements Serializable{
 		return p != null;
 	}
 
-	public static boolean saveState(String filename, Game game) {
+	public boolean saveState(String filename) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(game);
+            out.writeObject(this);
             out.close();
             fileOut.close();
         }catch(IOException i) {
@@ -76,5 +78,6 @@ public class Game implements Serializable{
         }
         return game;
 	}
+
 
 }

@@ -68,7 +68,7 @@ public class GameGUI extends Application {
         connectStage.show();
 
         button.setOnAction(event -> {
-            error.setText("");
+            error.setText("Connecting...");
             new Thread (() -> {
                 if (connect(hostname.getText(), port.getText(), name.getText()))
                     Platform.runLater(() -> connectStage.close());
