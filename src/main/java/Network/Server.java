@@ -3,6 +3,8 @@ package Network;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Juraj Vandor on 22.02.2017.
@@ -21,6 +23,14 @@ public class Server extends Thread implements Closeable{
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
         this.cardframeworkListener = cardframeworkListener;
+    }
+
+    public Set<Integer> getFreeIds(){
+        Set<Integer> ids = new TreeSet<>();
+        for (int i = 0; i < maxClientsCount; i++) {
+            if (threads[i] == null) ids.add(i);
+        }
+        return ids;
     }
 
     public void quit(){

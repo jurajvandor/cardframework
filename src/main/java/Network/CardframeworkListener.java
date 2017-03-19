@@ -6,4 +6,5 @@ package Network;
  */
 public interface CardframeworkListener {
     void processMessage(String message);
+    void closedConnection();
 }

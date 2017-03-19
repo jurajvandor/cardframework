@@ -7,9 +7,12 @@ import Network.CardframeworkListener;
 import Network.ClientConnection;
 import Network.MessageParser;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 /**
@@ -35,23 +38,41 @@ public class Controller implements CardframeworkListener {
         return game;
     }
 
+    public void closedConnection() {
+        Stage s = (Stage) chat.getScene().getWindow();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Connection closed");
+        alert.setHeaderText(null);
+        alert.setContentText("Connection to server has been closed!");
+        alert.showAndWait();
+        s.close();
+    }
+
+    public void addChatLine(String line){
+        chat.setText(chat.getText() + '\n' + line);
+    }
+
     public void processMessage(String message){
         Pair<Integer,String> m = MessageParser.parseId(message);
         Pair<String, String> c = MessageParser.parseType(m.getValue());
         int id = m.getKey();
         String code = c.getKey();
         String text = c.getValue();
+        System.out.println(message);
         switch (code){
             case "CHAT":
-                chat.setText(chat.getText() + '\n' + game.getPlayer(id).getName() + ": " + text);
+                addChatLine(game.getPlayer(id).getName() + ": " + text);
                 break;
             case "NAME":
                 game.addPlayer(id, text);
-                chat.setText(chat.getText() + '\n' + text + " connected with id " + id +".");
+                addChatLine(text + " connected with id " + id +".");
                 break;
             case "CONNECTED":
                 game.addPlayer(id, text);
-                System.out.println(message);
+                break;
+            case "QUIT":
+                addChatLine(game.getPlayer(id).getName() + " disconnected.");
+                game.removePlayer(id);
                 break;
             default:
                 System.out.println("invalid message: " + message);

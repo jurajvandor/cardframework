@@ -50,6 +50,10 @@ public class Game implements Serializable{
 	    return players.get(id);
     }
 
+    public void removePlayer(int id) {
+	    players.remove(id);
+    }
+
     public Map<Integer,Player>getPlayers(){
 	    return Collections.unmodifiableMap(players);
     }

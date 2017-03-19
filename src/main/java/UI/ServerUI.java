@@ -11,6 +11,7 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Set;
 
 import static java.lang.Thread.sleep;
 
@@ -65,5 +66,13 @@ public class ServerUI implements CardframeworkListener {
         for (Integer p: game.getPlayers().keySet()) {
             if (p != id) connection.send(id, p + " CONNECTED " + game.getPlayer(p).getName());
         }
+    }
+    public void closedConnection(){
+        Set<Integer> closed = connection.getFreeIds();
+        closed.retainAll(game.getPlayers().keySet());
+        closed.forEach(x -> {
+            game.removePlayer(x);
+            connection.sendAllClients(x + " QUIT");
+        });
     }
 }

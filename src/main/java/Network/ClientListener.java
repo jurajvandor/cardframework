@@ -28,6 +28,7 @@ public class ClientListener extends  Listener {
         }
         catch (IOException e){
             e.printStackTrace();
+            Platform.runLater(() -> cardframeworkListener.closedConnection());
         }
     }
 }

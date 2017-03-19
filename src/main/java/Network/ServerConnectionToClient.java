@@ -52,20 +52,21 @@ public class ServerConnectionToClient extends Thread implements Closeable {
                 sleep(50);
             }
 
-            synchronized (this) {
-                for (int i = 0; i < maxClientsCount; i++) {
-                    if (threads[i] == this) {
-                        threads[i] = null;
-                    }
-                }
-            }
-
             is.close();
             os.close();
             clientSocket.close();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+
+        synchronized (this) {
+            for (int i = 0; i < maxClientsCount; i++) {
+                if (threads[i] == this) {
+                    threads[i] = null;
+                }
+            }
+        }
+        cardframeworkListener.closedConnection();
     }
 }
 
