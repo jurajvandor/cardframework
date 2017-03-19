@@ -34,6 +34,10 @@ public class Server extends Thread implements Closeable{
         }
     }
 
+    public void send(int id, String message){
+        threads[id].send(message);
+    }
+
     public void sendAllClients(String message){
         for (ServerConnectionToClient c : threads) {
             if (c != null) c.send(message);

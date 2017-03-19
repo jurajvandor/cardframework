@@ -3,16 +3,18 @@ package DataLayer;
  * Created by Juraj Vandor on 14.03.2017.
  */
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.*;
 
-public class Game<_Player extends Player, _Card extends Card> implements Serializable{
+public class Game implements Serializable{
 
-	private List<Player> players;
+	private Map<Integer, Player> players;
 	private Map<String, LoadedCards> decks;
 	private Desk desk;
 	public Game() {
-		players = new ArrayList<>();
+		players = new HashMap<>();
 		decks = new HashMap<>();
 	}
 
@@ -40,17 +42,19 @@ public class Game<_Player extends Player, _Card extends Card> implements Seriali
         owner.addCards(customName, (decks.get(name).createDeck()));
     }
 
-	public int addPlayer(int id){
-		players.add(new Player(id));
-		return players.size()-1;
+	public void addPlayer(int id, String name){
+		players.put(id, new Player(name));
 	}
 
-	public boolean removePlayer(int id){
-		Player p = players.remove(id);
-		return p != null;
-	}
+	public Player getPlayer(int id){
+	    return players.get(id);
+    }
 
-	public boolean saveState(String filename) {
+    public Map<Integer,Player>getPlayers(){
+	    return Collections.unmodifiableMap(players);
+    }
+
+    public boolean saveState(String filename) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);

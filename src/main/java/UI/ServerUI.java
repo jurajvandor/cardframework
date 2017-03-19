@@ -1,5 +1,8 @@
 package UI;
 
+import DataLayer.Game;
+import DataLayer.Player;
+import DataLayer.XMLLoader;
 import Network.CardframeworkListener;
 import Network.MessageParser;
 import Network.Server;
@@ -16,6 +19,8 @@ import static java.lang.Thread.sleep;
  */
 public class ServerUI implements CardframeworkListener {
     private Server connection;
+    private Game game;
+
     public static void main(String[] args) throws InterruptedException {
 
         System.out.println("Port number to connect:");
@@ -31,14 +36,34 @@ public class ServerUI implements CardframeworkListener {
         ServerUI serverUI = new ServerUI();
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.connection.start();
+        serverUI.game = new Game();
+        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
     }
 
     @Override
     public void processMessage(String message) {
         Pair<Integer,String> m = MessageParser.parseId(message);
-        Pair<String, String> pair = MessageParser.parseType(m.getValue());
-        System.out.println(m.getKey() + " messages: " + m.getValue());
-        if (pair.getKey().equals("CHAT")) connection.sendAllClients("CHAT "+ m.getKey() + " messages: " + pair.getValue());
-        else connection.sendAllClients(m.getKey() + " messages: " + m.getValue());
+        Pair<String, String> c = MessageParser.parseType(m.getValue());
+        int id = m.getKey();
+        String code = c.getKey();
+        String text = c.getValue();
+        switch (code){
+            case "CHAT":
+                connection.sendAllClients(message);
+                break;
+            case "NAME":
+                game.addPlayer(id, text);
+                connection.sendAllClients(message);
+                sendOtherNames(id);
+                break;
+            default:
+                System.out.println("invalid message: " + message);
+        }
+    }
+
+    public void sendOtherNames(int id) {
+        for (Integer p: game.getPlayers().keySet()) {
+            if (p != id) connection.send(id, p + " CONNECTED " + game.getPlayer(p).getName());
+        }
     }
 }

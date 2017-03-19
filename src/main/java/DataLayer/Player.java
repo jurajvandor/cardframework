@@ -11,16 +11,15 @@ import java.util.Map;
 public class Player extends CardOwner implements Serializable {
 
 	private Map<String, String> properties;
+	private String name;
 
-	int id;
-
-	public Player(int id) {
+	public Player(String name) {
 		this.properties = new HashMap<String, String>();
-		this.id = id;
+		this.name = name;
 	}
 
-	public int getId(){
-		return id;
+	public String getName(){
+		return name;
 	}
 
 	public void addProperty(String type, String value) {

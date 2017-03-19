@@ -18,7 +18,7 @@ import java.util.*;
 public class XMLLoader implements Loader {
 
     public static void main(String[] args){
-        Loader l = new XMLLoader("C:\\Users\\Juraj\\IdeaProjects\\cardframework\\src\\main\\resources\\testcards.xml");
+        Loader l = new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath());
         LoadedCards c = l.loadCards();
         Deck d = c.createDeck();
     }
