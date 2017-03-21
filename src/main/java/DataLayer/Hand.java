@@ -7,9 +7,9 @@ import java.util.*;
 public class Hand implements GroupOfCards {
 
 	private boolean visibility;
-	private Set<Card> cards;
+	private HashSet<Card> cards;
 
-	public Hand(Set<Card> cards, boolean visibility) {
+	public Hand(HashSet<Card> cards, boolean visibility) {
 		this.cards = cards;
 		this.visibility = visibility;
 	}
@@ -42,7 +42,7 @@ public class Hand implements GroupOfCards {
 
 
 	public GroupOfCards copy(){
-		return new Hand(new TreeSet<>(cards), visibility);
+		return new Hand(new HashSet<>(cards), visibility);
 	}
 
 	@Override

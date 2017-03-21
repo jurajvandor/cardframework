@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class CardOwner  implements Serializable {
 
-    private Map<String, GroupOfCards> cards;
+    private HashMap<String, GroupOfCards> cards;
 
     public CardOwner(){
         cards = new HashMap<String, GroupOfCards>();

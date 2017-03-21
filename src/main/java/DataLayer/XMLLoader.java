@@ -32,13 +32,13 @@ public class XMLLoader implements Loader {
         Document xmlDoc = getDocument(path);
         String deckName = xmlDoc.getDocumentElement().getAttribute("name");
         NodeList listOfCards = xmlDoc.getElementsByTagName("card");
-        List<LoadedCard> list = new ArrayList<>();
+        ArrayList<LoadedCard> list = new ArrayList<>();
         for(int i = 0; i < listOfCards.getLength(); i++){
             Node item = listOfCards.item(i);
             if(item.getNodeType() == Node.ELEMENT_NODE){
                 Element card = (Element) item;
                 int count = Integer.parseInt(card.getAttribute("count"));
-                Map<String,String> map = new HashMap<>();
+                HashMap<String,String> map = new HashMap<>();
                 NodeList properties= card.getChildNodes();
                 for (int j = 0; j < properties.getLength(); j++){
                     Node property = properties.item(j);

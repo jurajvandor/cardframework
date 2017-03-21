@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by Juraj Vandor on 14.03.2017.
  */
-public class CardFinder  implements Serializable {
+public class CardFinder{
 
 	GroupOfCards cards;
 

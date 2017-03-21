@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Player extends CardOwner implements Serializable {
 
-	private Map<String, String> properties;
+	private HashMap<String, String> properties;
 	private String name;
 
 	public Player(String name) {

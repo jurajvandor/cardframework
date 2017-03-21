@@ -2,6 +2,7 @@ package Network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javafx.application.Platform;
 
@@ -12,7 +13,7 @@ public class ClientListener extends  Listener {
 
     private ClientConnection connection;
 
-    public ClientListener(BufferedReader inputStream, CardframeworkListener cardframeworkListener, ClientConnection connection){
+    public ClientListener(ObjectInputStream inputStream, CardframeworkListener cardframeworkListener, ClientConnection connection){
         super( inputStream, cardframeworkListener);
         this.connection = connection;
     }
@@ -21,7 +22,7 @@ public class ClientListener extends  Listener {
 
         try {
             while (!quit) {
-                final String message = inputStream.readLine();
+                final Message message = (Message) inputStream.readObject();
                 if (message == null) connection.close();
                 else Platform.runLater(() -> cardframeworkListener.processMessage(message));
             }
@@ -29,6 +30,9 @@ public class ClientListener extends  Listener {
         catch (IOException e){
             e.printStackTrace();
             Platform.runLater(() -> cardframeworkListener.closedConnection());
+        }
+        catch (ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 }

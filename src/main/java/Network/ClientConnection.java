@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ClientConnection extends Thread implements Closeable{
 
 
-    private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<Message> outputBuffer = new LinkedBlockingQueue<>();
     private boolean quit = false;
     private ClientListener listener = null;
     private Socket clientSocket;
@@ -27,19 +27,23 @@ public class ClientConnection extends Thread implements Closeable{
         quit = true;
     }
 
-    public void send(String message){
+    public void send(Message message){
         outputBuffer.add(message);
+    }
+
+    public void send(String message){
+        outputBuffer.add(new Message(message));
     }
 
     public void run() {
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
-            PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ClientListener( new BufferedReader(new InputStreamReader(is)), cardframeworkListener, this);
+            ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+            listener = new ClientListener( new ObjectInputStream(is), cardframeworkListener, this);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()) {
-                    os.println(outputBuffer.take());
+                    os.writeObject(outputBuffer.take());
                 }
                 os.flush();
                 sleep(50);

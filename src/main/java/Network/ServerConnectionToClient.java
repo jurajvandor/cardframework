@@ -13,7 +13,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private Socket clientSocket = null;
     private final ServerConnectionToClient[] connections;
     private int maxClientsCount;
-    private BlockingQueue<String> outputBuffer = new LinkedBlockingQueue<>();
+    private BlockingQueue<Message> outputBuffer = new LinkedBlockingQueue<>();
     private boolean quit = false;
     private ServerListener listener = null;
     private int id;
@@ -33,6 +33,10 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     }
 
     public void send(String message){
+        outputBuffer.add(new Message(message));
+    }
+
+    public void send(Message message){
         outputBuffer.add(message);
     }
 
@@ -42,12 +46,12 @@ public class ServerConnectionToClient extends Thread implements Closeable {
 
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
-            PrintStream os = new PrintStream(clientSocket.getOutputStream());
-            listener = new ServerListener( new BufferedReader(new InputStreamReader(is)), id, cardframeworkListener, this);
+            ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
+            listener = new ServerListener( new ObjectInputStream(is), id, cardframeworkListener, this);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
-                    os.println(outputBuffer.take());
+                    os.writeObject(outputBuffer.take());
                 }
                 sleep(50);
             }

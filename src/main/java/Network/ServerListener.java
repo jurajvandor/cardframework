@@ -2,6 +2,7 @@ package Network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Created by Juraj Vandor on 12.03.2017.
@@ -11,22 +12,27 @@ public class ServerListener extends Listener {
 
     private ServerConnectionToClient connection;
 
-    ServerListener( BufferedReader inputStream, int id, CardframeworkListener cardframeworkListener, ServerConnectionToClient connection){
+    ServerListener(ObjectInputStream inputStream, int id, CardframeworkListener cardframeworkListener, ServerConnectionToClient connection){
         super(inputStream, cardframeworkListener);
         this.id = id;
         this.connection = connection;
     }
 
     public void run(){
-        String message;
         try {
             while (!quit) {
-                message = inputStream.readLine();
+                final Message message = (Message) inputStream.readObject();
                 if (message == null) connection.close();
-                else cardframeworkListener.processMessage(id + " " + message);
+                else {
+                    message.setMessage(id + " " + message.getMessage());
+                    cardframeworkListener.processMessage(message);
+                }
             }
         }
         catch (IOException e){
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e ){
             e.printStackTrace();
         }
     }

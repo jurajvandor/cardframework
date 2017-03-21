@@ -3,15 +3,13 @@ package DataLayer;
  * Created by Juraj Vandor on 14.03.2017.
  */
 
-import javafx.util.Pair;
-
 import java.io.*;
 import java.util.*;
 
 public class Game implements Serializable{
 
-	private Map<Integer, Player> players;
-	private Map<String, LoadedCards> decks;
+	private HashMap<Integer, Player> players;
+	private HashMap<String, LoadedCards> decks;
 	private Desk desk;
 	public Game() {
 		players = new HashMap<>();
@@ -87,5 +85,16 @@ public class Game implements Serializable{
         return game;
 	}
 
-
+    public static void main(String[] args){//save and load testing
+        Game game = new Game();
+        game.addPlayer(0,"fero");
+        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
+        Deck deck = game.createDeck("french cards");
+        HashSet<Card> s = new HashSet<Card>();
+        s.add(deck.drawTopCard());
+        game.getPlayer(0).addCards("ruka", new Hand(s,true));
+        game.saveState("state.txt");
+        Game game2 = Game.loadState("state.txt");
+        game2.getPlayers();
+    }
 }

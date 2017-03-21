@@ -9,13 +9,13 @@ public class Deck implements GroupOfCards, Serializable {
 
 	private DeckType type;
 
-	private List<Card> cards;
+	private ArrayList<Card> cards;
 
-	public Deck(List<Card> cards ){
+	public Deck(ArrayList<Card> cards ){
 		this.cards = cards;
 	}
 	public Card drawTopCard() {
-		return cards.remove(cards.size());
+		return cards.remove(cards.size()-1);
 	}
 
 	public void returnCardToTop(Card card) {

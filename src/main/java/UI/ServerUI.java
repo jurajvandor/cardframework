@@ -4,6 +4,7 @@ import DataLayer.Game;
 import DataLayer.Player;
 import DataLayer.XMLLoader;
 import Network.CardframeworkListener;
+import Network.Message;
 import Network.MessageParser;
 import Network.Server;
 import javafx.util.Pair;
@@ -42,8 +43,8 @@ public class ServerUI implements CardframeworkListener {
     }
 
     @Override
-    public void processMessage(String message) {
-        Pair<Integer,String> m = MessageParser.parseId(message);
+    public void processMessage(Message message) {
+        Pair<Integer,String> m = MessageParser.parseId(message.getMessage());
         Pair<String, String> c = MessageParser.parseType(m.getValue());
         int id = m.getKey();
         String code = c.getKey();

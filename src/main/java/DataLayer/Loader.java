@@ -4,7 +4,7 @@ package DataLayer;
  */
 import java.io.Serializable;
 
-public interface Loader extends Serializable {
+public interface Loader{
 
 	LoadedCards loadCards();
 

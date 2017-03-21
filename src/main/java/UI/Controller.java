@@ -5,6 +5,7 @@ import DataLayer.Game;
 import DataLayer.XMLLoader;
 import Network.CardframeworkListener;
 import Network.ClientConnection;
+import Network.Message;
 import Network.MessageParser;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -52,13 +53,13 @@ public class Controller implements CardframeworkListener {
         chat.setText(chat.getText() + '\n' + line);
     }
 
-    public void processMessage(String message){
-        Pair<Integer,String> m = MessageParser.parseId(message);
+    public void processMessage(Message message){
+        Pair<Integer,String> m = MessageParser.parseId(message.getMessage());
         Pair<String, String> c = MessageParser.parseType(m.getValue());
         int id = m.getKey();
         String code = c.getKey();
         String text = c.getValue();
-        System.out.println(message);
+        System.out.println(message.getMessage());
         switch (code){
             case "CHAT":
                 addChatLine(game.getPlayer(id).getName() + ": " + text);
@@ -75,7 +76,7 @@ public class Controller implements CardframeworkListener {
                 game.removePlayer(id);
                 break;
             default:
-                System.out.println("invalid message: " + message);
+                System.out.println("invalid message: " + message.getMessage());
         }
     }
 

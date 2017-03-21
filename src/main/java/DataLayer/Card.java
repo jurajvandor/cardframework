@@ -9,11 +9,11 @@ import java.util.Map;
 /**
  * Created by Juraj Vandor on 14.03.2017.
  */
-public class Card  implements Serializable {
+public class Card implements Serializable {
 
-	private Map<String, String> properties;
+	private HashMap<String, String> properties;
 
-	public Card(Map<String,String> properties){
+	public Card(HashMap<String,String> properties){
 		this.properties = properties;
 	}
 
