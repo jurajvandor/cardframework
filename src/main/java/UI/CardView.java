@@ -8,14 +8,14 @@ import javafx.scene.image.ImageView;
 import javax.swing.event.HyperlinkEvent;
 
 /**
- * Created by Juraj on 27.03.2017.
+ * Created by Juraj Vandor on 27.03.2017.
  */
-public class CardGUI extends ImageView {
+public class CardView extends ImageView {
     private String nameOfHand;
     private int playerId;
     private Card card;
 
-    public CardGUI(String nameOfHand, int playerId, Card card) {
+    public CardView(String nameOfHand, int playerId, Card card) {
         super(card.getProperty("picture"));
         this.setFitHeight(120);
         this.setFitWidth(80);

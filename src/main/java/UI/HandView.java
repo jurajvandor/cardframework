@@ -2,26 +2,25 @@ package UI;
 
 import DataLayer.Card;
 import DataLayer.Hand;
-import javafx.event.EventHandler;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 /**
- * Created by Juraj on 27.03.2017.
+ * Created by Juraj Vandor on 27.03.2017.
  */
-public class HandGUI extends HBox{
+public class HandView extends HBox{
     private Hand hand;
     private String nameOfHand;
     private int playerId;
     private boolean showCards;
+    private PlayerActionHandler handler;
 
-    public HandGUI(Hand hand, String nameOfHand, int playerId, boolean showCards) {
+    public HandView(Hand hand, String nameOfHand, int playerId, boolean showCards, PlayerActionHandler handler) {
         this.hand = hand;
         this.nameOfHand = nameOfHand;
         this.playerId = playerId;
         this.showCards = showCards;
+        this.handler = handler;
     }
 
     public String getNameOfHand() {
@@ -32,16 +31,18 @@ public class HandGUI extends HBox{
         return playerId;
     }
 
+    public Hand getHand() {
+        return hand;
+    }
+
     void show(){
         this.getChildren().clear();
         for (Card c: hand) {
-            CardGUI card = new CardGUI(nameOfHand, playerId, c);
+            CardView card = new CardView(nameOfHand, playerId, c);
             card.addEventHandler(MouseEvent.MOUSE_CLICKED,(event -> {
-                    System.out.println("Tile pressed ");
-                    event.consume();
+                    handler.handleCardClick(c, playerId, nameOfHand);
                 })
             );
-
             this.getChildren().add(card);
         }
     }

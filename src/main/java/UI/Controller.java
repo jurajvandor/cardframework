@@ -7,7 +7,6 @@ import Network.ClientConnection;
 import Network.Message;
 import Network.MessageParser;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -20,7 +19,7 @@ import java.util.HashSet;
 /**
  * Created by Juraj Vandor on 05.03.2017.
  */
-public class Controller implements CardframeworkListener {
+public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     @FXML
     private TextField message;
@@ -30,6 +29,8 @@ public class Controller implements CardframeworkListener {
     private GridPane gamepanel;
     private ClientConnection connection;
     private Game game;
+
+    private HandView test;
 
     public Controller(){
         game = new Game();
@@ -57,9 +58,9 @@ public class Controller implements CardframeworkListener {
         set.add(deck.drawTopCard());
         set.add(deck.drawTopCard());
         set.add(deck.drawTopCard());
-        HandGUI h = new HandGUI(new Hand(set),"hand", 1, true);
-        h.show();
-        gamepanel.add(h,1,1);
+        test = new HandView(new Hand(set),"hand", 1, true, this);
+        test.show();
+        gamepanel.add(test,1,1);
     }
 
     public void addChatLine(String line){
@@ -100,5 +101,11 @@ public class Controller implements CardframeworkListener {
     public void handleMessage(){
         connection.send("CHAT " + message.getText());
         message.setText("");
+    }
+
+    @Override
+    public void handleCardClick(Card card, int playerId, String nameOfHand) {
+        test.getHand().removeCard(card);
+        test.show();
     }
 }
