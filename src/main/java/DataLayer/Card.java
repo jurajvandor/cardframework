@@ -21,6 +21,10 @@ public class Card implements Serializable {
 		this.properties = new HashMap<>(card.properties);
 	}
 
+	public String getProperty(String name){
+		return properties.get(name);
+	}
+
 	public Map<String, String> getProperties() {
 		return Collections.unmodifiableMap(this.properties);
 	}

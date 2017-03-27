@@ -92,7 +92,7 @@ public class Game implements Serializable{
         Deck deck = game.createDeck("french cards");
         HashSet<Card> s = new HashSet<Card>();
         s.add(deck.drawTopCard());
-        game.getPlayer(0).addCards("ruka", new Hand(s,true));
+        game.getPlayer(0).addCards("ruka", new Hand(s));
         game.saveState("state.txt");
         Game game2 = Game.loadState("state.txt");
         game2.getPlayers();

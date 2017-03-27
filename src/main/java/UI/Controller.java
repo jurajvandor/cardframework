@@ -1,8 +1,7 @@
 package UI;
 
 
-import DataLayer.Game;
-import DataLayer.XMLLoader;
+import DataLayer.*;
 import Network.CardframeworkListener;
 import Network.ClientConnection;
 import Network.Message;
@@ -15,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.util.HashSet;
 
 /**
  * Created by Juraj Vandor on 05.03.2017.
@@ -47,6 +48,18 @@ public class Controller implements CardframeworkListener {
         alert.setContentText("Connection to server has been closed!");
         alert.showAndWait();
         s.close();
+    }
+
+    public void skuska(){
+        Deck deck = game.createDeck("french cards");
+        HashSet<Card> set = new HashSet<Card>();
+        set.add(deck.drawTopCard());
+        set.add(deck.drawTopCard());
+        set.add(deck.drawTopCard());
+        set.add(deck.drawTopCard());
+        HandGUI h = new HandGUI(new Hand(set),"hand", 1, true);
+        h.show();
+        gamepanel.add(h,1,1);
     }
 
     public void addChatLine(String line){

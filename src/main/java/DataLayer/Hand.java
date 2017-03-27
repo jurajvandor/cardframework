@@ -5,23 +5,11 @@ package DataLayer;
 import java.util.*;
 
 public class Hand implements GroupOfCards {
-
-	private boolean visibility;
 	private HashSet<Card> cards;
 
-	public Hand(HashSet<Card> cards, boolean visibility) {
+	public Hand(HashSet<Card> cards) {
 		this.cards = cards;
-		this.visibility = visibility;
 	}
-
-	public boolean getVisibility() {
-		return this.visibility;
-	}
-
-	public void setVisibility(boolean visibility) {
-		this.visibility = visibility;
-	}
-
 
 	public Collection<Card> getCards() {
 		return cards;
@@ -42,7 +30,7 @@ public class Hand implements GroupOfCards {
 
 
 	public GroupOfCards copy(){
-		return new Hand(new HashSet<>(cards), visibility);
+		return new Hand(new HashSet<>(cards));
 	}
 
 	@Override
