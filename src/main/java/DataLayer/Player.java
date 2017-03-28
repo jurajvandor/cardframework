@@ -12,10 +12,16 @@ public class Player extends CardOwner implements Serializable {
 
 	private HashMap<String, String> properties;
 	private String name;
+	private int id;
 
-	public Player(String name) {
-		this.properties = new HashMap<String, String>();
+	public Player(String name, int id) {
+		this.properties = new HashMap<>();
 		this.name = name;
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getName(){

@@ -1,6 +1,7 @@
 package UI;
 
 import DataLayer.Card;
+import DataLayer.GroupOfCards;
 import DataLayer.Hand;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -9,13 +10,13 @@ import javafx.scene.layout.HBox;
  * Created by Juraj Vandor on 27.03.2017.
  */
 public class HandView extends HBox{
-    private Hand hand;
+    private GroupOfCards hand;
     private String nameOfHand;
     private int playerId;
     private boolean showCards;
     private PlayerActionHandler handler;
 
-    public HandView(Hand hand, String nameOfHand, int playerId, boolean showCards, PlayerActionHandler handler) {
+    public HandView(GroupOfCards hand, String nameOfHand, int playerId, boolean showCards, PlayerActionHandler handler) {
         this.hand = hand;
         this.nameOfHand = nameOfHand;
         this.playerId = playerId;
@@ -31,7 +32,7 @@ public class HandView extends HBox{
         return playerId;
     }
 
-    public Hand getHand() {
+    public GroupOfCards getHand() {
         return hand;
     }
 

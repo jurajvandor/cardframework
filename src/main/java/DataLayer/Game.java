@@ -41,7 +41,7 @@ public class Game implements Serializable{
     }
 
 	public void addPlayer(int id, String name){
-		players.put(id, new Player(name));
+		players.put(id, new Player(name, id));
 	}
 
 	public Player getPlayer(int id){
