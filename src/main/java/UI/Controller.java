@@ -10,14 +10,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Juraj Vandor on 05.03.2017.
@@ -29,7 +27,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     @FXML
     private TextArea chat;
     @FXML
-    private GridPane gamepanel;
+    private BorderPane gamepanel;
     private ClientConnection connection;
     private Game game;
     private int myId;
@@ -72,13 +70,18 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         fero.addCards("hand", new Hand(set));
         test = new PlayerView(true, fero, this);
         test.show();
-        gamepanel.add(test,1,1);
+        gamepanel.setBottom(test);
         PlayerView a = new PlayerView(false, fero, this);
         PlayerView b = new PlayerView(false, fero, this);
         a.show();
+        PlayerView c = new PlayerView(false, fero, this);
+        c.show();
         b.show();
-        gamepanel.add(a,2,1);
-        gamepanel.add(b,3,1);
+        b.setRotate(270);
+        c.setRotate(90);
+        gamepanel.setTop(a);
+        gamepanel.setLeft(b);
+        gamepanel.setRight(c);
     }
 
     public void addChatLine(String line){
@@ -131,14 +134,21 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     public void gameStart(){
         int i = 0;
         gamepanel.getChildren().clear();
+        List<PlayerView> list = new ArrayList<>();
         for (Player p : game.getPlayers().values() ) {
             i++;
             players.clear();
             PlayerView player = new PlayerView(p.getId() == myId, p, this);
             players.add(player);
             player.show();
-            gamepanel.add(player,i,0);
+            if (p.getId() == myId)
+                gamepanel.setBottom(player);
+            else
+                list.add(player);
         }
+        gamepanel.setRight(list.get(0));
+        gamepanel.setTop(list.get(1));
+        gamepanel.setLeft(list.get(2));
     }
 
     @Override

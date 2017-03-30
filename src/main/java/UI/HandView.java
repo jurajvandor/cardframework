@@ -3,6 +3,7 @@ package UI;
 import DataLayer.Card;
 import DataLayer.GroupOfCards;
 import DataLayer.Hand;
+import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -22,6 +23,7 @@ public class HandView extends HBox{
         this.playerId = playerId;
         this.showCards = showCards;
         this.handler = handler;
+        this.setAlignment(Pos.CENTER);
     }
 
     public String getNameOfHand() {

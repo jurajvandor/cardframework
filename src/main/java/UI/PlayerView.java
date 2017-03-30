@@ -1,6 +1,7 @@
 package UI;
 
 import DataLayer.Player;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -18,6 +19,7 @@ public class PlayerView extends VBox{
         hand = new HandView(player.getCards("hand"), "hand", player.getId(), me, handler);
         this.getChildren().add(new Label(player.getName()));
         this.getChildren().add(hand);
+        this.setAlignment(Pos.CENTER);
     }
 
     public Player getPlayer() {

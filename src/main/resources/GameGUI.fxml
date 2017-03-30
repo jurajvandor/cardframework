@@ -14,9 +14,9 @@
       <HBox prefHeight="680.0" prefWidth="1340.0">
          <children>
 
-            <GridPane prefHeight="680.0" prefWidth="1100" fx:id="gamepanel">
+            <BorderPane prefHeight="680.0" prefWidth="1100" fx:id="gamepanel">
                <!--game panel-->
-            </GridPane>
+            </BorderPane>
             <VBox prefHeight="680.0" prefWidth="240.0">
                <children>
                   <TextArea prefHeight="660.0" prefWidth="240.0" fx:id="chat"/>
