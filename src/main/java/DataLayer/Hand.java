@@ -7,6 +7,10 @@ import java.util.*;
 public class Hand implements GroupOfCards {
 	private HashSet<Card> cards;
 
+	public Hand() {
+		this.cards = new HashSet<>();
+	}
+
 	public Hand(HashSet<Card> cards) {
 		this.cards = cards;
 	}

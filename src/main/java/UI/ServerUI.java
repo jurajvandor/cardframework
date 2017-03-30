@@ -1,8 +1,6 @@
 package UI;
 
-import DataLayer.Game;
-import DataLayer.Player;
-import DataLayer.XMLLoader;
+import DataLayer.*;
 import Network.CardframeworkListener;
 import Network.Message;
 import Network.MessageParser;
@@ -57,6 +55,8 @@ public class ServerUI implements CardframeworkListener {
                 game.addPlayer(id, text);
                 connection.sendAllClients(message);
                 sendOtherNames(id);
+                if (game.getPlayers().size() == 3)
+                    initiateGame();
                 break;
             default:
                 System.out.println("invalid message: " + message);
@@ -68,6 +68,13 @@ public class ServerUI implements CardframeworkListener {
             if (p != id) connection.send(id, p + " CONNECTED " + game.getPlayer(p).getName());
         }
     }
+
+    public void sendIds(){
+        for (Integer p: game.getPlayers().keySet()) {
+            connection.send(p, p + " YOURID");
+        }
+    }
+
     public void closedConnection(){
         Set<Integer> closed = connection.getFreeIds();
         closed.retainAll(game.getPlayers().keySet());
@@ -75,5 +82,17 @@ public class ServerUI implements CardframeworkListener {
             game.removePlayer(x);
             connection.sendAllClients(x + " QUIT");
         });
+    }
+
+    public void initiateGame(){
+        sendIds();
+        Deck deck = game.createDeck("french cards", game.getDesk());
+        for (Player p : game.getPlayers().values()) {
+            p.addCards("hand", new Hand());
+            for (int i = 0; i < 4; i++){
+                p.getCards("hand").addCard(deck.drawTopCard());
+            }
+        }
+        connection.sendAllClients(new Message("GAME", game));
     }
 }

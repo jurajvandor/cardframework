@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private GridPane gamepanel;
     private ClientConnection connection;
     private Game game;
+    private int myId;
 
     private PlayerView test;
 
@@ -39,6 +41,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private GameState state;
 
     public Controller(){
+        players = new ArrayList<>();
         game = new Game();
         state = GameState.NO_GAME;
         game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
@@ -70,6 +73,12 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         test = new PlayerView(true, fero, this);
         test.show();
         gamepanel.add(test,1,1);
+        PlayerView a = new PlayerView(false, fero, this);
+        PlayerView b = new PlayerView(false, fero, this);
+        a.show();
+        b.show();
+        gamepanel.add(a,2,1);
+        gamepanel.add(b,3,1);
     }
 
     public void addChatLine(String line){
@@ -98,6 +107,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 addChatLine(game.getPlayer(id).getName() + " disconnected.");
                 game.removePlayer(id);
                 break;
+            case "GAME":
+                addChatLine("Game begins.");
+                game  = (Game)message.getObject();
+                gameStart();
+                break;
+            case "YOURID":
+                myId = id;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
@@ -113,8 +129,15 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void gameStart(){
+        int i = 0;
+        gamepanel.getChildren().clear();
         for (Player p : game.getPlayers().values() ) {
-            players.add(new PlayerView(true, p, this));
+            i++;
+            players.clear();
+            PlayerView player = new PlayerView(p.getId() == myId, p, this);
+            players.add(player);
+            player.show();
+            gamepanel.add(player,i,0);
         }
     }
 

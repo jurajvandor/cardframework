@@ -3,6 +3,8 @@ package DataLayer;
  * Created by Juraj Vandor on 14.03.2017.
  */
 
+import sun.security.krb5.internal.crypto.Des;
+
 import java.io.*;
 import java.util.*;
 
@@ -14,6 +16,7 @@ public class Game implements Serializable{
 	public Game() {
 		players = new HashMap<>();
 		decks = new HashMap<>();
+        desk = new Desk();
 	}
 
 	public void load(List<Loader> loaders){
@@ -21,6 +24,10 @@ public class Game implements Serializable{
             LoadedCards c = l.loadCards();
             decks.put(c.getName(), c);
         }
+    }
+
+    public Desk getDesk() {
+        return desk;
     }
 
     public void load(Loader loader){
@@ -32,8 +39,10 @@ public class Game implements Serializable{
 	    return decks.get(name).createDeck();
     }
 
-    public void createDeck(String name, CardOwner owner){
-        owner.addCards(name, (decks.get(name).createDeck()));
+    public Deck createDeck(String name, CardOwner owner){
+        Deck deck = decks.get(name).createDeck();
+        owner.addCards(name, deck);
+        return deck;
     }
 
     public void createDeckCustomizeName(String name, String customName, CardOwner owner){
