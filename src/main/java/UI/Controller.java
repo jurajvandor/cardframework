@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Juraj Vandor on 05.03.2017.
@@ -117,6 +118,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "YOURID":
                 myId = id;
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
@@ -132,23 +134,32 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void gameStart(){
-        int i = 0;
+//        int i = 0;
         gamepanel.getChildren().clear();
-        List<PlayerView> list = new ArrayList<>();
-        for (Player p : game.getPlayers().values() ) {
-            i++;
-            players.clear();
-            PlayerView player = new PlayerView(p.getId() == myId, p, this);
-            players.add(player);
-            player.show();
-            if (p.getId() == myId)
-                gamepanel.setBottom(player);
-            else
-                list.add(player);
+        List<PlayerView> views = new ArrayList<>();
+        List<Player> players = game.getPlayers().values().stream().sorted((x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());
+        int meIndex = 0;
+        for (int i = 0; i < players.size(); i++){
+            if (players.get(i).getId() == myId) meIndex = i;
         }
-        gamepanel.setRight(list.get(0));
-        gamepanel.setTop(list.get(1));
-        gamepanel.setLeft(list.get(2));
+        for (int i = meIndex; i < players.size()+meIndex; i++) {
+            Player player = players.get(i%players.size());
+            PlayerView view = new PlayerView(player.getId() == myId, player, this);
+            views.add(view);
+            view.show();
+        }
+        switch (views.size()){
+            case 4:
+                views.get(3).setRotate(90);
+                gamepanel.setRight(views.get(3));
+            case 3:
+                gamepanel.setTop(views.get(2));
+            case 2:
+                views.get(1).setRotate(270);
+                gamepanel.setLeft(views.get(1));
+            case 1:
+                gamepanel.setBottom(views.get(0));
+        }
     }
 
     @Override

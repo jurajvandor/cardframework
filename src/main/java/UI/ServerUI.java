@@ -55,7 +55,7 @@ public class ServerUI implements CardframeworkListener {
                 game.addPlayer(id, text);
                 connection.sendAllClients(message);
                 sendOtherNames(id);
-                if (game.getPlayers().size() == 3)
+                if (game.getPlayers().size() == 4)
                     initiateGame();
                 break;
             default:
