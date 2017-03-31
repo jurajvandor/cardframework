@@ -1,7 +1,7 @@
 package UI;
 
 /**
- * Created by Juraj on 28.03.2017.
+ * Created by Juraj Vandor on 28.03.2017.
  */
 public enum GameState {
     YOUR_TURN,

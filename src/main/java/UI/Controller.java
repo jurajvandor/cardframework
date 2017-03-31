@@ -116,8 +116,11 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 game  = (Game)message.getObject();
                 gameStart();
                 break;
-            case "YOURID":
+            case "YOUR_ID":
                 myId = id;
+                break;
+            case "YOUR_TURN":
+                state = GameState.YOUR_TURN;
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
@@ -134,7 +137,6 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void gameStart(){
-//        int i = 0;
         gamepanel.getChildren().clear();
         List<PlayerView> views = new ArrayList<>();
         List<Player> players = game.getPlayers().values().stream().sorted((x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());

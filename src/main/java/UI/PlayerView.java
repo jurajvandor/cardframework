@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 /**
- * Created by Juraj on 28.03.2017.
+ * Created by Juraj Vandor on 28.03.2017.
  */
 public class PlayerView extends VBox{
     private boolean me;

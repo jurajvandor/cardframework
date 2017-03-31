@@ -17,9 +17,10 @@ import static java.lang.Thread.sleep;
 /**
  * Created by Juraj Vandor on 02.03.2017.
  */
-public class ServerUI implements CardframeworkListener {
+public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private Server connection;
     private Game game;
+    private ServerTurnCounter turnCounter;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -71,7 +72,7 @@ public class ServerUI implements CardframeworkListener {
 
     public void sendIds(){
         for (Integer p: game.getPlayers().keySet()) {
-            connection.send(p, p + " YOURID");
+            connection.send(p, p + " YOUR_ID");
         }
     }
 
@@ -94,5 +95,12 @@ public class ServerUI implements CardframeworkListener {
             }
         }
         connection.sendAllClients(new Message("GAME", game));
+        turnCounter = new ServerTurnCounter(0, game.getPlayers().size(), this);
+        turnCounter.nextPlayerTurn();
+    }
+
+    @Override
+    public void announceTurn(int id) {
+        connection.send(id, "YOUR_TURN");
     }
 }
