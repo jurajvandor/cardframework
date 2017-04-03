@@ -11,11 +11,23 @@ public class Deck implements GroupOfCards, Serializable {
 
 	private ArrayList<Card> cards;
 
-	public Deck(ArrayList<Card> cards ){
+	public Deck(ArrayList<Card> cards, DeckType type){
 		this.cards = cards;
+		this.type = type;
 	}
+
+	public Deck(DeckType type){
+		this.cards = new ArrayList<>();
+		this.type = type;
+	}
+
 	public Card drawTopCard() {
 		return cards.remove(cards.size()-1);
+	}
+
+	public Card getTopCard() {
+		if (cards.size() == 0) return null;
+		return cards.get(cards.size()-1);
 	}
 
 	public void returnCardToTop(Card card) {
@@ -54,7 +66,7 @@ public class Deck implements GroupOfCards, Serializable {
 
 
 	public GroupOfCards copy(){
-		return new Deck(new ArrayList<>(cards));
+		return new Deck(new ArrayList<>(cards), type);
 	}
 
 	@Override

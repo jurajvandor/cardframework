@@ -59,6 +59,8 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 if (game.getPlayers().size() == 4)
                     initiateGame();
                 break;
+            case "test":
+                turnCounter.nextPlayerTurn();
             default:
                 System.out.println("invalid message: " + message);
         }
@@ -87,7 +89,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     public void initiateGame(){
         sendIds();
-        Deck deck = game.createDeck("french cards", game.getDesk());
+        Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
+        deck.shuffle();
+        game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers().values()) {
             p.addCards("hand", new Hand());
             for (int i = 0; i < 4; i++){

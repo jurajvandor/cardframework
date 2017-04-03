@@ -30,18 +30,22 @@ public class Game implements Serializable{
         return desk;
     }
 
+    public void setDesk(Desk desk) {
+        this.desk = desk;
+    }
+
     public void load(Loader loader){
         LoadedCards c = loader.loadCards();
         decks.put(c.getName(), c);
 	}
 
-    public Deck createDeck(String name){
-	    return decks.get(name).createDeck();
+    public Deck createDeck(String nameOfCards){
+	    return decks.get(nameOfCards).createDeck();
     }
 
-    public Deck createDeck(String name, CardOwner owner){
-        Deck deck = decks.get(name).createDeck();
-        owner.addCards(name, deck);
+    public Deck createDeck(String nameOfCards, CardOwner owner, String deckName){
+        Deck deck = decks.get(nameOfCards).createDeck();
+        owner.addCards(deckName, deck);
         return deck;
     }
 

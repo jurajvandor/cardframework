@@ -122,6 +122,14 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             case "YOUR_TURN":
                 state = GameState.YOUR_TURN;
                 break;
+            case "UPDATE_PLAYER":
+                game.getPlayers().put(id, (Player) message.getObject());
+                gameStart();
+                break;
+            case "UPDATE_DESK":
+                game.setDesk((Desk) message.getObject());
+                showDesk();
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
@@ -136,7 +144,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         message.setText("");
     }
 
-    public void gameStart(){
+    public void showDesk(){
+        DeskView view = new DeskView(game.getDesk(), this);
+        gamepanel.setCenter(view);
+        view.show();
+    }
+
+    public void showPlayers(){
         gamepanel.getChildren().clear();
         List<PlayerView> views = new ArrayList<>();
         List<Player> players = game.getPlayers().values().stream().sorted((x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());
@@ -164,9 +178,14 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         }
     }
 
+    public void gameStart() {
+        showPlayers();
+        showDesk();
+    }
+
+
     @Override
     public void handleCardClick(Card card, int playerId, String nameOfHand) {
-        test.getPlayer().getCards("hand").removeCard(card);
-        test.show();
+        connection.send("test");
     }
 }

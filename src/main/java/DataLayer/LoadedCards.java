@@ -28,6 +28,6 @@ public class LoadedCards  implements Serializable {
                 list.add(new Card(c.getCard()));
             }
         }
-        return new Deck(list);
+        return new Deck(list, DeckType.TAKE);
     }
 }
