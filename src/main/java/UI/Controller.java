@@ -121,6 +121,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "YOUR_TURN":
                 state = GameState.YOUR_TURN;
+                addChatLine("Your Turn");
                 break;
             case "UPDATE_PLAYER":
                 game.getPlayers().put(id, (Player) message.getObject());
