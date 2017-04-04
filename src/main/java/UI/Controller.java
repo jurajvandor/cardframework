@@ -43,7 +43,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         players = new ArrayList<>();
         game = new Game();
         state = GameState.NO_GAME;
-        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
+        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("double_cards_with_4_jokers.xml").getPath()));
     }
 
     public Game getGame(){
@@ -61,7 +61,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void skuska(){
-        Deck deck = game.createDeck("french cards");
+        Deck deck = game.createDeck("double french joker cards");
         HashSet<Card> set = new HashSet<>();
         set.add(deck.drawTopCard());
         set.add(deck.drawTopCard());

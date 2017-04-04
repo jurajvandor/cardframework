@@ -10,6 +10,8 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static java.lang.Thread.sleep;
@@ -38,7 +40,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.connection.start();
         serverUI.game = new Game();
-        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
+        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("double_cards_with_4_jokers.xml").getPath()));
     }
 
     @Override
@@ -61,8 +63,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 break;
             case "test":
                 turnCounter.nextPlayerTurn();
+                break;
             default:
-                System.out.println("invalid message: " + message);
+                System.out.println("invalid message: " + message.getMessage());
         }
     }
 
@@ -89,7 +92,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     public void initiateGame(){
         sendIds();
-        Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
+        Deck deck = game.createDeck("double french joker cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers().values()) {
@@ -99,7 +102,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             }
         }
         connection.sendAllClients(new Message("GAME", game));
-        turnCounter = new ServerTurnCounter(0, game.getPlayers().size(), this);
+        List<Integer> ids = new ArrayList<>(game.getPlayers().keySet());
+        ids.sort((x,y) -> (new Integer(x)).compareTo(y));
+        turnCounter = new ServerTurnCounter(0, ids , this);
         turnCounter.nextPlayerTurn();
     }
 

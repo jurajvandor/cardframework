@@ -73,5 +73,9 @@ public class Deck implements GroupOfCards, Serializable {
 	public Iterator<Card> iterator() {
 		return cards.iterator();
 	}
+
+	public void merge(Deck cards){
+		this.cards.addAll(cards.cards);
+	}
 }
 

@@ -25,13 +25,15 @@ public class Hand implements GroupOfCards {
 
 	public boolean removeCard(Card card) {
 		return cards.remove(card);
-
 	}
 
 	public boolean hasCard(Card card) {
 		return cards.contains(card);
 	}
 
+	public void merge(Hand cards) {
+		this.cards.addAll(cards.cards);
+	}
 
 	public GroupOfCards copy(){
 		return new Hand(new HashSet<>(cards));
