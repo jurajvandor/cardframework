@@ -61,7 +61,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 if (game.getPlayers().size() == 4)
                     initiateGame();
                 break;
-            case "test":
+            case "PLAY_CARD":
                 turnCounter.nextPlayerTurn();
                 break;
             default:

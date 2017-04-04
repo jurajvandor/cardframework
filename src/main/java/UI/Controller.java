@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -28,7 +27,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     @FXML
     private TextArea chat;
     @FXML
-    private BorderPane gamepanel;
+    private BorderPane gamePanel;
     private ClientConnection connection;
     private Game game;
     private int myId;
@@ -71,7 +70,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         fero.addCards("hand", new Hand(set));
         test = new PlayerView(true, fero, this);
         test.show();
-        gamepanel.setBottom(test);
+        gamePanel.setBottom(test);
         PlayerView a = new PlayerView(false, fero, this);
         PlayerView b = new PlayerView(false, fero, this);
         a.show();
@@ -80,9 +79,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         b.show();
         b.setRotate(270);
         c.setRotate(90);
-        gamepanel.setTop(a);
-        gamepanel.setLeft(b);
-        gamepanel.setRight(c);
+        gamePanel.setTop(a);
+        gamePanel.setLeft(b);
+        gamePanel.setRight(c);
     }
 
     public void addChatLine(String line){
@@ -114,6 +113,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             case "GAME":
                 addChatLine("Game begins.");
                 game  = (Game)message.getObject();
+                state = GameState.WAITING;
                 gameStart();
                 break;
             case "YOUR_ID":
@@ -124,7 +124,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "UPDATE_PLAYER":
                 game.getPlayers().put(id, (Player) message.getObject());
-                gameStart();
+                showPlayers();
                 break;
             case "UPDATE_DESK":
                 game.setDesk((Desk) message.getObject());
@@ -146,14 +146,15 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     public void showDesk(){
         DeskView view = new DeskView(game.getDesk(), this);
-        gamepanel.setCenter(view);
+        gamePanel.setCenter(view);
         view.show();
     }
 
     public void showPlayers(){
-        gamepanel.getChildren().clear();
+        gamePanel.getChildren().clear();
         List<PlayerView> views = new ArrayList<>();
-        List<Player> players = game.getPlayers().values().stream().sorted((x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());
+        List<Player> players = game.getPlayers().values().stream().sorted(
+                (x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());
         int meIndex = 0;
         for (int i = 0; i < players.size(); i++){
             if (players.get(i).getId() == myId) meIndex = i;
@@ -167,14 +168,14 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         switch (views.size()){
             case 4:
                 views.get(3).setRotate(90);
-                gamepanel.setRight(views.get(3));
+                gamePanel.setRight(views.get(3));
             case 3:
-                gamepanel.setTop(views.get(2));
+                gamePanel.setTop(views.get(2));
             case 2:
                 views.get(1).setRotate(270);
-                gamepanel.setLeft(views.get(1));
+                gamePanel.setLeft(views.get(1));
             case 1:
-                gamepanel.setBottom(views.get(0));
+                gamePanel.setBottom(views.get(0));
         }
     }
 
@@ -186,6 +187,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     @Override
     public void handleCardClick(Card card, int playerId, String nameOfHand) {
-        connection.send("test");
+        if (state == GameState.YOUR_TURN && playerId == myId) {
+            Message m = new Message("PLAY_CARD " + nameOfHand, card);
+            connection.send(m);
+            state = GameState.WAITING;
+        }
     }
 }

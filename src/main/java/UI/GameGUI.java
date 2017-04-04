@@ -66,7 +66,7 @@ public class GameGUI extends Application {
         connectStage.setScene(connectionScene);
 
         connectStage.show();
-        controller.skuska();
+        //controller.skuska();
         button.setOnAction(event -> {
             error.setText("Connecting...");
             new Thread (() -> {

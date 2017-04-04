@@ -14,7 +14,7 @@
       <HBox prefHeight="680.0" prefWidth="1340.0">
          <children>
 
-            <BorderPane prefHeight="680.0" prefWidth="1100" fx:id="gamepanel">
+            <BorderPane prefHeight="680.0" prefWidth="1100" fx:id="gamePanel">
                <!--game panel-->
             </BorderPane>
             <VBox prefHeight="680.0" prefWidth="240.0">
