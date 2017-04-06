@@ -4,9 +4,9 @@ package UI;
  * Created by Juraj Vandor on 28.03.2017.
  */
 public enum GameState {
-    YOUR_TURN,
+    DRAW,
     WAITING,
-    CHOOSE_CARD,
-    CHOOSE_PLAYER,
+    LAY_OFF,
+    MELD,
     NO_GAME;
 }

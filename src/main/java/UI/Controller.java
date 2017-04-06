@@ -42,7 +42,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         players = new ArrayList<>();
         game = new Game();
         state = GameState.NO_GAME;
-        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("double_cards_with_4_jokers.xml").getPath()));
+        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
     }
 
     public Game getGame(){
@@ -120,7 +120,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 myId = id;
                 break;
             case "YOUR_TURN":
-                state = GameState.YOUR_TURN;
+                state = GameState.DRAW;
                 addChatLine("Your Turn");
                 break;
             case "UPDATE_PLAYER":
@@ -188,7 +188,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     @Override
     public void handleCardClick(Card card, int playerId, String nameOfHand) {
-        if (state == GameState.YOUR_TURN && playerId == myId) {
+        if (state == GameState.DRAW && playerId == myId) {
             Message m = new Message("PLAY_CARD " + nameOfHand, card);
             connection.send(m);
             state = GameState.WAITING;

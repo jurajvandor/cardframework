@@ -40,7 +40,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.connection.start();
         serverUI.game = new Game();
-        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("double_cards_with_4_jokers.xml").getPath()));
+        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
     }
 
     @Override

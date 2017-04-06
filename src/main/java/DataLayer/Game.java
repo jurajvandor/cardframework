@@ -3,8 +3,6 @@ package DataLayer;
  * Created by Juraj Vandor on 14.03.2017.
  */
 
-import sun.security.krb5.internal.crypto.Des;
-
 import java.io.*;
 import java.util.*;
 
@@ -101,7 +99,7 @@ public class Game implements Serializable{
     public static void main(String[] args){//save and load testing
         Game game = new Game();
         game.addPlayer(0,"fero");
-        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("cards.xml").getPath()));
+        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
         Deck deck = game.createDeck("french cards");
         HashSet<Card> s = new HashSet<Card>();
         s.add(deck.drawTopCard());
