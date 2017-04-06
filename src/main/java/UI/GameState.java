@@ -8,5 +8,6 @@ public enum GameState {
     WAITING,
     LAY_OFF,
     MELD,
+    DISCARD,
     NO_GAME;
 }

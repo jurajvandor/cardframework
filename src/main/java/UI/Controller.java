@@ -7,10 +7,14 @@ import Network.ClientConnection;
 import Network.Message;
 import Network.MessageParser;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -147,7 +151,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     public void showDesk(){
         DeskView view = new DeskView(game.getDesk(), this);
-        gamePanel.setCenter(view);
+        Button meld = new Button("Meld");
+        Button layoff = new Button("Lay-off");
+        HBox melds = new HBox();
+        VBox desk = new VBox(melds, view, new HBox(meld, layoff));
+        desk.setAlignment(Pos.CENTER);
+        desk.setSpacing(10);
+        gamePanel.setCenter(desk);
         view.show();
     }
 

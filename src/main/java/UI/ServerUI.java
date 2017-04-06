@@ -92,7 +92,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     public void initiateGame(){
         sendIds();
-        Deck deck = game.createDeck("double french joker cards", game.getDesk(), "drawing");
+        Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers().values()) {
