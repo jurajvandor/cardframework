@@ -74,6 +74,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     public void discard(int id, Card card){
         game.getPlayer(id).getHand("hand").removeCard(card);
+        game.getDesk().getCards("discard").addCard(card);
         connection.sendAllClients(new Message(id + " DISCARD", card));
         turnCounter.nextPlayerTurn();
     }

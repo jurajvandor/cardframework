@@ -138,6 +138,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "DISCARD":
                 game.getPlayer(id).getHand("hand").removeCard((Card)message.getObject());
+                game.getDesk().getCards("discard").addCard((Card)message.getObject());
                 updateView();
                 break;
             default:
