@@ -14,8 +14,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class XMLLoader implements Loader {
+
+    private static AtomicInteger idCounter = new AtomicInteger(0);
 
     public static void main(String[] args){
         Loader l = new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath());
@@ -47,7 +50,7 @@ public class XMLLoader implements Loader {
                         map.put(p.getTagName(), p.getTextContent());
                     }
                 }
-                list.add(new LoadedCard(new Card(map), count));
+                list.add(new LoadedCard(new Card(map, idCounter.incrementAndGet()), count));
             }
         }
         return new LoadedCards(list, deckName);

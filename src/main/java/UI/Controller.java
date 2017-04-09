@@ -64,12 +64,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void skuska(){
-        Deck deck = game.createDeck("double french joker cards");
+        Deck deck = game.createDeck("french cards");
         HashSet<Card> set = new HashSet<>();
-        set.add(deck.drawTopCard());
-        set.add(deck.drawTopCard());
-        set.add(deck.drawTopCard());
-        set.add(deck.drawTopCard());
+        for (int i = 0; i< 12; i++)
+            set.add(deck.drawTopCard());
         Player fero = new Player("fero", 4);
         fero.addCards("hand", new Hand(set));
         test = new PlayerView(true, fero, this);
@@ -118,7 +116,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 addChatLine("Game begins.");
                 game  = (Game)message.getObject();
                 state = GameState.WAITING;
-                gameStart();
+                updateView();
                 break;
             case "YOUR_ID":
                 myId = id;
@@ -129,15 +127,28 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "UPDATE_PLAYER":
                 game.getPlayers().put(id, (Player) message.getObject());
-                showPlayers();
+                updateView();
                 break;
             case "UPDATE_DESK":
                 game.setDesk((Desk) message.getObject());
-                showDesk();
+                updateView();
+                break;
+            case "DRAW_CARD":
+                drawCard(id, text);
+                break;
+            case "DISCARD":
+                game.getPlayer(id).getHand("hand").removeCard((Card)message.getObject());
+                updateView();
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
+    }
+
+    public void drawCard(int id, String nameOfHand){
+        Deck deck = game.getDesk().getDeck(nameOfHand);
+        game.getPlayer(id).getCards("hand").addCard(deck.drawTopCard());
+        updateView();
     }
 
     public void setConnection(ClientConnection connection){
@@ -153,6 +164,8 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
         Button layoff = new Button("Lay-off");
+        meld.setOnAction(e -> state = GameState.MELD);
+        layoff.setOnAction(e -> state = GameState.LAY_OFF);
         HBox melds = new HBox();
         VBox desk = new VBox(melds, view, new HBox(meld, layoff));
         desk.setAlignment(Pos.CENTER);
@@ -190,16 +203,20 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         }
     }
 
-    public void gameStart() {
+    public void updateView() {
         showPlayers();
         showDesk();
     }
 
-
     @Override
     public void handleCardClick(Card card, int playerId, String nameOfHand) {
-        if (state == GameState.DRAW && playerId == myId) {
-            Message m = new Message("PLAY_CARD " + nameOfHand, card);
+        if (state == GameState.DRAW && playerId == -1) {
+            Message m = new Message("DRAW_CARD " + nameOfHand);
+            connection.send(m);
+            state = GameState.DISCARD;
+        }
+        if(state == GameState.DISCARD && playerId == myId){
+            Message m = new Message("DISCARD", card);
             connection.send(m);
             state = GameState.WAITING;
         }

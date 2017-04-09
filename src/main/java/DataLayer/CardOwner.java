@@ -46,4 +46,17 @@ public class CardOwner  implements Serializable {
         return cards.get(name);
     }
 
+    public Deck getDeck(String name){
+        GroupOfCards c = cards.get(name);
+        if (c instanceof Deck)
+            return (Deck)c;
+        return null;
+    }
+
+    public Hand getHand(String name){
+        GroupOfCards c = cards.get(name);
+        if (c instanceof Hand)
+            return (Hand)c;
+        return null;
+    }
 }

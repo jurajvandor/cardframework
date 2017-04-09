@@ -16,15 +16,17 @@ import java.util.Map;
 public class Card implements Serializable {
 
 	private HashMap<String, String> properties;
+	private int id;
 
 	/**
 	 * creates card with given properties
 	 * @param properties properties of card (they are beeing copied)
 	 */
-	public Card(Map<String,String> properties){
+	public Card(Map<String,String> properties, int id){
 		if (properties == null)
 			throw new NullPointerException("properties is null");
 		this.properties = new HashMap<>(properties);
+		this.id = id;
 	}
 
 	/**
@@ -33,6 +35,7 @@ public class Card implements Serializable {
 	 */
 	public Card(Card card){
 		this.properties = new HashMap<>(card.properties);
+		this.id = card.id;
 	}
 
 	/**
@@ -48,5 +51,20 @@ public class Card implements Serializable {
 	 */
 	public Map<String, String> getProperties() {
 		return Collections.unmodifiableMap(this.properties);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Card card = (Card) o;
+
+		return id == card.id;
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
 	}
 }

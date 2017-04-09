@@ -22,11 +22,14 @@ public class Deck implements GroupOfCards, Serializable {
 	}
 
 	public Card drawTopCard() {
+		if (cards.size() == 0)
+			return null;
 		return cards.remove(cards.size()-1);
 	}
 
 	public Card getTopCard() {
-		if (cards.size() == 0) return null;
+		if (cards.size() == 0)
+			return null;
 		return cards.get(cards.size()-1);
 	}
 

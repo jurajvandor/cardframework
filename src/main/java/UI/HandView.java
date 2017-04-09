@@ -24,6 +24,7 @@ public class HandView extends HBox{
         this.showCards = showCards;
         this.handler = handler;
         this.setAlignment(Pos.CENTER);
+        this.setSpacing(-50);
     }
 
     public String getNameOfHand() {

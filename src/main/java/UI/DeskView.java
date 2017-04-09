@@ -22,8 +22,8 @@ public class DeskView extends HBox{
 
     public void show(){
         this.getChildren().clear();
-        Deck dr = (Deck)desk.getCards("drawing");
-        Deck dis = (Deck)desk.getCards("discard");
+        Deck dr = desk.getDeck("drawing");
+        Deck dis = desk.getDeck("discard");
         CardView draw = new CardView("drawing", -1, dr.getTopCard(), false );
         CardView discard = new CardView("discard", -1, dis.getTopCard(), true);
         draw.addEventHandler(MouseEvent.MOUSE_CLICKED,(event -> {

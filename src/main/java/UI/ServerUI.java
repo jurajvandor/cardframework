@@ -61,11 +61,29 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 if (game.getPlayers().size() == 4)
                     initiateGame();
                 break;
-            case "PLAY_CARD":
-                turnCounter.nextPlayerTurn();
+            case "DRAW_CARD":
+                drawCard(id, text);
+                break;
+            case "DISCARD":
+                discard(id, (Card)message.getObject());
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
+        }
+    }
+
+    public void discard(int id, Card card){
+        game.getPlayer(id).getHand("hand").removeCard(card);
+        connection.sendAllClients(new Message(id + " DISCARD", card));
+        turnCounter.nextPlayerTurn();
+    }
+
+    public void drawCard(int id, String nameOfHand){
+        Deck deck = game.getDesk().getDeck(nameOfHand);
+        Card card = deck.drawTopCard();
+        if (card != null) {
+            game.getPlayer(id).getCards("hand").addCard(card);
+            connection.sendAllClients(id + " DRAW_CARD " + nameOfHand);
         }
     }
 
@@ -97,7 +115,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers().values()) {
             p.addCards("hand", new Hand());
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < 11; i++){
                 p.getCards("hand").addCard(deck.drawTopCard());
             }
         }
