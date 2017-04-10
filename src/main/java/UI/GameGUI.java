@@ -91,7 +91,7 @@ public class GameGUI extends Application {
         });
         controller = loader.getController();
         primaryStage.show();
-
+        primaryStage.getScene().getRoot().setStyle("-fx-background: #FF9900;");
         connectionWindow();
     }
 
