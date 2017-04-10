@@ -35,6 +35,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private ClientConnection connection;
     private Game game;
     private int myId;
+    private Logic logic;
 
     private PlayerView test;
 
@@ -116,6 +117,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 addChatLine("Game begins.");
                 game  = (Game)message.getObject();
                 state = GameState.WAITING;
+                logic = new Logic(game);
                 updateView();
                 break;
             case "YOUR_ID":
@@ -127,29 +129,25 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "UPDATE_PLAYER":
                 game.getPlayers().put(id, (Player) message.getObject());
+                logic.setGame(game);
                 updateView();
                 break;
             case "UPDATE_DESK":
                 game.setDesk((Desk) message.getObject());
+                logic.setGame(game);
                 updateView();
                 break;
             case "DRAW_CARD":
-                drawCard(id, text);
+                logic.drawCard(id, text);
+                updateView();
                 break;
             case "DISCARD":
-                game.getPlayer(id).getHand("hand").removeCard((Card)message.getObject());
-                game.getDesk().getCards("discard").addCard((Card)message.getObject());
+                logic.discard(id, (Card)message.getObject());
                 updateView();
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
-    }
-
-    public void drawCard(int id, String nameOfHand){
-        Deck deck = game.getDesk().getDeck(nameOfHand);
-        game.getPlayer(id).getCards("hand").addCard(deck.drawTopCard());
-        updateView();
     }
 
     public void setConnection(ClientConnection connection){

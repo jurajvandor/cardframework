@@ -23,6 +23,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private Server connection;
     private Game game;
     private ServerTurnCounter turnCounter;
+    private Logic logic;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -62,29 +63,14 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                     initiateGame();
                 break;
             case "DRAW_CARD":
-                drawCard(id, text);
+                logic.drawCard(id, text);
                 break;
             case "DISCARD":
-                discard(id, (Card)message.getObject());
+                logic.discard(id, (Card)message.getObject());
+                turnCounter.nextPlayerTurn();
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
-        }
-    }
-
-    public void discard(int id, Card card){
-        game.getPlayer(id).getHand("hand").removeCard(card);
-        game.getDesk().getCards("discard").addCard(card);
-        connection.sendAllClients(new Message(id + " DISCARD", card));
-        turnCounter.nextPlayerTurn();
-    }
-
-    public void drawCard(int id, String nameOfHand){
-        Deck deck = game.getDesk().getDeck(nameOfHand);
-        Card card = deck.drawTopCard();
-        if (card != null) {
-            game.getPlayer(id).getCards("hand").addCard(card);
-            connection.sendAllClients(id + " DRAW_CARD " + nameOfHand);
         }
     }
 
@@ -125,6 +111,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         ids.sort((x,y) -> (new Integer(x)).compareTo(y));
         turnCounter = new ServerTurnCounter(0, ids , this);
         turnCounter.nextPlayerTurn();
+        logic = new Logic(game,connection);
     }
 
     @Override
