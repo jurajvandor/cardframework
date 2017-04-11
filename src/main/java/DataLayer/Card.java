@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * represents single playing card with its properties stored in map with String key and String value
  */
-public class Card implements Serializable {
+public class Card implements Serializable, Comparable<Card>{
 
 	private HashMap<String, String> properties;
 	private int id;
@@ -66,5 +66,11 @@ public class Card implements Serializable {
 	@Override
 	public int hashCode() {
 		return id;
+	}
+
+
+	@Override
+	public int compareTo(Card o) {
+		return (new Integer(id)).compareTo(o.id);
 	}
 }

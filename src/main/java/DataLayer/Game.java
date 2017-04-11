@@ -101,7 +101,7 @@ public class Game implements Serializable{
         game.addPlayer(0,"fero");
         game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
         Deck deck = game.createDeck("french cards");
-        HashSet<Card> s = new HashSet<Card>();
+        TreeSet<Card> s = new TreeSet<>();
         s.add(deck.drawTopCard());
         game.getPlayer(0).addCards("ruka", new Hand(s));
         game.saveState("state.txt");

@@ -5,13 +5,13 @@ package DataLayer;
 import java.util.*;
 
 public class Hand implements GroupOfCards {
-	private HashSet<Card> cards;
+	private TreeSet<Card> cards;
 
 	public Hand() {
-		this.cards = new HashSet<>();
+		this.cards = new TreeSet<>();
 	}
 
-	public Hand(HashSet<Card> cards) {
+	public Hand(TreeSet<Card> cards) {
 		this.cards = cards;
 	}
 
@@ -36,7 +36,7 @@ public class Hand implements GroupOfCards {
 	}
 
 	public GroupOfCards copy(){
-		return new Hand(new HashSet<>(cards));
+		return new Hand(new TreeSet<>(cards));
 	}
 
 	@Override

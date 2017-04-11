@@ -20,6 +20,7 @@ import static java.lang.Thread.sleep;
  * Created by Juraj Vandor on 02.03.2017.
  */
 public class ServerUI implements CardframeworkListener, TurnAnnouncer {
+    private int numOfPlayers;
     private Server connection;
     private Game game;
     private ServerTurnCounter turnCounter;
@@ -41,6 +42,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.connection.start();
         serverUI.game = new Game();
+        serverUI.numOfPlayers = 4;
         serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
     }
 
@@ -59,7 +61,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 game.addPlayer(id, text);
                 connection.sendAllClients(message);
                 sendOtherNames(id);
-                if (game.getPlayers().size() == 4)
+                if (game.getPlayers().size() == numOfPlayers)
                     initiateGame();
                 break;
             case "DRAW_CARD":

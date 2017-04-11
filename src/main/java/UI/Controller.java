@@ -43,11 +43,14 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     private GameState state;
 
+    private Hand currentMeld;
+
     public Controller(){
         players = new ArrayList<>();
         game = new Game();
         state = GameState.NO_GAME;
         game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
+        currentMeld = null;
     }
 
     public Game getGame(){
@@ -66,7 +69,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     public void skuska(){
         Deck deck = game.createDeck("french cards");
-        HashSet<Card> set = new HashSet<>();
+        TreeSet<Card> set = new TreeSet<>();
         for (int i = 0; i< 12; i++)
             set.add(deck.drawTopCard());
         Player fero = new Player("fero", 4);
@@ -163,10 +166,21 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
         Button layoff = new Button("Lay-off");
-        meld.setOnAction(e -> state = GameState.MELD);
+        HBox buttons = new HBox(meld, layoff);
+        meld.setOnAction(e -> {
+            if (state == GameState.DISCARD) {
+                meld.setText("Done");
+                currentMeld = new Hand();
+                state = GameState.MELD;
+            }
+            if (state == GameState.MELD){
+                meld.setText("Meld");
+                meldDone();
+            }
+        });
         layoff.setOnAction(e -> state = GameState.LAY_OFF);
         HBox melds = new HBox();
-        VBox desk = new VBox(melds, view, new HBox(meld, layoff));
+        VBox desk = new VBox(melds, view, buttons);
         desk.setAlignment(Pos.CENTER);
         desk.setSpacing(10);
         gamePanel.setCenter(desk);
@@ -207,6 +221,36 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         showDesk();
     }
 
+    public void meldDone(){
+        if (currentMeld.getCards().size() > 3);
+        //remove from player send to server add meld to game
+        currentMeld = null;
+    }
+
+    public void addMeldingCard(Card card){
+        boolean equals = true;
+        for (Card c : currentMeld){
+            equals = (equals && c.getProperty("value").equals(card.getProperty("value")));
+        }
+        if (equals){
+            currentMeld.addCard(card);
+            return;
+        }
+        equals = true;
+        int sum = 0;
+        for (Card c : currentMeld){
+            equals = (equals && c.getProperty("suit").equals(card.getProperty("suit")));
+            sum += ValueGetter.getValue(c);
+        }
+        double avg = sum / currentMeld.getCards().size();
+        double halfSize = currentMeld.getCards().size() / 2.0;
+        int cardValue = ValueGetter.getValue(card);
+        boolean isNextCard = Math.abs(avg + halfSize - cardValue) < 0.01 || Math.abs(avg - halfSize - cardValue) < 0.01;
+        if (equals && isNextCard)
+            currentMeld.addCard(card);
+
+    }
+
     @Override
     public void handleCardClick(Card card, int playerId, String nameOfHand) {
         if (state == GameState.DRAW && playerId == -1) {
@@ -214,10 +258,16 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             connection.send(m);
             state = GameState.DISCARD;
         }
-        if(state == GameState.DISCARD && playerId == myId){
+        if (state == GameState.DISCARD && playerId == myId){
             Message m = new Message("DISCARD", card);
             connection.send(m);
             state = GameState.WAITING;
+        }
+        if (state == GameState.MELD && playerId == myId){
+            addMeldingCard(card);
+        }
+        if (state == GameState.LAY_OFF && playerId == myId){
+            addMeldingCard(card);
         }
     }
 }
