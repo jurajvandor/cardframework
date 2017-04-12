@@ -4,5 +4,8 @@ package DataLayer;
  */
 import java.io.Serializable;
 
+/**
+ * represents cards on desk
+ */
 public class Desk extends CardOwner implements Serializable {
 }

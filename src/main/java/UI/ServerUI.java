@@ -77,20 +77,20 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     }
 
     public void sendOtherNames(int id) {
-        for (Integer p: game.getPlayers().keySet()) {
+        for (Integer p: game.getIds()) {
             if (p != id) connection.send(id, p + " CONNECTED " + game.getPlayer(p).getName());
         }
     }
 
     public void sendIds(){
-        for (Integer p: game.getPlayers().keySet()) {
+        for (Integer p: game.getIds()) {
             connection.send(p, p + " YOUR_ID");
         }
     }
 
     public void closedConnection(){
         Set<Integer> closed = connection.getFreeIds();
-        closed.retainAll(game.getPlayers().keySet());
+        closed.retainAll(game.getIds());
         closed.forEach(x -> {
             game.removePlayer(x);
             connection.sendAllClients(x + " QUIT");
@@ -102,14 +102,14 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
-        for (Player p : game.getPlayers().values()) {
+        for (Player p : game.getPlayers()) {
             p.addCards("hand", new Hand());
             for (int i = 0; i < 11; i++){
                 p.getCards("hand").addCard(deck.drawTopCard());
             }
         }
         connection.sendAllClients(new Message("GAME", game));
-        List<Integer> ids = new ArrayList<>(game.getPlayers().keySet());
+        List<Integer> ids = new ArrayList<>(game.getIds());
         ids.sort((x,y) -> (new Integer(x)).compareTo(y));
         turnCounter = new ServerTurnCounter(0, ids , this);
         turnCounter.nextPlayerTurn();

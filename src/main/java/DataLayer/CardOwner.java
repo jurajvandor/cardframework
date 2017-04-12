@@ -46,6 +46,10 @@ public class CardOwner  implements Serializable {
         return cards.get(name);
     }
 
+    /**
+     * @param name key under which group of cards is stored
+     * @return if group of cards can be casted to Deck, Deck is returned else returns null
+     */
     public Deck getDeck(String name){
         GroupOfCards c = cards.get(name);
         if (c instanceof Deck)
@@ -53,6 +57,10 @@ public class CardOwner  implements Serializable {
         return null;
     }
 
+    /**
+     * @param name key under which group of cards is stored
+     * @return if group of cards can be casted to Hand, Hand is returned else returns null
+     */
     public Hand getHand(String name){
         GroupOfCards c = cards.get(name);
         if (c instanceof Hand)

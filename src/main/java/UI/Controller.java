@@ -131,7 +131,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 addChatLine("Your Turn");
                 break;
             case "UPDATE_PLAYER":
-                game.getPlayers().put(id, (Player) message.getObject());
+                game.addPlayer((Player) message.getObject());
                 logic.setGame(game);
                 updateView();
                 break;
@@ -190,7 +190,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     public void showPlayers(){
         gamePanel.getChildren().clear();
         List<PlayerView> views = new ArrayList<>();
-        List<Player> players = game.getPlayers().values().stream().sorted(
+        List<Player> players = game.getPlayers().stream().sorted(
                 (x,y) -> (new Integer(x.getId())).compareTo(y.getId())).collect(Collectors.toList());
         int meIndex = 0;
         for (int i = 0; i < players.size(); i++){
