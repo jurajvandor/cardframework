@@ -1,9 +1,6 @@
 package DataLayer;
 
-import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 /**
  * Created by Juraj Vandor on 14.03.2017.
  */

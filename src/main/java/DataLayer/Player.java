@@ -2,11 +2,9 @@ package DataLayer;
 /**
  * Created by Juraj Vandor on 14.03.2017.
  */
-import Network.ServerConnectionToClient;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Player extends CardOwner implements Serializable {
 

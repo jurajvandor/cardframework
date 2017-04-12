@@ -9,5 +9,5 @@ public enum GameState {
     LAY_OFF,
     MELD,
     DISCARD,
-    NO_GAME;
+    NO_GAME
 }

@@ -1,6 +1,5 @@
 package UI;
 
-import DataLayer.Card;
 import DataLayer.Deck;
 import DataLayer.Desk;
 import javafx.geometry.Pos;
