@@ -16,6 +16,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * loads cards from xml file with structre:
+ * <cards name="name of cards">
+ *     <card count="1">
+ *         <suit>spades</suit>
+ *         <value>A</value>
+ *     </card>
+ * </cards>
+ */
 public class XMLLoader implements Loader {
 
     private static AtomicInteger idCounter = new AtomicInteger(0);
@@ -27,10 +36,16 @@ public class XMLLoader implements Loader {
     }
 
     private String path;
+
+    /**
+     * creates loader with path to XML file
+     * @param path
+     */
     public XMLLoader(String path){
         this.path = path;
     }
 
+    @Override
     public LoadedCards loadCards() {
         Document xmlDoc = getDocument(path);
         String deckName = xmlDoc.getDocumentElement().getAttribute("name");

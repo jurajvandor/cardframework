@@ -4,8 +4,15 @@ package DataLayer;
  */
 import java.io.Serializable;
 
+/**
+ * interface for loading cards
+ */
 public interface Loader{
 
+	/**
+	 * loads cards to LoadedCards class which holds cards and their count in deck
+	 * @return LoadedCards class with loaded cards
+	 */
 	LoadedCards loadCards();
 
 }
