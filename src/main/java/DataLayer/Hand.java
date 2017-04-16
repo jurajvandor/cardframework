@@ -48,6 +48,24 @@ public class Hand implements GroupOfCards {
 	}
 
 	/**
+	 * removes cards from hand
+	 * @param cards collection of cards to be removed
+	 * @return true if successful
+	 */
+	public boolean removeCards(Collection<Card> cards) {
+		return this.cards.removeAll(cards);
+	}
+
+	/**
+	 * removes cards from hand
+	 * @param cards hand of cards to be removed
+	 * @return true if successful
+	 */
+	public boolean removeCards(Hand cards) {
+		return this.cards.removeAll(cards.cards);
+	}
+
+	/**
 	 * checks if card is in hand
 	 * @param card card to be found
 	 * @return true if found

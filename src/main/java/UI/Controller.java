@@ -8,10 +8,7 @@ import Network.Message;
 import Network.MessageParser;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +41,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private GameState state;
 
     private Hand currentMeld;
+    private Label currentMeldView;
 
     public Controller(){
         players = new ArrayList<>();
@@ -51,6 +49,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         state = GameState.NO_GAME;
         game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
         currentMeld = null;
+        currentMeldView = null;
     }
 
     public Game getGame(){
@@ -148,6 +147,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 logic.discard(id, (Card)message.getObject());
                 updateView();
                 break;
+            case "MELD":
+                logic.addMeld(id, (Hand)message.getObject());
+                updateView();
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
@@ -166,20 +169,25 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
         Button layoff = new Button("Lay-off");
-        HBox buttons = new HBox(meld, layoff);
+        currentMeldView = new Label();
+        HBox buttons = new HBox(meld, layoff, currentMeldView);
         meld.setOnAction(e -> {
+            if (state == GameState.MELD){
+                meld.setText("Meld");
+                meldDone();
+                state = GameState.DISCARD;
+                return;
+            }
             if (state == GameState.DISCARD) {
                 meld.setText("Done");
                 currentMeld = new Hand();
                 state = GameState.MELD;
             }
-            if (state == GameState.MELD){
-                meld.setText("Meld");
-                meldDone();
-            }
         });
         layoff.setOnAction(e -> state = GameState.LAY_OFF);
         HBox melds = new HBox();
+        for(int i = 0; i < logic.getMeldCount(); i++)
+            melds.getChildren().add(new Label(StaticUtils.meldString(game.getDesk().getHand("meld"+i))));
         VBox desk = new VBox(melds, view, buttons);
         desk.setAlignment(Pos.CENTER);
         desk.setSpacing(10);
@@ -222,9 +230,11 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void meldDone(){
-        if (currentMeld.getCards().size() > 3);
-        //remove from player send to server add meld to game
+        if (currentMeld.getCards().size() > 2) {
+            connection.send(new Message("MELD", currentMeld));
+        }
         currentMeld = null;
+        currentMeldView.setText("");
     }
 
     public void addMeldingCard(Card card){
@@ -234,21 +244,23 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         }
         if (equals){
             currentMeld.addCard(card);
+            currentMeldView.setText(StaticUtils.meldString(currentMeld));
             return;
         }
         equals = true;
         int sum = 0;
         for (Card c : currentMeld){
-            equals = (equals && c.getProperty("suit").equals(card.getProperty("suit")));
-            sum += ValueGetter.getValue(c);
+                equals = (equals && c.getProperty("suit").equals(card.getProperty("suit")));
+                sum += StaticUtils.getValue(c);
         }
-        double avg = sum / currentMeld.getCards().size();
-        double halfSize = currentMeld.getCards().size() / 2.0;
-        int cardValue = ValueGetter.getValue(card);
+        double avg = sum / (double)currentMeld.getCards().size();
+        double halfSize = (currentMeld.getCards().size()+1) / 2.0;
+        int cardValue = StaticUtils.getValue(card);
         boolean isNextCard = Math.abs(avg + halfSize - cardValue) < 0.01 || Math.abs(avg - halfSize - cardValue) < 0.01;
-        if (equals && isNextCard)
+        if (equals && isNextCard) {
             currentMeld.addCard(card);
-
+            currentMeldView.setText(StaticUtils.meldString(currentMeld));
+        }
     }
 
     @Override

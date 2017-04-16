@@ -71,6 +71,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 logic.discard(id, (Card)message.getObject());
                 turnCounter.nextPlayerTurn();
                 break;
+            case "MELD":
+                logic.addMeld(id, (Hand)message.getObject());
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }

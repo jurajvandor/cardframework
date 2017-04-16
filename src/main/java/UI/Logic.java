@@ -3,6 +3,7 @@ package UI;
 import DataLayer.Card;
 import DataLayer.Deck;
 import DataLayer.Game;
+import DataLayer.Hand;
 import Network.Message;
 import Network.Server;
 
@@ -12,19 +13,26 @@ import Network.Server;
 public class Logic {
     private Game game;
     private Server connection;
+    private int meldCount;
 
     public Logic(Game game){
         this.game = game;
         this.connection = null;
+        this.meldCount = 0;
     }
 
     public Logic(Game game, Server connection){
         this.game = game;
         this.connection = connection;
+        this.meldCount = 0;
     }
 
     public Game getGame() {
         return game;
+    }
+
+    public int getMeldCount(){
+        return meldCount;
     }
 
     public void setGame(Game game) {
@@ -46,5 +54,13 @@ public class Logic {
             if (connection != null)
                 connection.sendAllClients(id + " DRAW_CARD " + nameOfHand);
         }
+    }
+
+    public void addMeld(int id, Hand meld){
+        game.getPlayer(id).getHand("hand").removeCards(meld);
+        game.getDesk().addCards("meld" + meldCount, meld);
+        meldCount++;
+        if (connection != null)
+            connection.sendAllClients(new Message(id + " MELD", meld));
     }
 }
