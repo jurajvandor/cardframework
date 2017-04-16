@@ -83,6 +83,12 @@ public class Hand implements GroupOfCards {
 	}
 
 	/**
+	 * @return number of cards in hand
+	 */
+	public int size(){
+		return cards.size();
+	}
+	/**
 	 * copies hand into group of cards (could be casted to hand)
 	 * @return copied group of cards
 	 */

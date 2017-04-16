@@ -25,6 +25,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private Game game;
     private ServerTurnCounter turnCounter;
     private Logic logic;
+    private boolean gameRunning = false;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -74,9 +75,22 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             case "MELD":
                 logic.addMeld(id, (Hand)message.getObject());
                 break;
+            case "LAYOFF":
+                logic.layOff(id, text, (Card)message.getObject());
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
+        checkEnd();
+    }
+
+    public void checkEnd(){
+        if (!gameRunning) return;
+        boolean end = false;
+        for (Player p : game.getPlayers()){
+            end = end || p.getHand("hand").size() == 0;
+        }
+
     }
 
     public void sendOtherNames(int id) {
@@ -117,6 +131,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         turnCounter = new ServerTurnCounter(0, ids , this);
         turnCounter.nextPlayerTurn();
         logic = new Logic(game,connection);
+        gameRunning = true;
     }
 
     @Override

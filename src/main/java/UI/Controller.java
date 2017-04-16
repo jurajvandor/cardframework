@@ -34,22 +34,17 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private int myId;
     private Logic logic;
 
-    private PlayerView test;
-
-    private List<PlayerView> players;
-
     private GameState state;
 
-    private Hand currentMeld;
-    private HBox currentMeldView;
+    private MeldView currentMeldView;
+    private MeldView layoffMeld;
 
     public Controller(){
-        players = new ArrayList<>();
         game = new Game();
         state = GameState.NO_GAME;
         game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
-        currentMeld = null;
-        currentMeldView = null;
+        currentMeldView = new MeldView("currentMeld", new Hand());
+        layoffMeld = null;
     }
 
     public Game getGame(){
@@ -67,6 +62,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void skuska(){
+        PlayerView test;
         Deck deck = game.createDeck("french cards");
         TreeSet<Card> set = new TreeSet<>();
         for (int i = 0; i< 12; i++)
@@ -151,6 +147,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 logic.addMeld(id, (Hand)message.getObject());
                 updateView();
                 break;
+            case "LAYOFF":
+                logic.layOff(id, text, (Card) message.getObject());
+                updateView();
+                break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
@@ -168,9 +168,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     public void showDesk(){
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
-        Button layoff = new Button("Lay-off");
-        currentMeldView = new HBox();
-        HBox buttons = new HBox(meld, layoff, currentMeldView);
+        HBox buttons = new HBox(meld, currentMeldView);
         meld.setOnAction(e -> {
             if (state == GameState.MELD){
                 meld.setText("Meld");
@@ -180,14 +178,23 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             }
             if (state == GameState.DISCARD) {
                 meld.setText("Done");
-                currentMeld = new Hand();
                 state = GameState.MELD;
             }
         });
-        layoff.setOnAction(e -> state = GameState.LAY_OFF);
         HBox melds = new HBox();
-        for(int i = 0; i < logic.getMeldCount(); i++)
-            melds.getChildren().add(StaticUtils.meldString(game.getDesk().getHand("meld"+i), "meld"+i));
+        for(int i = 0; i < logic.getMeldCount(); i++) {
+            MeldView m = new MeldView("meld" + i, game.getDesk().getHand("meld"+i));
+            m.setOnMouseClicked(e -> {
+                if (state == GameState.LAY_OFF) {
+                    layoffMeld = m;
+                }
+                if (state == GameState.DISCARD) {
+                    layoffMeld = m;
+                    state = GameState.LAY_OFF;
+                }
+            });
+            melds.getChildren().add(m);
+        }
         VBox desk = new VBox(melds, view, buttons);
         desk.setAlignment(Pos.CENTER);
         desk.setSpacing(10);
@@ -230,41 +237,31 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     }
 
     public void meldDone(){
-        if (currentMeld.getCards().size() > 2) {
-            connection.send(new Message("MELD", currentMeld));
+        if (currentMeldView.getMeld().getCards().size() > 2) {
+            connection.send(new Message("MELD", currentMeldView.getMeld()));
         }
-        currentMeld = null;
-        currentMeldView.getChildren().clear();
+        currentMeldView.reset();
     }
 
-    public void addCurrentMeldCard(Card card){
-        currentMeld.addCard(card);
-        currentMeldView.getChildren().clear();
-        currentMeldView.getChildren().add(StaticUtils.meldString(currentMeld, "currentMeld"));
-    }
-
-    public void addMeldingCard(Card card){
+    public boolean addMeldingCard(Card card, MeldView meldView){
         boolean equals = true;
-        for (Card c : currentMeld){
+        for (Card c : meldView.getMeld()){
             equals = (equals && c.getProperty("value").equals(card.getProperty("value")));
         }
         if (equals){
-            addCurrentMeldCard(card);
-            return;
+            return true;
         }
         equals = true;
         int sum = 0;
-        for (Card c : currentMeld){
+        for (Card c : meldView.getMeld()){
                 equals = (equals && c.getProperty("suit").equals(card.getProperty("suit")));
                 sum += StaticUtils.getValue(c);
         }
-        double avg = sum / (double)currentMeld.getCards().size();
-        double halfSize = (currentMeld.getCards().size()+1) / 2.0;
+        double avg = sum / (double)meldView.getMeld().size();
+        double halfSize = (meldView.getMeld().size()+1) / 2.0;
         int cardValue = StaticUtils.getValue(card);
         boolean isNextCard = Math.abs(avg + halfSize - cardValue) < 0.01 || Math.abs(avg - halfSize - cardValue) < 0.01;
-        if (equals && isNextCard) {
-            addCurrentMeldCard(card);
-        }
+        return equals && isNextCard;
     }
 
     @Override
@@ -280,10 +277,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             state = GameState.WAITING;
         }
         if (state == GameState.MELD && playerId == myId){
-            addMeldingCard(card);
+            if (addMeldingCard(card, currentMeldView))
+                currentMeldView.add(card);
         }
-        if (state == GameState.LAY_OFF && playerId == myId){
-            addMeldingCard(card);
+        if (state == GameState.LAY_OFF && playerId == myId && layoffMeld != null){
+            state = GameState.DISCARD;
+            if (addMeldingCard(card, layoffMeld))
+                connection.send(new Message("LAYOFF " + layoffMeld.getName(), card));
         }
     }
 }

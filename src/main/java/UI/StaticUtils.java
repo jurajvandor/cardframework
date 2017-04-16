@@ -1,10 +1,8 @@
 package UI;
 
 import DataLayer.Card;
-import DataLayer.Hand;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 /**
  * Created by Juraj Vandor on 11.04.2017.
@@ -12,7 +10,6 @@ import javafx.scene.text.TextFlow;
 public class StaticUtils {
     public static int getValue(Card card){
         String value = card.getProperty("value");
-        System.out.println(value);
         switch (value){
             case "A":
                 return 1;
@@ -49,13 +46,5 @@ public class StaticUtils {
         }
         text.setText(res + " ");
         return text;
-    }
-
-    public static MeldView meldString(Hand hand, String name){
-        MeldView res = new MeldView(name);
-        for (Card c : hand){
-            res.add(getShortToString(c));
-        }
-        return res;
     }
 }

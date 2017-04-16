@@ -63,4 +63,12 @@ public class Logic {
         if (connection != null)
             connection.sendAllClients(new Message(id + " MELD", meld));
     }
+
+    public void layOff(int id, String meldName, Card card){
+        game.getPlayer(id).getHand("hand").removeCard(card);
+        game.getDesk().getCards(meldName).addCard(card);
+        if (connection != null){
+            connection.sendAllClients(new Message(id + " LAYOFF " + meldName, card));
+        }
+    }
 }
