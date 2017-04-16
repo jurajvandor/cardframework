@@ -2,6 +2,9 @@ package UI;
 
 import DataLayer.Card;
 import DataLayer.Hand;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /**
  * Created by Juraj Vandor on 11.04.2017.
@@ -24,32 +27,35 @@ public class StaticUtils {
         }
     }
 
-    public static String getShortToString(Card card){
+    public static Text getShortToString(Card card){
         String res = card.getProperty("value");
         String suit = card.getProperty("suit");
+        Text text = new Text();
         switch (suit){
             case "spades":
                 res += "♠";
                 break;
             case "hearts":
                 res += "♥";
+                text.setFill(Color.RED);
                 break;
             case "diamonds":
                 res += "♦";
+                text.setFill(Color.RED);
                 break;
             case "clubs":
                 res += "♣";
                 break;
         }
-        return res;
+        text.setText(res + " ");
+        return text;
     }
 
-    public static String meldString(Hand hand){
-        StringBuilder res = new StringBuilder();
+    public static MeldView meldString(Hand hand, String name){
+        MeldView res = new MeldView(name);
         for (Card c : hand){
-            res.append(getShortToString(c));
-            res.append(" ");
+            res.add(getShortToString(c));
         }
-        return res.toString();
+        return res;
     }
 }

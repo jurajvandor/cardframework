@@ -41,7 +41,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     private GameState state;
 
     private Hand currentMeld;
-    private Label currentMeldView;
+    private HBox currentMeldView;
 
     public Controller(){
         players = new ArrayList<>();
@@ -169,7 +169,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
         Button layoff = new Button("Lay-off");
-        currentMeldView = new Label();
+        currentMeldView = new HBox();
         HBox buttons = new HBox(meld, layoff, currentMeldView);
         meld.setOnAction(e -> {
             if (state == GameState.MELD){
@@ -187,7 +187,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         layoff.setOnAction(e -> state = GameState.LAY_OFF);
         HBox melds = new HBox();
         for(int i = 0; i < logic.getMeldCount(); i++)
-            melds.getChildren().add(new Label(StaticUtils.meldString(game.getDesk().getHand("meld"+i))));
+            melds.getChildren().add(StaticUtils.meldString(game.getDesk().getHand("meld"+i), "meld"+i));
         VBox desk = new VBox(melds, view, buttons);
         desk.setAlignment(Pos.CENTER);
         desk.setSpacing(10);
@@ -234,7 +234,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             connection.send(new Message("MELD", currentMeld));
         }
         currentMeld = null;
-        currentMeldView.setText("");
+        currentMeldView.getChildren().clear();
+    }
+
+    public void addCurrentMeldCard(Card card){
+        currentMeld.addCard(card);
+        currentMeldView.getChildren().clear();
+        currentMeldView.getChildren().add(StaticUtils.meldString(currentMeld, "currentMeld"));
     }
 
     public void addMeldingCard(Card card){
@@ -243,8 +249,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             equals = (equals && c.getProperty("value").equals(card.getProperty("value")));
         }
         if (equals){
-            currentMeld.addCard(card);
-            currentMeldView.setText(StaticUtils.meldString(currentMeld));
+            addCurrentMeldCard(card);
             return;
         }
         equals = true;
@@ -258,8 +263,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         int cardValue = StaticUtils.getValue(card);
         boolean isNextCard = Math.abs(avg + halfSize - cardValue) < 0.01 || Math.abs(avg - halfSize - cardValue) < 0.01;
         if (equals && isNextCard) {
-            currentMeld.addCard(card);
-            currentMeldView.setText(StaticUtils.meldString(currentMeld));
+            addCurrentMeldCard(card);
         }
     }
 
