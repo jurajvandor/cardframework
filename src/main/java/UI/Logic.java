@@ -48,6 +48,8 @@ public class Logic {
 
     public void drawCard(int id, String nameOfHand){
         Deck deck = game.getDesk().getDeck(nameOfHand);
+        if (deck.getTopCard() == null)
+            Deck.swapAndTurnAround(game.getDesk().getDeck("discard"), game.getDesk().getDeck("drawing"));
         Card card = deck.drawTopCard();
         if (card != null) {
             game.getPlayer(id).getCards("hand").addCard(card);
@@ -70,5 +72,10 @@ public class Logic {
         if (connection != null){
             connection.sendAllClients(new Message(id + " LAYOFF " + meldName, card));
         }
+    }
+
+    public void addPoints(int id, int score){
+        int points = Integer.parseInt(game.getPlayer(id).getProperty("points"));
+        game.getPlayer(id).addProperty("points", ((Integer)(points + score)).toString());
     }
 }

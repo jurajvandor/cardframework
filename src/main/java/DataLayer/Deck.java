@@ -131,5 +131,13 @@ public class Deck implements GroupOfCards, Serializable {
 	public void merge(Deck cards){
 		this.cards.addAll(cards.cards);
 	}
+
+	public static void swapAndTurnAround(Deck deck1, Deck deck2){
+		ArrayList<Card> tmp = deck1.cards;
+		deck1.cards = deck2.cards;
+		deck1.cards = tmp;
+		Collections.reverse(deck1.cards);
+		Collections.reverse(deck2.cards);
+	}
 }
 
