@@ -99,6 +99,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             sum += StaticUtils.getHandPoints(p.getHand("hand"));
         }
         connection.sendAllClients(new Message(id + " GAME_END", sum));
+        //check complete end
 
     }
 
@@ -123,8 +124,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         });
     }
 
-    public void initiateGame(){//rozdelit uplne new game
-        sendIds();
+    public void newPlay(){
         Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
@@ -133,15 +133,21 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             for (int i = 0; i < 11; i++){
                 p.getCards("hand").addCard(deck.drawTopCard());
             }
-            p.addProperty("points", "0");
         }
+        logic = new Logic(game,connection);
+        gameRunning = true;
         connection.sendAllClients(new Message("GAME", game));
+        turnCounter.resetAndNext(0);
+    }
+
+    public void initiateGame(){
+        sendIds();
+        for (Player p : game.getPlayers())
+            p.addProperty("points", "0");
         List<Integer> ids = new ArrayList<>(game.getIds());
         ids.sort((x,y) -> (new Integer(x)).compareTo(y));
         turnCounter = new ServerTurnCounter(0, ids , this);
-        turnCounter.nextPlayerTurn();
-        logic = new Logic(game,connection);
-        gameRunning = true;
+        newPlay();
     }
 
     @Override

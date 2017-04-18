@@ -3,6 +3,7 @@ package UI;
 import DataLayer.Card;
 import DataLayer.Hand;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
@@ -45,6 +46,7 @@ public class StaticUtils {
                 res += "♣";
                 break;
         }
+        text.setFont(new Font(18));
         text.setText(res + " ");
         return text;
     }
