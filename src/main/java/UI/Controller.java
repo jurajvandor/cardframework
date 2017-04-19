@@ -154,7 +154,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             case "GAME_END":
                 logic.addPoints(id, (Integer)message.getObject());
                 break;
-            case "SHOW_WINNER":
+            case "WINNER":
+                break;
+            case "LOOSER":
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());

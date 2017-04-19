@@ -5,6 +5,7 @@ import Network.CardframeworkListener;
 import Network.Message;
 import Network.MessageParser;
 import Network.Server;
+import javafx.print.PageLayout;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -26,6 +27,8 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private ServerTurnCounter turnCounter;
     private Logic logic;
     private boolean gameRunning = false;
+    private int numberOfDeals;
+    private int dealCounter = 0;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -38,9 +41,19 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             System.out.println("Using default port 2222");
             port = 2222;
         }
+        System.out.println("Number of deals:");
+        int numOfDeals;
+        try {
+            numOfDeals = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
+        }
+        catch (IOException e){
+            System.out.println("one game only");
+            numOfDeals = 2222;
+        }
 
         ServerUI serverUI = new ServerUI();
         serverUI.connection = new Server(port, 10, serverUI);
+        serverUI.numberOfDeals = numOfDeals;
         serverUI.connection.start();
         serverUI.game = new Game();
         serverUI.numOfPlayers = 4;
@@ -99,8 +112,18 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             sum += StaticUtils.getHandPoints(p.getHand("hand"));
         }
         connection.sendAllClients(new Message(id + " GAME_END", sum));
-        //check complete end
-
+        if (numberOfDeals == dealCounter){
+            List<Integer> winners = getWinners();
+            for (Player p : game.getPlayers()){
+                if (winners.contains(p.getId())){
+                    connection.send(p.getId(), "WINNER");
+                }
+                else {
+                    connection.send(p.getId(), "LOOSER");
+                }
+            }
+        }
+        else newPlay();
     }
 
     public void sendOtherNames(int id) {
@@ -135,6 +158,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             }
         }
         logic = new Logic(game,connection);
+        dealCounter++;
         gameRunning = true;
         connection.sendAllClients(new Message("GAME", game));
         turnCounter.resetAndNext(0);
@@ -148,6 +172,24 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         ids.sort((x,y) -> (new Integer(x)).compareTo(y));
         turnCounter = new ServerTurnCounter(0, ids , this);
         newPlay();
+    }
+
+    public List<Integer> getWinners(){
+        ArrayList<Integer> winners = new ArrayList<Integer>();
+        int max = 0;
+        for (Player p : game.getPlayers()){
+            int points = Integer.parseInt(p.getProperty("points"));
+            if (points > max){
+                winners.clear();
+                winners.add(p.getId());
+                max = points;
+            }else {
+                if (points == max){
+                    winners.add(p.getId());
+                }
+            }
+        }
+        return winners;
     }
 
     @Override
