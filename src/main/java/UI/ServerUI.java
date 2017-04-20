@@ -111,6 +111,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         for (Player p : game.getPlayers()){
             sum += StaticUtils.getHandPoints(p.getHand("hand"));
         }
+        logic.addPoints(id,sum);
         connection.sendAllClients(new Message(id + " GAME_END", sum));
         if (numberOfDeals == dealCounter){
             List<Integer> winners = getWinners();

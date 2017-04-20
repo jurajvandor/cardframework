@@ -6,15 +6,22 @@ import Network.CardframeworkListener;
 import Network.ClientConnection;
 import Network.Message;
 import Network.MessageParser;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,8 +54,60 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         layoffMeld = null;
     }
 
-    public Game getGame(){
-        return game;
+    private boolean connect(String hostname, String port, String name){
+        try {
+            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), this);
+            connection.start();
+            this.connection = connection;
+            connection.send("NAME " + name);
+        }catch (IOException e){
+            return false;
+        }
+        return true;
+    }
+
+    public void connectionWindow(Stage primaryStage){
+        primaryStage.setOnCloseRequest(event -> {
+            if (connection != null) connection.close();
+        });
+        Stage connectStage = new Stage();
+        connectStage.initModality(Modality.APPLICATION_MODAL);
+        connectStage.setTitle("Connect");
+        connectStage.setResizable(false);
+        connectStage.setMaxWidth(300);
+        connectStage.setMaxHeight(400);
+        connectStage.setMinWidth(300);
+        connectStage.setMinHeight(400);
+        connectStage.setOnCloseRequest(event -> primaryStage.close());
+
+        Label label1 = new Label("Hostname or IP adress:");
+        TextArea hostname = new TextArea("localhost");
+        hostname.setMaxHeight(10);
+        Label label2 = new Label("Port:");
+        TextArea port = new TextArea("2222");
+        port.setMaxHeight(10);
+        Label label3 = new Label("Player name:");
+        TextArea name = new TextArea("Player");
+        name.setMaxHeight(10);
+        Button button = new Button("Connect");
+        Label error = new Label("");
+
+        VBox connectionLayout= new VBox(label1, hostname, label2, port, label3, name, button, error);
+        connectionLayout.setSpacing(10);
+        connectionLayout.setPadding(new Insets(10,10,10,10));
+        Scene connectionScene = new Scene(connectionLayout);
+        connectStage.setScene(connectionScene);
+
+        connectStage.show();
+        //skuska();
+        button.setOnAction(event -> {
+            error.setText("Connecting...");
+            new Thread (() -> {
+                if (connect(hostname.getText(), port.getText(), name.getText()))
+                    Platform.runLater(() -> connectStage.close());
+                else Platform.runLater(() -> error.setText("Could not connect to server"));
+            }).start();
+        });
     }
 
     public void closedConnection() {
@@ -59,6 +118,24 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         alert.setContentText("Connection to server has been closed!");
         alert.showAndWait();
         s.close();
+    }
+
+    public void winAnnouncment(boolean won) {
+        Stage s = (Stage) chat.getScene().getWindow();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        if (won) {
+            alert.setTitle("You Won");
+            alert.setContentText("you won with " + game.getPlayer(myId).getProperty("points") + " points");
+        } else{
+            alert.setTitle("You Lost");
+            alert.setContentText("you lost with " + game.getPlayer(myId).getProperty("points") + " points");
+        }
+        alert.showAndWait();
+        game = new Game();
+        state = GameState.NO_GAME;
+        gamePanel.getChildren().clear();
+        connectionWindow(s);
     }
 
     public void skuska(){
@@ -153,10 +230,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "GAME_END":
                 logic.addPoints(id, (Integer)message.getObject());
+                updateView();
                 break;
             case "WINNER":
+                winAnnouncment(true);
                 break;
             case "LOOSER":
+                winAnnouncment(false);
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
