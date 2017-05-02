@@ -1,8 +1,7 @@
-package UI;
+package Rummy;
 
 import DataLayer.Card;
 import DataLayer.GroupOfCards;
-import DataLayer.Hand;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;

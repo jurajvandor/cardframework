@@ -1,4 +1,4 @@
-package UI;
+package Rummy;
 
 /**
  * Created by Juraj Vandor on 28.03.2017.

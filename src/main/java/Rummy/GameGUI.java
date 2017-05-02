@@ -1,21 +1,13 @@
-package UI;
+package Rummy;
 /**
  * Created by Juraj Vandor on 02.03.2017.
  */
 
-import Network.ClientConnection;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class GameGUI extends Application {
 

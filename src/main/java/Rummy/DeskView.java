@@ -1,4 +1,4 @@
-package UI;
+package Rummy;
 
 import DataLayer.Deck;
 import DataLayer.Desk;

@@ -29,12 +29,6 @@ public class XMLLoader implements Loader {
 
     private static AtomicInteger idCounter = new AtomicInteger(0);
 
-    public static void main(String[] args){
-        Loader l = new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath());
-        LoadedCards c = l.loadCards();
-        Deck d = c.createDeck();
-    }
-
     private String path;
 
     /**

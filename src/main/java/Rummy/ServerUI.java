@@ -1,11 +1,10 @@
-package UI;
+package Rummy;
 
 import DataLayer.*;
 import Network.CardframeworkListener;
 import Network.Message;
 import Network.MessageParser;
 import Network.Server;
-import javafx.print.PageLayout;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -14,8 +13,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static java.lang.Thread.sleep;
 
 /**
  * Created by Juraj Vandor on 02.03.2017.

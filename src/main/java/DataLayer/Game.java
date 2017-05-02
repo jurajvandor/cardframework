@@ -166,17 +166,4 @@ public class Game implements Serializable{
         }
         return game;
 	}
-
-    public static void main(String[] args){//save and load testing
-        Game game = new Game();
-        game.addPlayer(0,"fero");
-        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
-        Deck deck = game.createDeck("french cards");
-        TreeSet<Card> s = new TreeSet<>();
-        s.add(deck.drawTopCard());
-        game.getPlayer(0).addCards("ruka", new Hand(s));
-        game.saveState("state.txt");
-        Game game2 = Game.loadState("state.txt");
-        game2.getPlayers();
-    }
 }
