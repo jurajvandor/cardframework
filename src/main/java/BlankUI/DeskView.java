@@ -1,4 +1,4 @@
-package UI;
+package BlankUI;
 
 import DataLayer.Deck;
 import DataLayer.Desk;

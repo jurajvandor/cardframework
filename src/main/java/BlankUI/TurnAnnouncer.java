@@ -1,4 +1,4 @@
-package UI;
+package BlankUI;
 
 /**
  * Created by Juraj on 31.03.2017.

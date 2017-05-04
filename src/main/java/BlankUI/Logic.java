@@ -1,4 +1,4 @@
-package UI;
+package BlankUI;
 
 import DataLayer.Game;
 import Network.Server;

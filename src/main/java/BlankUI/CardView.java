@@ -1,12 +1,8 @@
-package UI;
+package BlankUI;
 
 import DataLayer.Card;
-import javafx.event.EventType;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import javax.swing.event.HyperlinkEvent;
 
 /**
  * Created by Juraj Vandor on 27.03.2017.

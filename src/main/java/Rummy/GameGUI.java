@@ -3,6 +3,7 @@ package Rummy;
  * Created by Juraj Vandor on 02.03.2017.
  */
 
+import Rummy.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,9 +14,9 @@ public class GameGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RummyGUI.fxml"));
         Parent root = loader.load();
-        primaryStage.setTitle("Defualt Game");
+        primaryStage.setTitle("Rummy");
         primaryStage.setScene(new Scene(root, 1340, 680));
         primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1360);
