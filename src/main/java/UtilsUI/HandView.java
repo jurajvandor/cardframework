@@ -1,7 +1,9 @@
-package BlankUI;
+package UtilsUI;
 
 import DataLayer.Card;
 import DataLayer.GroupOfCards;
+import UtilsUI.CardView;
+import UtilsUI.PlayerActionHandler;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -38,7 +40,7 @@ public class HandView extends HBox{
         return hand;
     }
 
-    void show(){
+    public void show(){
         this.getChildren().clear();
         for (Card c: hand) {
             CardView card = new CardView(nameOfHand, playerId, c, showCards);

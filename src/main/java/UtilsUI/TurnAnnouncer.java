@@ -1,4 +1,4 @@
-package Rummy;
+package UtilsUI;
 
 /**
  * Created by Juraj on 31.03.2017.

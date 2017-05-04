@@ -1,4 +1,4 @@
-package BlankUI;
+package UtilsUI;
 
 import DataLayer.Card;
 

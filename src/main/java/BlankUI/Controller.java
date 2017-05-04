@@ -6,6 +6,7 @@ import Network.CardframeworkListener;
 import Network.ClientConnection;
 import Network.Message;
 import Network.MessageParser;
+import UtilsUI.PlayerActionHandler;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -22,7 +23,7 @@ import java.io.IOException;
 /**
  * Created by Juraj Vandor on 05.03.2017.
  */
-public class Controller implements CardframeworkListener, PlayerActionHandler{
+public class Controller implements CardframeworkListener, PlayerActionHandler {
 
     @FXML
     private TextField message;

@@ -1,5 +1,6 @@
 package Rummy;
 
+import UtilsUI.*;
 import DataLayer.Player;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

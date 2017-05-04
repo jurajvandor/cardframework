@@ -1,4 +1,4 @@
-package Rummy;
+package UtilsUI;
 
 import DataLayer.Card;
 import javafx.scene.image.Image;
