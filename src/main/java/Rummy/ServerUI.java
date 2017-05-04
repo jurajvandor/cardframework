@@ -44,8 +44,8 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             numOfDeals = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
         }
         catch (IOException e){
-            System.out.println("one game only");
-            numOfDeals = 2222;
+            System.out.println("One game only selected as default");
+            numOfDeals = 1;
         }
 
         ServerUI serverUI = new ServerUI();
@@ -55,6 +55,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         serverUI.game = new Game();
         serverUI.numOfPlayers = 4;
         serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
+        System.out.println("Server listening at port "+ port);
     }
 
     @Override
