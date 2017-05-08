@@ -50,11 +50,20 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         }
 
         ServerUI serverUI = new ServerUI();
+
+        System.out.println("Number of players:");
+        try {
+            serverUI.numOfPlayers = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
+        }
+        catch (IOException e){
+            System.out.println("Game for 2 as default");
+            serverUI.numOfPlayers = 2;
+        }
+
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.numberOfDeals = numOfDeals;
         serverUI.connection.start();
         serverUI.game = new Game();
-        serverUI.numOfPlayers = 4;
         serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
         System.out.println("Server listening at port "+ port);
     }
@@ -147,12 +156,22 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         });
     }
 
+    private int getCardCount(){
+        switch (numOfPlayers){
+            case 2: return 10;
+            case 3:
+            case 4: return 7;
+        }
+        return 7;
+    }
+
     public void newPlay(){
         Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers()) {
             p.addCards("hand", new Hand());
+            int count = getCardCount();
             for (int i = 0; i < 11; i++){
                 p.getCards("hand").addCard(deck.drawTopCard());
             }
