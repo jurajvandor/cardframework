@@ -57,7 +57,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
 
     private boolean connect(String hostname, String port, String name){
         try {
-            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), this);
+            ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), this, true);
             connection.start();
             this.connection = connection;
             connection.send("NAME " + name);

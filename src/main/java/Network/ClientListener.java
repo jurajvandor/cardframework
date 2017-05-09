@@ -11,10 +11,12 @@ import javafx.application.Platform;
 public class ClientListener extends  Listener {
 
     private ClientConnection connection;
+    private boolean fx;
 
-    public ClientListener(ObjectInputStream inputStream, CardframeworkListener cardframeworkListener, ClientConnection connection){
+    public ClientListener(ObjectInputStream inputStream, CardframeworkListener cardframeworkListener, ClientConnection connection, boolean fx){
         super( inputStream, cardframeworkListener);
         this.connection = connection;
+        this.fx = fx;
     }
 
     public void run(){
@@ -23,12 +25,14 @@ public class ClientListener extends  Listener {
             while (!quit) {
                 final Message message = (Message) inputStream.readObject();
                 if (message == null) connection.close();
-                else Platform.runLater(() -> cardframeworkListener.processMessage(message));
+                else if (fx) {Platform.runLater(() -> cardframeworkListener.processMessage(message));}
+                     else cardframeworkListener.processMessage(message);
             }
         }
         catch (IOException e){
             e.printStackTrace();
-            Platform.runLater(() -> cardframeworkListener.closedConnection());
+            if (fx) {Platform.runLater(() -> cardframeworkListener.closedConnection());}
+            else cardframeworkListener.closedConnection();
         }
         catch (ClassNotFoundException e){
             e.printStackTrace();

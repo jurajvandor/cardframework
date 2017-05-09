@@ -16,10 +16,12 @@ public class ClientConnection extends Thread implements Closeable{
     private ClientListener listener = null;
     private Socket clientSocket;
     private CardframeworkListener cardframeworkListener;
+    private boolean fx;
 
-    public ClientConnection(String host, int portNumber, CardframeworkListener cardframeworkListener) throws IOException{
+    public ClientConnection(String host, int portNumber, CardframeworkListener cardframeworkListener, boolean fx) throws IOException{
         clientSocket = new Socket(host, portNumber);
         this.cardframeworkListener = cardframeworkListener;
+        this.fx = fx;
     }
 
     public void close(){
@@ -39,7 +41,7 @@ public class ClientConnection extends Thread implements Closeable{
         try {
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-            listener = new ClientListener( new ObjectInputStream(is), cardframeworkListener, this);
+            listener = new ClientListener( new ObjectInputStream(is), cardframeworkListener, this, fx);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()) {
