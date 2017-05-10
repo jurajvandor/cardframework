@@ -63,7 +63,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
             e.printStackTrace();
         }
 
-        synchronized (this) {
+        synchronized (connections) {
             for (int i = 0; i < maxClientsCount; i++) {
                 if (threads[i] == this) {
                     threads[i] = null;

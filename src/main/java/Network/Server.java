@@ -14,7 +14,7 @@ public class Server extends Thread implements Closeable{
     private ServerSocket serverSocket = null;
     private int portNumber;
     private int maxClientsCount;
-    private ServerConnectionToClient[] threads;
+    private final ServerConnectionToClient[] threads;
     private boolean quit = false;
     private CardframeworkListener cardframeworkListener;
 
@@ -27,8 +27,10 @@ public class Server extends Thread implements Closeable{
 
     public Set<Integer> getFreeIds(){
         Set<Integer> ids = new TreeSet<>();
-        for (int i = 0; i < maxClientsCount; i++) {
-            if (threads[i] == null) ids.add(i);
+        synchronized (threads) {
+            for (int i = 0; i < maxClientsCount; i++) {
+                if (threads[i] == null) ids.add(i);
+            }
         }
         return ids;
     }
@@ -39,8 +41,10 @@ public class Server extends Thread implements Closeable{
 
     public void close() {
         quit();
-        for (ServerConnectionToClient c : threads){
-            c.close();
+        synchronized (threads) {
+            for (ServerConnectionToClient c : threads) {
+                c.close();
+            }
         }
     }
 
@@ -49,17 +53,23 @@ public class Server extends Thread implements Closeable{
     }
 
     public void sendAllClients(String message){
-        for (ServerConnectionToClient c : threads) {
-            if (c != null) c.send(message);
+        synchronized (threads) {
+            for (ServerConnectionToClient c : threads) {
+                if (c != null) c.send(message);
+            }
         }
     }
     public void send(int id, Message message){
-        threads[id].send(message);
+        synchronized (threads) {
+            threads[id].send(message);
+        }
     }
 
     public void sendAllClients(Message message){
-        for (ServerConnectionToClient c : threads) {
-            if (c != null) c.send(message);
+        synchronized (threads) {
+            for (ServerConnectionToClient c : threads) {
+                if (c != null) c.send(message);
+            }
         }
     }
 
@@ -75,9 +85,11 @@ public class Server extends Thread implements Closeable{
                 Socket clientSocket = serverSocket.accept();
                 int i;
                 for (i = 0; i < maxClientsCount; i++) {
-                    if (threads[i] == null) {
-                        (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, cardframeworkListener)).start();
-                        break;
+                    synchronized (threads) {
+                        if (threads[i] == null) {
+                            (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, cardframeworkListener)).start();
+                            break;
+                        }
                     }
                 }
                 if (i == maxClientsCount || quit) {
