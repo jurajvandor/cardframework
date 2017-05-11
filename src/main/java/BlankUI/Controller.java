@@ -6,7 +6,7 @@ import Network.CardframeworkListener;
 import Network.ClientConnection;
 import Network.Message;
 import Network.MessageParser;
-import UtilsUI.PlayerActionHandler;
+import UIUtils.PlayerActionHandler;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;

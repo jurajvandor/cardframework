@@ -1,6 +1,6 @@
 package Rummy;
 
-import UtilsUI.*;
+import UIUtils.*;
 import DataLayer.Deck;
 import DataLayer.Desk;
 import javafx.geometry.Pos;

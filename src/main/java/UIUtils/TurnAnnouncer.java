@@ -1,4 +1,4 @@
-package UtilsUI;
+package UIUtils;
 
 /**
  * Created by Juraj on 31.03.2017.

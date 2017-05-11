@@ -1,7 +1,7 @@
 package Rummy;
 
 
-import UtilsUI.*;
+import UIUtils.*;
 import DataLayer.*;
 import Network.CardframeworkListener;
 import Network.ClientConnection;

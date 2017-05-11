@@ -1,4 +1,4 @@
-package UtilsUI;
+package UIUtils;
 
 import java.util.List;
 

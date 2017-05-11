@@ -1,9 +1,7 @@
-package UtilsUI;
+package UIUtils;
 
 import DataLayer.Card;
 import DataLayer.GroupOfCards;
-import UtilsUI.CardView;
-import UtilsUI.PlayerActionHandler;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;

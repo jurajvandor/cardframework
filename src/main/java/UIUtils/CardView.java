@@ -1,4 +1,4 @@
-package UtilsUI;
+package UIUtils;
 
 import DataLayer.Card;
 import javafx.scene.image.Image;
