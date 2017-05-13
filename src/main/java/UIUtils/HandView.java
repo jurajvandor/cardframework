@@ -41,11 +41,7 @@ public class HandView extends HBox{
     public void show(){
         this.getChildren().clear();
         for (Card c: hand) {
-            CardView card = new CardView(nameOfHand, playerId, c, showCards);
-            card.addEventHandler(MouseEvent.MOUSE_CLICKED,(event -> {
-                    handler.handleCardClick(c, playerId, nameOfHand);
-                })
-            );
+            CardView card = new CardView(nameOfHand, playerId, c, showCards, handler);
             this.getChildren().add(card);
         }
     }

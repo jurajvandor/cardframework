@@ -51,6 +51,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
+                    os.reset();
                     os.writeObject(outputBuffer.take());
                 }
                 sleep(50);

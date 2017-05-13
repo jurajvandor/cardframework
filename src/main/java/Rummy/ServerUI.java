@@ -11,9 +11,7 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Juraj Vandor on 02.03.2017.
@@ -27,6 +25,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private boolean gameRunning = false;
     private int numberOfDeals;
     private int dealCounter = 0;
+    private Map<Integer,String> names;
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -59,7 +58,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             System.out.println("Game for 2 as default");
             serverUI.numOfPlayers = 2;
         }
-
+        serverUI.names = new HashMap<>();
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.numberOfDeals = numOfDeals;
         serverUI.connection.start();
@@ -81,6 +80,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                 break;
             case "NAME":
                 game.addPlayer(id, text);
+                names.put(id,text);
                 connection.sendAllClients(message);
                 sendOtherNames(id);
                 if (game.getPlayers().size() == numOfPlayers)
@@ -158,7 +158,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     private int getCardCount(){
         switch (numOfPlayers){
-            case 2: return 10;
+            case 2: return 3;
             case 3:
             case 4: return 7;
         }
@@ -166,13 +166,14 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     }
 
     public void newPlay(){
+        game.setDesk(new Desk());
         Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
         deck.shuffle();
         game.getDesk().addCards("discard", new Deck(DeckType.DISCARD));
         for (Player p : game.getPlayers()) {
             p.addCards("hand", new Hand());
             int count = getCardCount();
-            for (int i = 0; i < 11; i++){
+            for (int i = 0; i < getCardCount(); i++){
                 p.getCards("hand").addCard(deck.drawTopCard());
             }
         }

@@ -90,6 +90,12 @@ public class Game implements Serializable{
 		players.put(id, new Player(name, id));
 	}
 
+    public void addPlayers(Map<Integer,String> names){
+	    for (int id : names.keySet()){
+	        addPlayer(id,names.get(id));
+        }
+    }
+
     /**
      * puts player (rewrites) under given id
      * @param player player name

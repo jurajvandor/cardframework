@@ -191,6 +191,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
                 break;
             case "GAME":
                 addChatLine("Game begins.");
+                game = null;
                 game  = (Game)message.getObject();
                 state = GameState.WAITING;
                 logic = new Logic(game);
@@ -202,16 +203,6 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
             case "YOUR_TURN":
                 state = GameState.DRAW;
                 addChatLine("Your Turn");
-                break;
-            case "UPDATE_PLAYER":
-                game.addPlayer((Player) message.getObject());
-                logic.setGame(game);
-                updateView();
-                break;
-            case "UPDATE_DESK":
-                game.setDesk((Desk) message.getObject());
-                logic.setGame(game);
-                updateView();
                 break;
             case "DRAW_CARD":
                 logic.drawCard(id, text);

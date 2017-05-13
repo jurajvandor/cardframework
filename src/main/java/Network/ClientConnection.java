@@ -45,6 +45,7 @@ public class ClientConnection extends Thread implements Closeable{
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()) {
+                    os.reset();
                     os.writeObject(outputBuffer.take());
                 }
                 os.flush();
