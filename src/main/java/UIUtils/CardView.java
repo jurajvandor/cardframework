@@ -34,14 +34,6 @@ public class CardView extends ImageView {
         );
     }
 
-    public void setHalf(){
-        this.setFitWidth(40);
-    }
-
-    public void setFull(){
-        this.setFitWidth(40);
-    }
-
     public String getNameOfCards() {
         return nameOfCards;
     }
