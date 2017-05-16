@@ -15,7 +15,7 @@ public class GameGUI extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
         Parent root = loader.load();
-        primaryStage.setTitle("Defualt Game");
+        primaryStage.setTitle("Defualt Game");//TODO
         primaryStage.setScene(new Scene(root, 1340, 680));
         primaryStage.setMinHeight(720);
         primaryStage.setMinWidth(1360);

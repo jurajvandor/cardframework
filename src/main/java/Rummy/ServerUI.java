@@ -58,6 +58,10 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
             System.out.println("Game for 2 as default");
             serverUI.numOfPlayers = 2;
         }
+        if (serverUI.numOfPlayers > 4) {
+            serverUI.numOfPlayers = 4;
+            System.out.println("Maximum 4 players chosen");
+        }
         serverUI.names = new HashMap<>();
         serverUI.connection = new Server(port, 10, serverUI);
         serverUI.numberOfDeals = numOfDeals;
@@ -131,6 +135,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
                     connection.send(p.getId(), "LOOSER");
                 }
             }
+            System.out.println("Game finished.");
         }
         else newPlay();
     }
