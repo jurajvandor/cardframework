@@ -95,7 +95,7 @@ public class Server extends Thread implements Closeable{
         catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         }
-        gen.initialize(512);
+        gen.initialize(1024);
         keys = gen.generateKeyPair();
 
         while (!quit) {

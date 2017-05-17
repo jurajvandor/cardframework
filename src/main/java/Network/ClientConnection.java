@@ -46,7 +46,7 @@ public class ClientConnection extends Thread implements Closeable{
     public void run() {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("DiffieHellman");
-            kpg.initialize(512);
+            kpg.initialize(1024);
             KeyPair keys = kpg.generateKeyPair();
 
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
@@ -61,8 +61,6 @@ public class ClientConnection extends Thread implements Closeable{
             agreement.doPhase(otherKey, true);
 
             Key symKey = agreement.generateSecret("DES");
-            System.out.println(symKey.getFormat());
-            System.out.println(symKey.getEncoded());
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(ENCRYPT_MODE,symKey);
             listener = new ClientListener( ois, cardframeworkListener, this, fx,symKey);
