@@ -1,9 +1,13 @@
 package Network;
 
+import javax.crypto.*;
 import java.io.*;
 import java.net.Socket;
+import java.security.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static javax.crypto.Cipher.ENCRYPT_MODE;
 
 /**
  * Created by Juraj Vandor on 28.02.2017.
@@ -18,13 +22,15 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private ServerListener listener = null;
     private int id;
     private CardframeworkListener cardframeworkListener;
+    private KeyPair keys;
 
-    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, CardframeworkListener cardframeworkListener) {
+    public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, CardframeworkListener cardframeworkListener, KeyPair keys) {
         this.clientSocket = clientSocket;
         this.connections = connections;
         maxClientsCount = connections.length;
         this.id = id;
         this.cardframeworkListener = cardframeworkListener;
+        this.keys = keys;
     }
 
     public void close(){
@@ -43,16 +49,33 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     public void run() {
         int maxClientsCount = this.maxClientsCount;
         ServerConnectionToClient[] threads = this.connections;
-
         try {
+
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-            listener = new ServerListener( new ObjectInputStream(is), id, cardframeworkListener, this);
+            ObjectInputStream ois = new ObjectInputStream(is);
+
+            os.writeObject(keys.getPublic());
+            PublicKey otherKey = (PublicKey)ois.readObject();
+
+            KeyAgreement agreement = KeyAgreement.getInstance("DH");
+            agreement.init(keys.getPrivate());
+            agreement.doPhase(otherKey, true);
+
+            Key symKey = agreement.generateSecret("DES");
+            Cipher cipher = Cipher.getInstance("DES");
+            cipher.init(ENCRYPT_MODE,symKey);
+            listener = new ServerListener( ois, id, cardframeworkListener, this, symKey);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()){
                     os.reset();
-                    os.writeObject(outputBuffer.take());
+                    try {
+                        os.writeObject(new SealedObject(outputBuffer.take(), cipher));
+                    }
+                    catch (IllegalBlockSizeException e){
+                        e.printStackTrace();
+                    }
                 }
                 sleep(50);
             }
@@ -60,7 +83,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
             is.close();
             os.close();
             clientSocket.close();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | ClassNotFoundException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
             e.printStackTrace();
         }
 

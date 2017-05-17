@@ -1,9 +1,15 @@
 package Network;
 
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import static javax.crypto.Cipher.ENCRYPT_MODE;
 
 /**
  * Created by Juraj Vandor on 28.02.2017.
@@ -39,14 +45,37 @@ public class ClientConnection extends Thread implements Closeable{
 
     public void run() {
         try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("DiffieHellman");
+            kpg.initialize(512);
+            KeyPair keys = kpg.generateKeyPair();
+
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
-            listener = new ClientListener( new ObjectInputStream(is), cardframeworkListener, this, fx);
+            ObjectInputStream ois = new ObjectInputStream(is);
+
+            os.writeObject(keys.getPublic());
+            PublicKey otherKey = (PublicKey)ois.readObject();
+
+            KeyAgreement agreement = KeyAgreement.getInstance("DH");
+            agreement.init(keys.getPrivate());
+            agreement.doPhase(otherKey, true);
+
+            Key symKey = agreement.generateSecret("DES");
+            System.out.println(symKey.getFormat());
+            System.out.println(symKey.getEncoded());
+            Cipher cipher = Cipher.getInstance("DES");
+            cipher.init(ENCRYPT_MODE,symKey);
+            listener = new ClientListener( ois, cardframeworkListener, this, fx,symKey);
             listener.start();
             while (!quit){
                 if (!outputBuffer.isEmpty()) {
                     os.reset();
-                    os.writeObject(outputBuffer.take());
+                    try{
+                        os.writeObject(new SealedObject(outputBuffer.take(), cipher));
+                    }
+                    catch (IllegalBlockSizeException e){
+                        e.printStackTrace();
+                    }
                 }
                 os.flush();
                 sleep(50);
@@ -55,7 +84,7 @@ public class ClientConnection extends Thread implements Closeable{
             is.close();
             os.close();
             clientSocket.close();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | ClassNotFoundException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
             e.printStackTrace();
         }
         cardframeworkListener.closedConnection();

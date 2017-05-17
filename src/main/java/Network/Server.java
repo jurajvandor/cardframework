@@ -1,8 +1,14 @@
 package Network;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.*;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,6 +17,7 @@ import java.util.TreeSet;
  */
 public class Server extends Thread implements Closeable{
 
+    private KeyPair keys;
     private ServerSocket serverSocket = null;
     private int portNumber;
     private int maxClientsCount;
@@ -19,6 +26,7 @@ public class Server extends Thread implements Closeable{
     private CardframeworkListener cardframeworkListener;
 
     public Server(int portNumber, int maxClientsCount, CardframeworkListener cardframeworkListener){
+
         this.portNumber = portNumber;
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
@@ -79,6 +87,16 @@ public class Server extends Thread implements Closeable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        KeyPairGenerator gen = null;
+
+        try {
+             gen =  KeyPairGenerator.getInstance("DiffieHellman");
+        }
+        catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        gen.initialize(512);
+        keys = gen.generateKeyPair();
 
         while (!quit) {
             try {
@@ -87,7 +105,7 @@ public class Server extends Thread implements Closeable{
                 for (i = 0; i < maxClientsCount; i++) {
                     synchronized (threads) {
                         if (threads[i] == null) {
-                            (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, cardframeworkListener)).start();
+                            (threads[i] = new ServerConnectionToClient(clientSocket, threads, i, cardframeworkListener, keys)).start();
                             break;
                         }
                     }
