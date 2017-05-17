@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
+<!DOCTYPE cards [
+        <!ELEMENT cards (card)*>
+        <!ATTLIST cards
+                name CDATA #REQUIRED>
+        <!ELEMENT card (suit|value|picture)*>
+        <!ATTLIST card
+                count CDATA #REQUIRED>
+        <!ELEMENT suit (#PCDATA)>
+        <!ELEMENT value (#PCDATA)>
+        <!ELEMENT picture (#PCDATA)>
+        ]>
 <cards name="french cards">
 	<card count="1">
 		<suit>diamonds</suit>

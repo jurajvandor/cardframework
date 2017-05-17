@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
+<!DOCTYPE cards [
+		<!ELEMENT cards (card)*>
+		<!ATTLIST cards
+				name CDATA #REQUIRED>
+		<!ELEMENT card (suit|value|picture)*>
+		<!ATTLIST card
+				count CDATA #REQUIRED>
+		<!ELEMENT suit (#PCDATA)>
+		<!ELEMENT value (#PCDATA)>
+		<!ELEMENT picture (#PCDATA)>
+		]>
 <cards name="double french joker cards">
 	<card count="2">
 		<suit>diamonds</suit>
