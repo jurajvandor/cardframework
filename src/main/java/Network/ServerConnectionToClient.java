@@ -74,7 +74,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
                         os.writeObject(new SealedObject(outputBuffer.take(), cipher));
                     }
                     catch (IllegalBlockSizeException e){
-                        e.printStackTrace();
+                        throw new NetworkLayerException(e);
                     }
                 }
                 sleep(50);
@@ -84,7 +84,7 @@ public class ServerConnectionToClient extends Thread implements Closeable {
             os.close();
             clientSocket.close();
         } catch (IOException | InterruptedException | ClassNotFoundException | NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
-            e.printStackTrace();
+            throw new NetworkLayerException(e);
         }
 
         synchronized (connections) {

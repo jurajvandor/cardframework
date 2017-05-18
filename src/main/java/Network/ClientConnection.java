@@ -43,7 +43,8 @@ public class ClientConnection extends Thread implements Closeable{
         outputBuffer.add(new Message(message));
     }
 
-    public void run() {
+
+    public void run() throws NetworkLayerException {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("DiffieHellman");
             kpg.initialize(1024);
@@ -72,7 +73,7 @@ public class ClientConnection extends Thread implements Closeable{
                         os.writeObject(new SealedObject(outputBuffer.take(), cipher));
                     }
                     catch (IllegalBlockSizeException e){
-                        e.printStackTrace();
+                        throw new NetworkLayerException(e);
                     }
                 }
                 os.flush();
@@ -83,7 +84,7 @@ public class ClientConnection extends Thread implements Closeable{
             os.close();
             clientSocket.close();
         } catch (IOException | InterruptedException | ClassNotFoundException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
-            e.printStackTrace();
+            new NetworkLayerException(e);
         }
         cardframeworkListener.closedConnection();
     }

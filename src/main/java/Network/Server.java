@@ -85,7 +85,7 @@ public class Server extends Thread implements Closeable{
         try {
             serverSocket = new ServerSocket(portNumber);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("server failed", e);
         }
         KeyPairGenerator gen = null;
 
@@ -114,7 +114,7 @@ public class Server extends Thread implements Closeable{
                     clientSocket.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new NetworkLayerException(e);
             }
         }
     }

@@ -35,7 +35,7 @@ public class ClientListener extends  Listener {
                     message = (Message) sealedMessage.getObject(symKey);
                 }
                 catch (NoSuchAlgorithmException | InvalidKeyException e){
-                    e.printStackTrace();
+                    throw new NetworkLayerException(e);
                 }
                 final Message m = message;
                 if (message == null) connection.close();

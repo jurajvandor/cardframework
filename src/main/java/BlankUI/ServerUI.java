@@ -23,25 +23,14 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private Server connection;
     private Game game;
     private Logic logic;
-    public static void main(String[] args) throws InterruptedException {
 
-        System.out.println("Port number to connect:");
-        int port;
-        try {
-             port = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
-        }
-        catch (IOException e){
-            System.out.println("Using default port 2222");
-            port = 2222;
-        }
-
-        ServerUI serverUI = new ServerUI();
-        serverUI.connection = new Server(port, 10, serverUI);
-        serverUI.connection.start();
-        serverUI.game = new Game();
-        serverUI.logic = new Logic(serverUI.game, serverUI.connection);
-        serverUI.numOfPlayers = 4;//TODO
-        serverUI.game.load(new XMLLoader("french_cards.xml"));//TODO
+    public ServerUI(int port, int numOfPlayers)  {
+        this.connection = new Server(port, 10, this);
+        this.connection.start();
+        this.game = new Game();
+        this.logic = new Logic(this.game, this.connection);
+        this.numOfPlayers = numOfPlayers;
+        this.game.load(new XMLLoader("french_cards.xml"));//TODO
     }
 
     @Override

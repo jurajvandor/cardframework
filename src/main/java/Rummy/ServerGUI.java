@@ -1,9 +1,7 @@
-package BlankUI;/**
+package Rummy;/**
  * Created by Juraj on 18.05.2017.
  */
 
-import DataLayer.Player;
-import Network.NetworkLayerException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -12,10 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.net.BindException;
 
 public class ServerGUI extends Application {
 
@@ -38,11 +33,14 @@ public class ServerGUI extends Application {
         port.setMaxHeight(10);
         Label label2 = new Label("Number of players:");
         TextArea numOfP = new TextArea("2");
+        Label label3 = new Label("Number of deals:");
+        TextArea numOfG = new TextArea("2");
         numOfP.setMaxHeight(10);
+        numOfG.setMaxHeight(10);
         Button button = new Button("Host");
         Label error = new Label("");
 
-        VBox layout= new VBox(label1, port, label2, numOfP, button, error);
+        VBox layout= new VBox(label1, port, label2, numOfP, label3, numOfG, button, error);
         layout.setSpacing(10);
         layout.setPadding(new Insets(10,10,10,10));
         Scene scene = new Scene(layout);
@@ -50,15 +48,9 @@ public class ServerGUI extends Application {
 
         primaryStage.show();
         button.setOnAction(event -> {
-            new Thread(() -> {
                 Platform.runLater(() -> error.setText("initializing..."));
-                //try {
-                    new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()));
-                    Platform.runLater(() -> error.setText("listening..."));
-                //} catch (NetworkLayerException e) {
-                 //   Platform.runLater(() -> error.setText("failed"));
-                //}
-            }).start();
+                new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()), Integer.parseInt(numOfG.getText()));
+                Platform.runLater(() -> error.setText("listening..."));
         });
     }
 

@@ -2,6 +2,8 @@ package BlankUI;/**
  * Created by Juraj on 18.05.2017.
  */
 
+import DataLayer.Player;
+import Network.NetworkLayerException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -13,14 +15,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.net.BindException;
+
 public class ServerGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public void connectionWindow(Stage primaryStage){
-        primaryStage.initModality(Modality.APPLICATION_MODAL);
+    @Override
+    public void start(Stage primaryStage){
         primaryStage.setTitle("Server");
         primaryStage.setResizable(false);
         primaryStage.setMaxWidth(300);
@@ -35,7 +39,7 @@ public class ServerGUI extends Application {
         Label label2 = new Label("Number of players:");
         TextArea numOfP = new TextArea("2");
         numOfP.setMaxHeight(10);
-        Button button = new Button("Connect");
+        Button button = new Button("Host");
         Label error = new Label("");
 
         VBox layout= new VBox(label1, port, label2, numOfP, button, error);
@@ -46,16 +50,11 @@ public class ServerGUI extends Application {
 
         primaryStage.show();
         button.setOnAction(event -> {
-            new Thread (() -> {
-                new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()));
-                           }).start();
-            error.setText("listening...");
+                Platform.runLater(() -> error.setText("initializing..."));
+                    new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()));
+                    Platform.runLater(() -> error.setText("listening..."));
         });
     }
 
 
-    @Override
-    public void start(Stage primaryStage) {
-
-    }
 }

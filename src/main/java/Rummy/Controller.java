@@ -50,7 +50,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     public Controller(){
         game = new Game();
         state = GameState.NO_GAME;
-        game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
+        game.load(new XMLLoader("french_cards.xml"));
         currentMeldView = new MeldView("currentMeld", new Hand());
         layoffMeld = null;
     }
@@ -100,7 +100,6 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
         connectStage.setScene(connectionScene);
 
         connectStage.show();
-        //skuska();
         button.setOnAction(event -> {
             error.setText("Connecting...");
             new Thread (() -> {

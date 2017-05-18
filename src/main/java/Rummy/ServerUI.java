@@ -27,47 +27,15 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private int dealCounter = 0;
     private Map<Integer,String> names;
 
-    public static void main(String[] args) throws InterruptedException {
+    public ServerUI(int port, int numOfPlayers, int numberOfDeals) {
+        this.connection = new Server(port, 10, this);
+        this.connection.start();
 
-        System.out.println("Port number to connect:");
-        int port;
-        try {
-             port = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
-        }
-        catch (IOException e){
-            System.out.println("Using default port 2222");
-            port = 2222;
-        }
-        System.out.println("Number of deals:");
-        int numOfDeals;
-        try {
-            numOfDeals = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
-        }
-        catch (IOException e){
-            System.out.println("One game only selected as default");
-            numOfDeals = 1;
-        }
-
-        ServerUI serverUI = new ServerUI();
-
-        System.out.println("Number of players:");
-        try {
-            serverUI.numOfPlayers = Integer.parseInt((new BufferedReader(new InputStreamReader(System.in))).readLine());
-        }
-        catch (IOException e){
-            System.out.println("Game for 2 as default");
-            serverUI.numOfPlayers = 2;
-        }
-        if (serverUI.numOfPlayers > 4) {
-            serverUI.numOfPlayers = 4;
-            System.out.println("Maximum 4 players chosen");
-        }
-        serverUI.names = new HashMap<>();
-        serverUI.connection = new Server(port, 10, serverUI);
-        serverUI.numberOfDeals = numOfDeals;
-        serverUI.connection.start();
-        serverUI.game = new Game();
-        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));
+        this.names = new HashMap<>();
+        this.numberOfDeals = numberOfDeals;
+        this.numOfPlayers = numOfPlayers;
+        this.game = new Game();
+        this.game.load(new XMLLoader("french_cards.xml"));
         System.out.println("Server listening at port "+ port);
     }
 
@@ -163,7 +131,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
 
     private int getCardCount(){
         switch (numOfPlayers){
-            case 2: return 3;
+            case 2: return 10;
             case 3:
             case 4: return 7;
         }

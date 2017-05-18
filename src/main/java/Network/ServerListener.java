@@ -41,10 +41,10 @@ public class ServerListener extends Listener {
             }
         }
         catch (IOException e){
-            e.printStackTrace();
+            throw new NetworkLayerException(e);
         }
         catch (ClassNotFoundException e ){
-            e.printStackTrace();
+            throw new NetworkLayerException(e);
         }
     }
 }

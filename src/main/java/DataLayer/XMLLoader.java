@@ -41,7 +41,7 @@ public class XMLLoader implements Loader {
 
     @Override
     public LoadedCards loadCards() {
-        Document xmlDoc = getDocument(path);
+        Document xmlDoc = getDocument();
         String deckName = xmlDoc.getDocumentElement().getAttribute("name");
         NodeList listOfCards = xmlDoc.getElementsByTagName("card");
         ArrayList<LoadedCard> list = new ArrayList<>();
@@ -65,13 +65,13 @@ public class XMLLoader implements Loader {
         return new LoadedCards(list, deckName);
     }
 
-    private Document getDocument(String path) {
+    private Document getDocument() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(true);
         factory.setIgnoringElementContentWhitespace(true);
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
-            return builder.parse(new InputSource(path));
+            return builder.parse(new InputSource(XMLLoader.class.getClassLoader().getResourceAsStream(path)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
