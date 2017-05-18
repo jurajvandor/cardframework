@@ -41,7 +41,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         serverUI.game = new Game();
         serverUI.logic = new Logic(serverUI.game, serverUI.connection);
         serverUI.numOfPlayers = 4;//TODO
-        serverUI.game.load(new XMLLoader(XMLLoader.class.getClassLoader().getResource("french_cards.xml").getPath()));//TODO
+        serverUI.game.load(new XMLLoader("french_cards.xml"));//TODO
     }
 
     @Override
