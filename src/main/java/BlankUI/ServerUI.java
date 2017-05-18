@@ -33,6 +33,10 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         this.game.load(new XMLLoader("french_cards.xml"));//TODO
     }
 
+    public Server getConnection() {
+        return connection;
+    }
+
     @Override
     public void processMessage(Message message) {
         Pair<Integer,String> m = MessageParser.parseId(message.getMessage());

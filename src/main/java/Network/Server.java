@@ -31,6 +31,13 @@ public class Server extends Thread implements Closeable{
         this.maxClientsCount = maxClientsCount;
         this.threads = new ServerConnectionToClient[maxClientsCount];
         this.cardframeworkListener = cardframeworkListener;
+        Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
+            try {
+                serverSocket.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }});
     }
 
     public Set<Integer> getFreeIds(){
@@ -51,8 +58,18 @@ public class Server extends Thread implements Closeable{
         quit();
         synchronized (threads) {
             for (ServerConnectionToClient c : threads) {
-                c.close();
+                try {
+                    c.close();
+                }catch (NetworkLayerException e){
+                    e.printStackTrace();
+                }
             }
+        }
+        try {
+            serverSocket.close();
+        }
+        catch (IOException e){
+            throw new NetworkLayerException(e);
         }
     }
 

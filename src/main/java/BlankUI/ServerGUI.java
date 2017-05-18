@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import java.net.BindException;
 
 public class ServerGUI extends Application {
+    private ServerUI serverUI;
+    private Label error;
 
     public static void main(String[] args) {
         launch(args);
@@ -40,7 +42,7 @@ public class ServerGUI extends Application {
         TextArea numOfP = new TextArea("2");
         numOfP.setMaxHeight(10);
         Button button = new Button("Host");
-        Label error = new Label("");
+        error = new Label("");
 
         VBox layout= new VBox(label1, port, label2, numOfP, button, error);
         layout.setSpacing(10);
@@ -51,9 +53,20 @@ public class ServerGUI extends Application {
         primaryStage.show();
         button.setOnAction(event -> {
                 Platform.runLater(() -> error.setText("initializing..."));
-                    new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()));
+                    serverUI = new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()));
                     Platform.runLater(() -> error.setText("listening..."));
         });
+
+        primaryStage.setOnCloseRequest(event -> {
+                    new Thread(() -> {
+                        serverUI.getConnection().quit();
+                        serverUI.getConnection().close();
+                    });
+                    primaryStage.close();
+                    System.exit(0);
+                }
+
+        );
     }
 
 

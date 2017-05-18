@@ -31,6 +31,13 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         this.id = id;
         this.cardframeworkListener = cardframeworkListener;
         this.keys = keys;
+        Runtime.getRuntime().addShutdownHook(new Thread(){public void run() {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }});
     }
 
     public void close(){

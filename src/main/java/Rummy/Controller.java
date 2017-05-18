@@ -70,6 +70,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler{
     public void connectionWindow(Stage primaryStage){
         primaryStage.setOnCloseRequest(event -> {
             if (connection != null) connection.close();
+            System.exit(0);
         });
         Stage connectStage = new Stage();
         connectStage.initModality(Modality.APPLICATION_MODAL);

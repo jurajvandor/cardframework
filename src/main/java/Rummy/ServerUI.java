@@ -39,6 +39,10 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         System.out.println("Server listening at port "+ port);
     }
 
+    public Server getConnection() {
+        return connection;
+    }
+
     @Override
     public void processMessage(Message message) {
         Pair<Integer,String> m = MessageParser.parseId(message.getMessage());

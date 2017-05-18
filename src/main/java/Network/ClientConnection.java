@@ -28,6 +28,13 @@ public class ClientConnection extends Thread implements Closeable{
         clientSocket = new Socket(host, portNumber);
         this.cardframeworkListener = cardframeworkListener;
         this.fx = fx;
+        Runtime.getRuntime().addShutdownHook(new Thread(){public void run() {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }});
     }
 
     public void close(){

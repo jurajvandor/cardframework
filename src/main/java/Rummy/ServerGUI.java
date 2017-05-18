@@ -2,6 +2,7 @@ package Rummy;/**
  * Created by Juraj on 18.05.2017.
  */
 
+import Network.Server;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -12,10 +13,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import static javafx.application.Platform.exit;
+
 public class ServerGUI extends Application {
+    private ServerUI serverUI;
+    private Label error;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void closedConnection(){
+        error.setText("connection closed");
     }
 
     @Override
@@ -38,7 +47,7 @@ public class ServerGUI extends Application {
         numOfP.setMaxHeight(10);
         numOfG.setMaxHeight(10);
         Button button = new Button("Host");
-        Label error = new Label("");
+        error = new Label("");
 
         VBox layout= new VBox(label1, port, label2, numOfP, label3, numOfG, button, error);
         layout.setSpacing(10);
@@ -49,9 +58,20 @@ public class ServerGUI extends Application {
         primaryStage.show();
         button.setOnAction(event -> {
                 Platform.runLater(() -> error.setText("initializing..."));
-                new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()), Integer.parseInt(numOfG.getText()));
+                serverUI = new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()), Integer.parseInt(numOfG.getText()));
                 Platform.runLater(() -> error.setText("listening..."));
         });
+
+        primaryStage.setOnCloseRequest(event -> {
+            new Thread(() -> {
+                serverUI.getConnection().quit();
+                serverUI.getConnection().close();
+            });
+            primaryStage.close();
+            System.exit(0);
+        }
+
+        );
     }
 
 
