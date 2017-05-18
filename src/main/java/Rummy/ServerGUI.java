@@ -20,7 +20,7 @@ public class ServerGUI extends Application {
 
     @Override
     public void start(Stage primaryStage){
-        primaryStage.setTitle("Server");
+        primaryStage.setTitle("Server Rummy");
         primaryStage.setResizable(false);
         primaryStage.setMaxWidth(300);
         primaryStage.setMaxHeight(400);
