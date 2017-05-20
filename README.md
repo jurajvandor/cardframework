@@ -2,7 +2,7 @@
 framework for creating multiplayer card games and implementation of game Rummy in Java using JavaFX for GUI
 
 Use:
-To play Basic Rummy implementation packed in .jar file you need to have JRE version 8 or higher installed. Then you can just run jar files of client and server from file explorer.
+To play Basic Rummy implementation packed in .jar file you need to have JRE version 8 or higher installed. Then you can just run jar files of client and server from file explorer. Those .jar files are located in out/artifacts/ folder of this repository.
 
 As developer you need to import this Maven project to IDE. It was created in IDEA from JetBrains, in which it was tested (on Windows 10 and Ubuntu 16.04)
 
