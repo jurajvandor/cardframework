@@ -38,7 +38,7 @@ public class ServerGUI extends Application {
         primaryStage.setOnCloseRequest(event -> primaryStage.close());
 
         Label label1 = new Label("Port:");
-        TextArea port = new TextArea("2222");
+        TextArea port = new TextArea("22222");
         port.setMaxHeight(10);
         Label label2 = new Label("Number of players:");
         TextArea numOfP = new TextArea("2");
@@ -57,9 +57,16 @@ public class ServerGUI extends Application {
 
         primaryStage.show();
         button.setOnAction(event -> {
+            int portNum = Integer.parseInt(port.getText());
+            int players = Integer.parseInt(numOfP.getText());
+            if (portNum < 65535 && players <= 4 && players >= 2) {
                 Platform.runLater(() -> error.setText("initializing..."));
-                serverUI = new ServerUI(Integer.parseInt(port.getText()), Integer.parseInt(numOfP.getText()), Integer.parseInt(numOfG.getText()));
+                serverUI = new ServerUI(portNum, players, Integer.parseInt(numOfG.getText()));
                 Platform.runLater(() -> error.setText("listening..."));
+            }
+            else {
+                error.setText("Invalid values");
+            }
         });
 
         primaryStage.setOnCloseRequest(event -> {

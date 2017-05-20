@@ -76,7 +76,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         TextArea hostname = new TextArea("localhost");
         hostname.setMaxHeight(10);
         Label label2 = new Label("Port:");
-        TextArea port = new TextArea("2222");
+        TextArea port = new TextArea("22222");
         port.setMaxHeight(10);
         Label label3 = new Label("Player name:");
         TextArea name = new TextArea("Player");
