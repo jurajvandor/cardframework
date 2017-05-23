@@ -17,6 +17,9 @@ import javafx.stage.Stage;
 
 import java.net.BindException;
 
+/**
+ * Simple server gui which takes parameters from user and passes them to created ServerUI object
+ */
 public class ServerGUI extends Application {
     private ServerUI serverUI;
     private Label error;

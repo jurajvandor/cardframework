@@ -9,6 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * class that initiates controller and main window of client application
+ */
 public class GameGUI extends Application {
 
     @Override
@@ -26,6 +29,10 @@ public class GameGUI extends Application {
     }
 
 
+    /**
+     * just launches JavFX app
+     * @param args are passed to launch method
+     */
     public static void main(String[] args) {
         launch(args);
     }

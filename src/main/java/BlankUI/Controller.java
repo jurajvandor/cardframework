@@ -23,6 +23,10 @@ import java.io.IOException;
 /**
  * Created by Juraj Vandor on 05.03.2017.
  */
+
+/**
+ * controlls whole application and reacts to player's actions
+ */
 public class Controller implements CardframeworkListener, PlayerActionHandler {
 
     @FXML
@@ -39,12 +43,22 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
     private GameState state;
 
 
+    /**
+     * initiates some values
+     */
     public Controller(){
         game = new Game();
         state = GameState.NO_GAME;
-        game.load(new XMLLoader("french_cards.xml"));
+        game.load(new XMLLoader("french_cards.xml"));//TODO load another cards
     }
 
+    /**
+     * connects to server with given parameters and sets connection
+     * @param hostname internet address
+     * @param port port to which connection will be made
+     * @param name name of player
+     * @return
+     */
     private boolean connect(String hostname, String port, String name){
         try {
             ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), this, true);
@@ -57,6 +71,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         return true;
     }
 
+    /**
+     * creates and shows connection window
+     * @param primaryStage primary stage of game
+     */
     public void connectionWindow(Stage primaryStage){
         primaryStage.setOnCloseRequest(event -> {
             if (connection != null) connection.close();
@@ -101,6 +119,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         });
     }
 
+    @Override
     public void closedConnection() {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -111,6 +130,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         s.close();
     }
 
+    /**
+     * announcment shown when game ends
+     * @param won true if player won else false
+     */
     public void winAnnouncment(boolean won) {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -129,6 +152,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         connectionWindow(s);
     }
 
+    /**
+     * adds line of text to chat
+     * @param line string with text
+     */
     public void addChatLine(String line){
         chat.setText(chat.getText() + '\n' + line);
     }
@@ -175,19 +202,31 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         }
     }
 
+    /**
+     * handles new message written by player on this client (sends it to server)
+     */
     public void handleMessage(){
         connection.send("CHAT " + message.getText());
         message.setText("");
     }
 
+    /**
+     * shows middle of gamePanel - Layout of desk according to object game
+     */
     public void showDesk(){
         //TODO
     }
 
+    /**
+     * shows each player of game (if cards ar visible or not visible should be according to equality of yourId and player id
+     */
     public void showPlayers(){
-        //TODO
+        //TODO code for 4 players can be found in Basic Rummy implementation
     }
 
+    /**
+     * calls showDesk and showPlayers. should be called after every transaction concerning object game
+     */
     public void updateView() {
         showPlayers();
         showDesk();
