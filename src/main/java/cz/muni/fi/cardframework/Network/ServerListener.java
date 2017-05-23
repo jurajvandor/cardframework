@@ -10,16 +10,31 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by Juraj Vandor on 12.03.2017.
  */
+
+/**
+ * listener from one client on server side
+ */
 public class ServerListener extends Listener {
     private final int id;
     private ServerConnectionToClient connection;
 
+    /**
+     * initiates values
+     * @param inputStream input stream from client
+     * @param id id of client
+     * @param cardframeworkListener message handler
+     * @param connection connection to client
+     * @param key DES key for deciphering
+     */
     ServerListener(ObjectInputStream inputStream, int id, CardframeworkListener cardframeworkListener, ServerConnectionToClient connection, Key key){
         super(inputStream, cardframeworkListener, key);
         this.id = id;
         this.connection = connection;
     }
 
+    /**
+     * listens to messages from client
+     */
     public void run(){
         try {
 

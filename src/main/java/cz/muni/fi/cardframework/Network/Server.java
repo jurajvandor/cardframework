@@ -10,6 +10,10 @@ import java.util.TreeSet;
 /**
  * Created by Juraj Vandor on 22.02.2017.
  */
+
+/**
+ * class for creating server with listening to new connections from clients and receiving and sending new messages
+ */
 public class Server extends Thread implements Closeable{
 
     private KeyPair keys;
@@ -20,6 +24,12 @@ public class Server extends Thread implements Closeable{
     private boolean quit = false;
     private CardframeworkListener cardframeworkListener;
 
+    /**
+     * initiates server attributes
+     * @param portNumber port to listen on
+     * @param maxClientsCount maximum connected clients
+     * @param cardframeworkListener message handler object
+     */
     public Server(int portNumber, int maxClientsCount, CardframeworkListener cardframeworkListener){
 
         this.portNumber = portNumber;
@@ -35,6 +45,9 @@ public class Server extends Thread implements Closeable{
         }});
     }
 
+    /**
+     * @return ids that are not associated with any of clients
+     */
     public Set<Integer> getFreeIds(){
         Set<Integer> ids = new TreeSet<>();
         synchronized (threads) {
@@ -45,6 +58,9 @@ public class Server extends Thread implements Closeable{
         return ids;
     }
 
+    /**
+     * quits accepting new connections
+     */
     public void quit(){
         quit = true;
     }
@@ -68,10 +84,19 @@ public class Server extends Thread implements Closeable{
         }
     }
 
+    /**
+     * sends message to client
+     * @param id id of client
+     * @param message message to send
+     */
     public void send(int id, String message){
         threads[id].send(message);
     }
 
+    /**
+     * sends message to all clients
+     * @param message message to send
+     */
     public void sendAllClients(String message){
         synchronized (threads) {
             for (ServerConnectionToClient c : threads) {
@@ -79,12 +104,22 @@ public class Server extends Thread implements Closeable{
             }
         }
     }
+
+    /**
+     * sends message to client
+     * @param id id of client
+     * @param message message to send
+     */
     public void send(int id, Message message){
         synchronized (threads) {
             threads[id].send(message);
         }
     }
 
+    /**
+     * sends message to all clients
+     * @param message message to send
+     */
     public void sendAllClients(Message message){
         synchronized (threads) {
             for (ServerConnectionToClient c : threads) {
@@ -93,7 +128,12 @@ public class Server extends Thread implements Closeable{
         }
     }
 
-    public void run() {
+    /**
+     * initiates socket and starts accepting incoming connections until quit() is called or socket is closed
+     * also generates Diffie-Hellman keypair
+     * @throws NetworkLayerException if something goes wrong
+     */
+    public void run() throws NetworkLayerException{
         try {
             serverSocket = new ServerSocket(portNumber);
         } catch (IOException e) {

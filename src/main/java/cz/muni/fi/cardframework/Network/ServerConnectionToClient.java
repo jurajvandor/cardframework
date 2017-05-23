@@ -12,6 +12,10 @@ import static javax.crypto.Cipher.ENCRYPT_MODE;
 /**
  * Created by Juraj Vandor on 28.02.2017.
  */
+
+/**
+ * represents connection to each of the clients
+ */
 public class ServerConnectionToClient extends Thread implements Closeable {
 
     private Socket clientSocket = null;
@@ -24,6 +28,14 @@ public class ServerConnectionToClient extends Thread implements Closeable {
     private CardframeworkListener cardframeworkListener;
     private KeyPair keys;
 
+    /**
+     * connection is initialized
+     * @param clientSocket accepted socket
+     * @param connections array of connections (when closed it can remove itself and make space for another)
+     * @param id id of client connected to
+     * @param cardframeworkListener message handler
+     * @param keys Dieffie-Hellman keypair
+     */
     public ServerConnectionToClient(Socket clientSocket, ServerConnectionToClient[] connections, int id, CardframeworkListener cardframeworkListener, KeyPair keys) {
         this.clientSocket = clientSocket;
         this.connections = connections;
@@ -40,20 +52,36 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         }});
     }
 
+    /**
+     * closes connection
+     */
     public void close(){
         listener.close();
         quit = true;
     }
 
+    /**
+     * sends text message to client
+     * @param message text message
+     */
     public void send(String message){
         outputBuffer.add(new Message(message));
     }
 
+    /**
+     * sends message to client
+     * @param message message to be sent
+     */
     public void send(Message message){
         outputBuffer.add(message);
     }
 
-    public void run() {
+
+    /**
+     * exchanges Diffie-Hellman keys generates DES key, initiates streams and starts listener and sending new of messages
+     * @throws NetworkLayerException
+     */
+    public void run() throws NetworkLayerException{
         int maxClientsCount = this.maxClientsCount;
         ServerConnectionToClient[] threads = this.connections;
         try {
