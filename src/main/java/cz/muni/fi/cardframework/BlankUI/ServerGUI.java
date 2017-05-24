@@ -45,7 +45,7 @@ public class ServerGUI extends Application {
         VBox layout= new VBox(label1, port, label2, numOfP, button, error);
         layout.setSpacing(10);
         layout.setPadding(new Insets(10,10,10,10));
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(layout, 300, 400);
         primaryStage.setScene(scene);
 
         primaryStage.show();

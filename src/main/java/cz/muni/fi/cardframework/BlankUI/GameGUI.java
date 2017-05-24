@@ -20,8 +20,8 @@ public class GameGUI extends Application {
         Parent root = loader.load();
         primaryStage.setTitle("Defualt Game");//TODO
         primaryStage.setScene(new Scene(root, 1340, 680));
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1360);
+        primaryStage.setMinHeight(680);
+        primaryStage.setMinWidth(1340);
         Controller controller = loader.getController();
         primaryStage.show();
         primaryStage.getScene().getRoot().setStyle("-fx-background: #FF9900;");

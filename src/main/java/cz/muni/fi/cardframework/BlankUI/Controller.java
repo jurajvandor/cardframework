@@ -107,7 +107,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         VBox connectionLayout= new VBox(label1, hostname, label2, port, label3, name, button, error);
         connectionLayout.setSpacing(10);
         connectionLayout.setPadding(new Insets(10,10,10,10));
-        Scene connectionScene = new Scene(connectionLayout);
+        Scene connectionScene = new Scene(connectionLayout, 300, 400);
         connectStage.setScene(connectionScene);
 
         connectStage.show();
