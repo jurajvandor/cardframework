@@ -10,9 +10,19 @@ import javafx.scene.layout.HBox;
 /**
  * Created by Juraj Vandor on 03.04.2017.
  */
+
+/**
+ * represents view of cards on Desk
+ */
 public class DeskView extends HBox{
     private Desk desk;
     private PlayerActionHandler handler;
+
+    /**
+     * initiates values
+     * @param desk desk to be shown
+     * @param handler object that handles player's clicks
+     */
     public DeskView(Desk desk, PlayerActionHandler handler){
         this.desk = desk;
         this.setSpacing(10);
@@ -20,6 +30,9 @@ public class DeskView extends HBox{
         this.handler = handler;
     }
 
+    /**
+     * shows desk and resets view to current state of Decks
+     */
     public void show(){
         this.getChildren().clear();
         Deck dr = desk.getDeck("drawing");

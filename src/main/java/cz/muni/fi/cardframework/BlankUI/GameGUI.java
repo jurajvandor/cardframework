@@ -17,6 +17,7 @@ public class GameGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
+        //TODO change fxml file to its copy and change controller inside this copy
         Parent root = loader.load();
         primaryStage.setTitle("Defualt Game");//TODO
         primaryStage.setScene(new Scene(root, 1340, 680));
@@ -30,7 +31,7 @@ public class GameGUI extends Application {
 
 
     /**
-     * just launches JavFX app
+     * just launches JavaFX app
      * @param args are passed to launch method
      */
     public static void main(String[] args) {

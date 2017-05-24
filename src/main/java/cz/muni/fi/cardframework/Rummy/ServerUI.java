@@ -14,6 +14,10 @@ import java.util.*;
 /**
  * Created by Juraj Vandor on 02.03.2017.
  */
+
+/**
+ * Class that handles server reactions on incoming messages, sends messages to clients, creates games and initiates them
+ */
 public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private int numOfPlayers;
     private Server connection;
@@ -25,6 +29,12 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
     private int dealCounter = 0;
     private Map<Integer,String> names;
 
+    /**
+     * initiates values and starts listening
+     * @param port port to listen on
+     * @param numOfPlayers nnumber of players
+     * @param numberOfDeals number of deals until game ends
+     */
     public ServerUI(int port, int numOfPlayers, int numberOfDeals) {
         this.connection = new Server(port, 10, this);
         this.connection.start();
@@ -79,6 +89,10 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         checkEnd();
     }
 
+    /**
+     * checks if game should end and if yes handles it by sending winner or looser to each client
+     * or just by initiating new round.
+     */
     public void checkEnd(){
         if (!gameRunning) return;
         Integer id = null;
@@ -110,18 +124,28 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         else newPlay();
     }
 
+    /**
+     * sends names of other players already connected apart from one given as parameter
+     * @param id id to send to
+     */
     public void sendOtherNames(int id) {
         for (Integer p: game.getIds()) {
             if (p != id) connection.send(id, p + " CONNECTED " + game.getPlayer(p).getName());
         }
     }
 
+    /**
+     * sends id to each client
+     */
     public void sendIds(){
         for (Integer p: game.getIds()) {
             connection.send(p, p + " YOUR_ID");
         }
     }
 
+    /**
+     * handles closed connecton
+     */
     public void closedConnection(){
         Set<Integer> closed = connection.getFreeIds();
         closed.retainAll(game.getIds());
@@ -131,6 +155,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         });
     }
 
+    /**
+     * @return number of cards dealt to each player according to their count
+     */
     private int getCardCount(){
         switch (numOfPlayers){
             case 2: return 10;
@@ -140,6 +167,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         return 7;
     }
 
+    /**
+     * creates new round of game with existing players
+     */
     public void newPlay(){
         game.setDesk(new Desk());
         Deck deck = game.createDeck("french cards", game.getDesk(), "drawing");
@@ -159,6 +189,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         turnCounter.resetAndNext(0);
     }
 
+    /**
+     * initiates whole game and creates new round
+     */
     public void initiateGame(){
         sendIds();
         for (Player p : game.getPlayers())
@@ -169,6 +202,9 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
         newPlay();
     }
 
+    /**
+     * @return list of ids that have highest score (wins)
+     */
     public List<Integer> getWinners(){
         ArrayList<Integer> winners = new ArrayList<Integer>();
         int max = 0;

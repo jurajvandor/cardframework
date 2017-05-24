@@ -9,7 +9,15 @@ import javafx.scene.text.Text;
 /**
  * Created by Juraj Vandor on 11.04.2017.
  */
+
+/**
+ * static methods used in Basic Rummy
+ */
 public class StaticUtils {
+    /**
+     * @param card card, which value needs to be found
+     * @return value of card
+     */
     public static int getValue(Card card){
         String value = card.getProperty("value");
         switch (value){
@@ -26,7 +34,11 @@ public class StaticUtils {
         }
     }
 
-    public static Text getShortToString(Card card){
+    /**
+     * @param card card which needs to be transformed to text
+     * @return text version of card
+     */
+    public static Text getCardText(Card card){
         String res = card.getProperty("value");
         String suit = card.getProperty("suit");
         Text text = new Text();
@@ -51,6 +63,10 @@ public class StaticUtils {
         return text;
     }
 
+    /**
+     * @param card card to be valued
+     * @return number of points for card
+     */
     public static int getPoints(Card card){
         String value = card.getProperty("value");
         switch (value){
@@ -65,6 +81,10 @@ public class StaticUtils {
         }
     }
 
+    /**
+     * @param hand hand to be counted
+     * @return number of points of cards in hand
+     */
     public static int getHandPoints(Hand hand){
         int sum = 0;
         for (Card c : hand){

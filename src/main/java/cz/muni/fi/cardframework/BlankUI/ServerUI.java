@@ -120,6 +120,7 @@ public class ServerUI implements CardframeworkListener, TurnAnnouncer {
      * initiates whole game and creates new round
      */
     public void initiateGame(){
+        sendIds();
         //TODO
         newPlay();
     }

@@ -29,6 +29,10 @@ import java.util.stream.Collectors;
 /**
  * Created by Juraj Vandor on 05.03.2017.
  */
+
+/**
+ * controls whole application and reacts to player's actions
+ */
 public class Controller implements CardframeworkListener, PlayerActionHandler {
 
     @FXML
@@ -47,6 +51,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
     private MeldView currentMeldView;
     private MeldView layoffMeld;
 
+    /**
+     * initiates some values
+     */
     public Controller(){
         game = new Game();
         state = GameState.NO_GAME;
@@ -55,6 +62,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         layoffMeld = null;
     }
 
+    /**
+     * connects to server with given parameters and sets connection
+     * @param hostname internet address
+     * @param port port to which connection will be made
+     * @param name name of player
+     * @return
+     */
     private boolean connect(String hostname, String port, String name){
         try {
             ClientConnection connection = new ClientConnection(hostname, Integer.parseInt(port), this, true);
@@ -67,6 +81,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         return true;
     }
 
+    /**
+     * creates and shows connection window
+     * @param primaryStage primary stage of game
+     */
     public void connectionWindow(Stage primaryStage){
         primaryStage.setOnCloseRequest(event -> {
             if (connection != null) connection.close();
@@ -111,6 +129,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         });
     }
 
+    @Override
     public void closedConnection() {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -121,7 +140,11 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         s.close();
     }
 
-    public void winAnnouncment(boolean won) {
+    /**
+     * announcment shown when game ends
+     * @param won true if player won else false
+     */
+    public void winAnnouncement(boolean won) {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -139,34 +162,15 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         connectionWindow(s);
     }
 
-    public void skuska(){
-        PlayerView test;
-        Deck deck = game.createDeck("french cards");
-        TreeSet<Card> set = new TreeSet<>();
-        for (int i = 0; i< 12; i++)
-            set.add(deck.drawTopCard());
-        Player fero = new Player("fero", 4);
-        fero.addCards("hand", new Hand(set));
-        test = new PlayerView(true, fero, this);
-        test.show();
-        gamePanel.setBottom(test);
-        PlayerView a = new PlayerView(false, fero, this);
-        PlayerView b = new PlayerView(false, fero, this);
-        a.show();
-        PlayerView c = new PlayerView(false, fero, this);
-        c.show();
-        b.show();
-        b.setRotate(270);
-        c.setRotate(90);
-        gamePanel.setTop(a);
-        gamePanel.setLeft(b);
-        gamePanel.setRight(c);
-    }
-
+    /**
+     * adds line of text to chat
+     * @param line string with text
+     */
     public void addChatLine(String line){
         chat.setText(chat.getText() + '\n' + line);
     }
 
+    @Override
     public void processMessage(Message message){
         Pair<Integer,String> m = MessageParser.parseId(message.getMessage());
         Pair<String, String> c = MessageParser.parseType(m.getValue());
@@ -225,25 +229,27 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
                 updateView();
                 break;
             case "WINNER":
-                winAnnouncment(true);
+                winAnnouncement(true);
                 break;
             case "LOOSER":
-                winAnnouncment(false);
+                winAnnouncement(false);
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
         }
     }
 
-    public void setConnection(ClientConnection connection){
-        this.connection = connection;
-    }
-
+    /**
+     * handles new message written by player on this client (sends it to server)
+     */
     public void handleMessage(){
         connection.send("CHAT " + message.getText());
         message.setText("");
     }
 
+    /**
+     * shows middle of gamePanel where 2 decks (drawing and discard) are shown with melds and button for melding
+     */
     public void showDesk(){
         DeskView view = new DeskView(game.getDesk(), this);
         Button meld = new Button("Meld");
@@ -281,6 +287,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         view.show();
     }
 
+    /**
+     * shows each player of game (if hand is visible or not visible should be according to equality of yourId and player id)
+     */
     public void showPlayers(){
         gamePanel.getChildren().clear();
         List<PlayerView> views = new ArrayList<>();
@@ -310,11 +319,17 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         }
     }
 
+    /**
+     * calls showDesk and showPlayers. should be called after every transaction concerning object game
+     */
     public void updateView() {
         showPlayers();
         showDesk();
     }
 
+    /**
+     * checks if meld has enough cards if yes sends it to server, else empties it
+     */
     public void meldDone(){
         if (currentMeldView.getMeld().getCards().size() > 2) {
             connection.send(new Message("MELD", currentMeldView.getMeld()));
@@ -322,6 +337,13 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         currentMeldView.reset();
     }
 
+    /**
+     * adds card to meld if criteria is met (first card is added without checking, every other
+     * must be same value or same suit with value smaller/bigger than cards on edge of meld)
+     * @param card card to be added
+     * @param meldView view to be added to (could be while laying off or creating meld)
+     * @return true if successful else false
+     */
     public boolean addMeldingCard(Card card, MeldView meldView){
         boolean equals = true;
         for (Card c : meldView.getMeld()){

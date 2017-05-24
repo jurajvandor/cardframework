@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 
 /**
- * controlls whole application and reacts to player's actions
+ * controls whole application and reacts to player's actions
  */
 public class Controller implements CardframeworkListener, PlayerActionHandler {
 
@@ -136,7 +136,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
      * announcment shown when game ends
      * @param won true if player won else false
      */
-    public void winAnnouncment(boolean won) {
+    public void winAnnouncement(boolean won) {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
@@ -162,6 +162,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         chat.setText(chat.getText() + '\n' + line);
     }
 
+    @Override
     public void processMessage(Message message){
         Pair<Integer,String> m = MessageParser.parseId(message.getMessage());
         Pair<String, String> c = MessageParser.parseType(m.getValue());
@@ -194,10 +195,10 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
                 myId = id;
                 break;
             case "WINNER":
-                winAnnouncment(true);
+                winAnnouncement(true);
                 break;
             case "LOOSER":
-                winAnnouncment(false);
+                winAnnouncement(false);
                 break;
             default:
                 System.out.println("invalid message: " + message.getMessage());
@@ -220,7 +221,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
     }
 
     /**
-     * shows each player of game (if cards ar visible or not visible should be according to equality of yourId and player id
+     * shows each player of game (if cards are visible or not visible should be according to equality of yourId and player id)
      */
     public void showPlayers(){
         //TODO code for 4 players can be found in Basic Rummy implementation

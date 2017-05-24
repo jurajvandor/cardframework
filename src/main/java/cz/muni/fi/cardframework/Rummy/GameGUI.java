@@ -8,14 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/**
+ * class that initiates controller and main window of client application
+ */
 public class GameGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RummyGUI.fxml"));
         Parent root = loader.load();
-        primaryStage.setTitle("cz/muni/fi/cardframework/Rummy");
+        primaryStage.setTitle("Basic Rummy");
         primaryStage.setScene(new Scene(root, 1340, 680));
         primaryStage.setMinHeight(680);
         primaryStage.setMinWidth(1340);
@@ -25,7 +27,10 @@ public class GameGUI extends Application {
         controller.connectionWindow(primaryStage);
     }
 
-
+    /**
+     * just launches JavaFX app
+     * @param args are passed to launch method
+     */
     public static void main(String[] args) {
         launch(args);
     }

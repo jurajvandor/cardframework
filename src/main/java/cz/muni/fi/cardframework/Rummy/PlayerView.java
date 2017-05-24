@@ -11,11 +11,21 @@ import javafx.scene.text.Font;
 /**
  * Created by Juraj Vandor on 28.03.2017.
  */
+
+/**
+ * graphical view for each player
+ */
 public class PlayerView extends VBox{
     private boolean me;
     private Player player;
     private HandView hand;
 
+    /**
+     * initiates values and creates the view
+     * @param me true if cards should be visible
+     * @param player player's data
+     * @param handler handler for clicks on cards
+     */
     public PlayerView(boolean me, Player player, PlayerActionHandler handler) {
         this.me = me;
         this.player = player;
