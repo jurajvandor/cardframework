@@ -8,6 +8,10 @@ import javafx.scene.layout.HBox;
 /**
  * Created by Juraj Vandor on 27.03.2017.
  */
+
+/**
+ * graphical view of hand
+ */
 public class HandView extends HBox{
     private GroupOfCards hand;
     private String nameOfHand;
@@ -15,6 +19,14 @@ public class HandView extends HBox{
     private boolean showCards;
     private PlayerActionHandler handler;
 
+    /**
+     * initiating values, cards in hand are overlapped to approximately half of their width
+     * @param hand data for hand
+     * @param nameOfHand name of hand
+     * @param playerId owner's id of hand {-1 for Desk}
+     * @param showCards true if cards are visible
+     * @param handler handles player's clicks
+     */
     public HandView(GroupOfCards hand, String nameOfHand, int playerId, boolean showCards, PlayerActionHandler handler) {
         this.hand = hand;
         this.nameOfHand = nameOfHand;
@@ -37,6 +49,9 @@ public class HandView extends HBox{
         return hand;
     }
 
+    /**
+     * shows/resets view of hand
+     */
     public void show(){
         this.getChildren().clear();
         for (Card c: hand) {
