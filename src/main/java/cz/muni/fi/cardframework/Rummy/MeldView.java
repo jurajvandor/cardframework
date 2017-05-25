@@ -24,7 +24,7 @@ public class MeldView extends TextFlow{
         this.name = name;
         this.meld = meld;
         for (Card c : meld){
-            this.getChildren().add(StaticUtils.getShortToString(c));
+            this.getChildren().add(StaticUtils.getCardText(c));
         }
     }
 
@@ -36,7 +36,7 @@ public class MeldView extends TextFlow{
         meld.addCard(card);
         this.getChildren().clear();
         for (Card c : meld){
-            this.getChildren().add(StaticUtils.getShortToString(c));
+            this.getChildren().add(StaticUtils.getCardText(c));
         }
     }
 
