@@ -10,5 +10,5 @@ To create your own game you need to copy BlankUI package and rename it and its m
 
 To deploy in IDEA you can add artifacts to build using File > Project Structure.. > Artifacts > green + > JavaFX application > choose GameGUI class and the same thing for ServerGUI class. Then open JavaFX tab for both and insert name of these classes. Then you just build them using Build > Build Artifacts > All artifacts. 
 
-
+Already built .jar files for Basic Rummy game can be found in out/ folder.
 
