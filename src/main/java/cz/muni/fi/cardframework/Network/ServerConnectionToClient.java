@@ -85,18 +85,18 @@ public class ServerConnectionToClient extends Thread implements Closeable {
         int maxClientsCount = this.maxClientsCount;
         ServerConnectionToClient[] threads = this.connections;
         try {
-
+            //initiate streams
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(is);
-
+            //exchange keys
             os.writeObject(keys.getPublic());
             PublicKey otherKey = (PublicKey)ois.readObject();
-
+            //combine recived public and my private keys
             KeyAgreement agreement = KeyAgreement.getInstance("DH");
             agreement.init(keys.getPrivate());
             agreement.doPhase(otherKey, true);
-
+            //generate DES key
             Key symKey = agreement.generateSecret("DES");
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(ENCRYPT_MODE,symKey);

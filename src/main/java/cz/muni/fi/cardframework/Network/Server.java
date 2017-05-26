@@ -140,7 +140,7 @@ public class Server extends Thread implements Closeable{
             throw new RuntimeException("server failed", e);
         }
         KeyPairGenerator gen = null;
-
+        //generate DH keys
         try {
              gen =  KeyPairGenerator.getInstance("DiffieHellman");
         }

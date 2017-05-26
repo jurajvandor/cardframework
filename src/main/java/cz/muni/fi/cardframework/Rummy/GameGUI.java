@@ -13,7 +13,10 @@ import javafx.stage.Stage;
  */
 public class GameGUI extends Application {
 
-    @Override
+    /**
+     * initiates JavaFX app
+     * @param primaryStage primary stage of app
+     */
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RummyGUI.fxml"));
         Parent root = loader.load();

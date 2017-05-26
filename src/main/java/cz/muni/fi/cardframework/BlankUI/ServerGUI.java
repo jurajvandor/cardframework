@@ -23,8 +23,12 @@ public class ServerGUI extends Application {
         launch(args);
     }
 
-    @Override
+    /**
+     * initiates JavaFX app
+     * @param primaryStage primary stage of app
+     */
     public void start(Stage primaryStage){
+
         primaryStage.setTitle("Server");
         primaryStage.setResizable(false);
         primaryStage.setMaxWidth(300);

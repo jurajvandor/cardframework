@@ -45,6 +45,9 @@ public class PlayerView extends VBox{
         return hand;
     }
 
+    /**
+     * resets view of hand
+     */
     public void show(){
         hand.show();
     }

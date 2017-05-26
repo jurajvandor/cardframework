@@ -78,24 +78,26 @@ public class ClientConnection extends Thread implements Closeable{
      */
     public void run() throws NetworkLayerException {
         try {
+            //generate DH keypair
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("DiffieHellman");
             kpg.initialize(1024);
             KeyPair keys = kpg.generateKeyPair();
-
+            //initiate streams
             DataInputStream is = new DataInputStream(clientSocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(is);
-
+            //exchange public keys
             os.writeObject(keys.getPublic());
             PublicKey otherKey = (PublicKey)ois.readObject();
-
+            //combine recieved public and my private
             KeyAgreement agreement = KeyAgreement.getInstance("DH");
             agreement.init(keys.getPrivate());
             agreement.doPhase(otherKey, true);
-
+            //generate DES key
             Key symKey = agreement.generateSecret("DES");
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(ENCRYPT_MODE,symKey);
+            //initiate sending and listening
             listener = new ClientListener( ois, cardframeworkListener, this, fx,symKey);
             listener.start();
             while (!quit){
@@ -111,7 +113,7 @@ public class ClientConnection extends Thread implements Closeable{
                 os.flush();
                 sleep(50);
             }
-
+            //cleanup
             is.close();
             os.close();
             clientSocket.close();

@@ -35,11 +35,17 @@ public class ServerTurnCounter {
         nextPlayerTurn();
     }
 
-
+    /**
+     * @return last announced ID
+     */
     public int getOnTurnId() {
         return ids.get(onTurnIndex);
     }
 
+    /**
+     * removed id form loop
+     * @param id id to be removed
+     */
     public void removeIdFromGame(int id){
         ids.remove(id);
     }

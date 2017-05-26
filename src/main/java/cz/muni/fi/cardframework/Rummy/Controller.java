@@ -129,7 +129,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         });
     }
 
-    @Override
+    /**
+     * creates notification when connection is closed
+     */
     public void closedConnection() {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

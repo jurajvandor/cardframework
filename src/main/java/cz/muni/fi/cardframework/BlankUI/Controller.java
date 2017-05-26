@@ -82,6 +82,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
             if (connection != null) connection.close();
             System.exit(0);
         });
+        //set stage
         Stage connectStage = new Stage();
         connectStage.initModality(Modality.APPLICATION_MODAL);
         connectStage.setTitle("Connect");
@@ -91,7 +92,7 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         connectStage.setMinWidth(300);
         connectStage.setMinHeight(400);
         connectStage.setOnCloseRequest(event -> primaryStage.close());
-
+        //set components
         Label label1 = new Label("Hostname or IP adress:");
         TextArea hostname = new TextArea("localhost");
         hostname.setMaxHeight(10);
@@ -121,7 +122,9 @@ public class Controller implements CardframeworkListener, PlayerActionHandler {
         });
     }
 
-    @Override
+    /**
+     * creates notification when connection is closed
+     */
     public void closedConnection() {
         Stage s = (Stage) chat.getScene().getWindow();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

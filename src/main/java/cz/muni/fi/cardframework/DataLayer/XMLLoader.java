@@ -45,13 +45,16 @@ public class XMLLoader implements Loader {
         String deckName = xmlDoc.getDocumentElement().getAttribute("name");
         NodeList listOfCards = xmlDoc.getElementsByTagName("card");
         ArrayList<LoadedCard> list = new ArrayList<>();
+
         for(int i = 0; i < listOfCards.getLength(); i++){
             Node item = listOfCards.item(i);
             if(item.getNodeType() == Node.ELEMENT_NODE){
+
                 Element card = (Element) item;
                 int count = Integer.parseInt(card.getAttribute("count"));
                 HashMap<String,String> map = new HashMap<>();
                 NodeList properties= card.getChildNodes();
+
                 for (int j = 0; j < properties.getLength(); j++){
                     Node property = properties.item(j);
                     if(property.getNodeType() == Node.ELEMENT_NODE) {
@@ -65,16 +68,22 @@ public class XMLLoader implements Loader {
         return new LoadedCards(list, deckName);
     }
 
+
+    /**
+     * @return transformed XML file to Document object for parser
+     */
     private Document getDocument() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(true);
         factory.setIgnoringElementContentWhitespace(true);
+
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
             return builder.parse(new InputSource(XMLLoader.class.getClassLoader().getResourceAsStream(path)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

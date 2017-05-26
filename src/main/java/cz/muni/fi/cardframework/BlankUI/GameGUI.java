@@ -14,7 +14,10 @@ import javafx.stage.Stage;
  */
 public class GameGUI extends Application {
 
-    @Override
+    /**
+     * initiates JavaFX app
+     * @param primaryStage primary stage of app
+     */
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGUI.fxml"));
         //TODO change fxml file to its copy and change controller inside this copy
